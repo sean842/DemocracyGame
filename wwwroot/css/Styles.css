@@ -1,0 +1,135 @@
+﻿body {
+    direction: ltr;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: aquamarine;
+    height: 10%;
+    padding: 10px;
+}
+
+.GoLeft {
+    margin-right: 10px; /* Adjust spacing between elements */
+}
+
+.ProgressBar {
+    margin-left: auto; /* Pushes the progress bar to the right */
+}
+
+#SettingsContainer {
+    background-color: chocolate;
+    position: absolute;
+    top: 10%; /* Height of the header */
+    bottom: 0;
+    left: 0;
+    width: 40%;
+}
+
+#CharacterContainer {
+    background-color: aqua;
+    position: absolute;
+    top: 40%; /* 10% (header) + 30% (Settings) */
+    bottom: 0;
+    left: 0;
+    width: 40%;
+}
+
+#CharacterContainer img {
+        max-width: 100%; /* Set maximum width to 100% of its container */
+        max-height: 100%; /* Set maximum height to 100% of its container */
+}
+
+#LawContentContainer {
+    background-color: brown;
+    position: absolute;
+    top: 10%; /* Height of the header */
+    bottom: 0;
+    right: 0;
+    left: 40%; /* Width of Settings and Character */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+/*  justify-content: center;
+    align-items: center;
+    gap:10vh;
+*/
+}
+
+/*.half {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+}
+*/
+
+.half {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.head {
+    flex: 35%; /* Set the top part to take up 35% of the height */
+}
+
+.bottom {
+    flex: 65%; /* Set the bottom part to take up the remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+
+#lawWrapper {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    width: 80%; /* Make it fill the width of its parent */
+    height:80%;
+}
+
+#law {
+    background-color: aliceblue;
+    border: solid black;
+    width: 70%; /* Set the desired width */
+    height: 70%; 
+}
+
+#cardsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:80%;
+    height:80%;
+    gap:5%;
+}
+
+#GreenCard,
+#YellowCard,
+#RedCard {
+    width: 25%;
+    height: 80%;
+    background-color: green;
+}
+
+#GreenCard{
+    background-color:green;
+}
+
+#YellowCard {
+    background-color: yellow;
+}
+
+#RedCard {
+    background-color: red;
+}
