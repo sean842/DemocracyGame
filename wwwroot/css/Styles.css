@@ -4,7 +4,15 @@
     padding: 0;
     height: 100vh;
     overflow: hidden;
+    background-color: lightblue; /* Adjust as needed */
 }
+
+:root {
+    font-size: 24px;
+    --t: 20;
+}
+
+
 
 header {
     display: flex;
@@ -23,14 +31,112 @@ header {
     margin-left: auto; /* Pushes the progress bar to the right */
 }
 
+
+
+.screen {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#VoteScreen {
+    /*background-color: lightblue;*/ /* Adjust as needed */
+}
+
+#NewScreen {
+    display: none;
+    /*background-color: lightgreen;*/ /* Adjust as needed */
+}
+
+#PieChartContainer {
+    position: absolute;
+    top: 10%; /* Adjust as needed */
+    bottom: 0;
+    left: 40%; /* Adjust as needed */
+    right: 0;
+    background-color: beige; /* Adjust as needed */
+}
+
+
+
+
 #SettingsContainer {
     background-color: chocolate;
     position: absolute;
-    top: 10%; /* Height of the header */
+    top: 10%;
     bottom: 0;
     left: 0;
     width: 40%;
 }
+
+#timerAndTableContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+
+#countdown {
+    font-size: 4vw; /* Responsive font size */
+}
+/* Center the countdown vertically and horizontally */
+/*.countdown-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}*/
+
+
+
+/* Additional styling for the table */
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: white;
+    color: black;
+}
+
+td {
+    background-color: white;
+    color: black;
+}
+
+#pass{
+    color:green;
+}
+#fall{
+    color:red;
+}
+
+/* Style the popup */
+#popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+
+
 
 #CharacterContainer {
     background-color: aqua;
@@ -41,10 +147,13 @@ header {
     width: 40%;
 }
 
-#CharacterContainer img {
+    #CharacterContainer img {
         max-width: 100%; /* Set maximum width to 100% of its container */
         max-height: 100%; /* Set maximum height to 100% of its container */
-}
+    }
+
+
+
 
 #LawContentContainer {
     background-color: brown;
@@ -56,21 +165,12 @@ header {
     padding: 10px;
     display: flex;
     flex-direction: column;
-/*  justify-content: center;
+    /*  justify-content: center;
     align-items: center;
     gap:10vh;
 */
 }
 
-/*.half {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    justify-content: center;
-    align-items: center;
-}
-*/
 
 .half {
     display: flex;
@@ -95,35 +195,39 @@ header {
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     width: 80%; /* Make it fill the width of its parent */
-    height:80%;
+    height: 80%;
 }
 
 #law {
     background-color: aliceblue;
-    border: solid black;
     width: 70%; /* Set the desired width */
-    height: 70%; 
+    height: 70%;
+    padding: 2%;
+    border: 1px solid black; /* Add a 1px solid black border */
+    border-radius: 10px; /* Add rounded corners with a radius of 10px */
 }
 
 #cardsContainer {
     display: flex;
     justify-content: center;
     align-items: center;
-    width:80%;
-    height:80%;
-    gap:5%;
+    width: 80%;
+    height: 80%;
+    gap: 5%;
 }
 
 #GreenCard,
 #YellowCard,
 #RedCard {
     width: 25%;
-    height: 80%;
-    background-color: green;
+    height: 65%;
+    border: none; /* Remove the border */
+    font-size: 2rem;
+    border-radius: 10px;
 }
 
-#GreenCard{
-    background-color:green;
+#GreenCard {
+    background-color: green;
 }
 
 #YellowCard {
@@ -133,3 +237,17 @@ header {
 #RedCard {
     background-color: red;
 }
+
+/* When button is hovered */
+#cardsContainer button:hover {
+    transform: scale(1.2); /* Increase size by 20% */
+    transition: transform 0.3s ease; /* Add smooth transition */
+}
+
+
+
+
+/*#NewScreen{
+    display:none;
+    background-color:black;
+}*/

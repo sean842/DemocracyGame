@@ -7,8 +7,17 @@
     <meta name="description" content="ממשק למידה דמוקרטיה" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <script src="js/javascript.js" defer></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </head>
 <body>
+
+
 
     <header>
         <span class="GoLeft">Logo</span>
@@ -17,34 +26,92 @@
         <span class="ProgressBar">Progress Bar</span>
     </header>
 
-    <div id="SettingsContainer"></div>
-
-    <div id="CharacterContainer">
-        <div>his text</div>
-        <img src="img/MyDiplo.png" />
-    </div>
 
 
-    <div id="LawContentContainer">
 
-        <div class="half head">
+    <div id="VoteScreen" class="screen">
 
-            <div id="lawWrapper">
+        <div id="SettingsContainer">
 
-                <div id="law">the law content will be here</div>
+            <div id="timerAndTableContainer" class="d-flex justify-content-center align-items-center">
+                <div class="col text-center">
+                    <div id="countdown">10</div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th id="pass">עברו</th>
+                            <th id="fall">נפלו</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+
+        <div id="CharacterContainer">
+            <div>his text</div>
+            <img src="img/MyDiplo.png" />
+        </div>
+
+
+        <div id="LawContentContainer">
+
+            <div class="half head">
+
+                <div id="lawWrapper">
+
+                    <div id="law">the law content will be here</div>
+
+                </div>
+
+            </div>
+
+            <div class="half bottom">
+
+                <div id="cardsContainer">
+                    <button id="RedCard"> בעד </button>
+                    <button id="YellowCard"> נמנע </button>
+                    <button id="GreenCard"> נגד </button>
+                </div>
 
             </div>
 
         </div>
 
-        <div class="half bottom">
+    </div>
 
-            <div id="cardsContainer">
-                <div id="RedCard"> </div>
-                <div id="YellowCard"></div>
-                <div id="GreenCard"></div>
+
+    <div id="NewScreen" class="screen">
+
+        <div id="SettingsContainer">
+
+            <div class="row">
+                <div class="col text-center">
+                    <div id="countdown">10</div>
+                </div>
             </div>
 
+
+
+        </div>
+
+
+        <div id="CharacterContainer">
+            <!-- Character content -->
+        </div>
+
+        <div id="PieChartContainer">
+            <!-- Pie chart content -->
         </div>
 
     </div>
