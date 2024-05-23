@@ -1,12 +1,72 @@
-﻿var countdownInterval;
+﻿const lawsData = {
+    "laws": [
+        {
+            "content": "First Law Content",
+            "isImg": false,
+            "imgContent": "",
+            "for": 0,
+            "avoids": 0,
+            "against": 0
+        },
+        {
+            "content": "Second Law Content",
+            "isImg": false,
+            "imgContent": "",
+            "for": 0,
+            "avoids": 0,
+            "against": 0
+        },
+        {
+            "content": "Third Law Content",
+            "isImg": false,
+            "imgContent": "",
+            "for": 0,
+            "avoids": 0,
+            "against": 0
+        },
+        {
+            "content": "Fourth Law Content",
+            "isImg": false,
+            "imgContent": "",
+            "for": 0,
+            "avoids": 0,
+            "against": 0
+        },
+        {
+            "content": "Fifth Law Content",
+            "isImg": false,
+            "imgContent": "",
+            "for": 0,
+            "avoids": 0,
+            "against": 0
+        }
+    ]
+};
+
+
+let currentLawIndex = 0; // Variable to track the current law index
+let countdownInterval;
+
+// Function to display the current law
+function displayCurrentLaw() {
+    const currentLaw = lawsData.laws[currentLawIndex];
+    const lawContentElement = document.getElementById('law');
+    lawContentElement.textContent = currentLaw.content;
+    // Start the countdown timer when the page is loaded
+    startCountdown();
+}
+
+displayCurrentLaw();
+
+
 
 // Function to start the countdown timer
 function startCountdown() {
     // Get countdown element
-    var countdownElement = document.getElementById('countdown');
+    const countdownElement = document.getElementById('countdown');
 
     // Set initial countdown value
-    var countdownValue = 10;
+    let countdownValue = 10;
 
     // Update countdown display every second
     countdownInterval = setInterval(function () {
@@ -21,15 +81,11 @@ function startCountdown() {
     }, 1000);
 }
 
-// Function to stop the countdown timer
-function stopCountdown() {
-    clearInterval(countdownInterval);
-}
 
 // Function to show the Bootstrap modal popup
 function showPopup() {
     // Create and show the Bootstrap modal dynamically
-    var modalDiv = document.createElement('div');
+    const modalDiv = document.createElement('div');
     modalDiv.classList.add('modal', 'fade');
     modalDiv.setAttribute('id', 'popupModal');
     modalDiv.setAttribute('tabindex', '-1');
@@ -58,21 +114,32 @@ function showPopup() {
     $('#popupModal').modal('show');
 }
 
-// Start the countdown timer when the page is loaded
-startCountdown();
+
+
+// Add event listeners to the buttons
+document.getElementById('RedCard').addEventListener('click', handleButtonClick);
+document.getElementById('YellowCard').addEventListener('click', handleButtonClick);
+document.getElementById('GreenCard').addEventListener('click', handleButtonClick);
 
 // Function to handle button click event
 function handleButtonClick(event) {
-    var buttonId = event.target.id; // Get the id of the clicked button
+    const buttonId = event.target.id; // Get the id of the clicked button
 
     // Call the function to create the popup dynamically
     createConfirmationPopup(buttonId);
 }
 
+
 // Function to create the confirmation popup dynamically
 function createConfirmationPopup(buttonId) {
+    // Remove any existing modal with the same ID
+    const existingModal = document.getElementById('confirmationModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
     // Create and show the Bootstrap modal dynamically
-    var modalDiv = document.createElement('div');
+    const modalDiv = document.createElement('div');
     modalDiv.classList.add('modal', 'fade');
     modalDiv.setAttribute('id', 'confirmationModal');
     modalDiv.setAttribute('tabindex', '-1');
@@ -102,11 +169,13 @@ function createConfirmationPopup(buttonId) {
     $('#confirmationModal').modal('show');
 }
 
+
 // Function to handle confirmation of the selection
 function handleConfirmation(buttonId) {
     // Call approveSelection with the selected buttonId
     approveSelection(buttonId);
 }
+
 
 // Function to handle approval of the selection
 function approveSelection(buttonId) {
@@ -120,20 +189,31 @@ function approveSelection(buttonId) {
     createPieChart();
 }
 
-// Add event listeners to the buttons
-document.getElementById('RedCard').addEventListener('click', handleButtonClick);
-document.getElementById('YellowCard').addEventListener('click', handleButtonClick);
-document.getElementById('GreenCard').addEventListener('click', handleButtonClick);
 
+// Function to stop the countdown timer
+function stopCountdown() {
+    clearInterval(countdownInterval);
+}
 
 
 // Function to create the pie chart
 function createPieChart() {
+    // Remove the existing canvas if it exists
+    const existingCanvas = document.getElementById('myPieChart');
+    if (existingCanvas) {
+        existingCanvas.parentNode.removeChild(existingCanvas);
+    }
     // Get the canvas element
-    var ctx = document.getElementById('myPieChart').getContext('2d');
+    const canvasContainer = document.getElementById('canvasContainer');
+    const canvas = document.createElement('canvas');
+    canvas.id = 'myPieChart';
+    canvasContainer.appendChild(canvas);
+
+    // Get the 2d context
+    const ctx = canvas.getContext('2d');
 
     // Define the data for the pie chart
-    var data = {
+    const data = {
         labels: ['Green', 'Red', 'Yellow'], // Labels for the pie chart
         datasets: [{
             label: 'Votes',
@@ -147,7 +227,7 @@ function createPieChart() {
     };
 
     // Create the pie chart
-    var myPieChart = new Chart(ctx, {
+    const myPieChart = new Chart(ctx, {
         type: 'pie',
         data: data,
         options: {
@@ -166,3 +246,36 @@ function createPieChart() {
         }
     });
 }
+
+// Function to handle button click event to go to the next law
+function goToNextLaw() {
+    currentLawIndex++;
+    if (currentLawIndex >= lawsData.laws.length) {
+        // Handle reaching the end of the laws array
+        return
+    }
+    displayCurrentLaw();
+    // Show LawContentContainer
+    document.getElementById('LawContentContainer').style.display = 'flex';
+
+    // Hide PieChartContainer
+    document.getElementById('PieChartContainer').style.display = 'none';
+    // Remove the existing pie chart if it exists
+    const canvas = document.getElementById('myPieChart');
+    if (canvas) {
+        canvas.remove();
+    }
+}
+
+
+
+
+
+
+document.getElementById('nextLawButton').addEventListener('click', goToNextLaw);
+
+
+
+
+
+

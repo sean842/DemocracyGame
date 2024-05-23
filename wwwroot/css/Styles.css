@@ -54,12 +54,17 @@ header {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 40%; /* Adjust as needed */
+    left: 40%; /* Same left position as LawContentContainer */
     right: 0;
     background-color: beige; /* Adjust as needed */
     display: none; /* Initially hide the PieChartContainer */
     width: 60%; /* Same width as LawContentContainer */
     height: 100%; /* Same height as LawContentContainer */
+}
+
+#canvasContainer {
+    width: 70%;
+    height: 70%;
 }
 
 
@@ -284,9 +289,3 @@ th#pass::after, th#fall::after {
 }
 
 
-
-
-/*#NewScreen{
-    display:none;
-    background-color:black;
-}*/
