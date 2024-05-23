@@ -1,5 +1,4 @@
-﻿// Variable to hold the countdown interval
-var countdownInterval;
+﻿var countdownInterval;
 
 // Function to start the countdown timer
 function startCountdown() {
@@ -38,23 +37,23 @@ function showPopup() {
     modalDiv.setAttribute('aria-labelledby', 'popupModalLabel');
     modalDiv.setAttribute('aria-hidden', 'true');
     modalDiv.innerHTML = `
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="popupModalLabel">Time's up!</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Sorry, your time has run out.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    `;
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="popupModalLabel">Time's up!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Sorry, your time has run out.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        `;
     document.body.appendChild(modalDiv);
     $('#popupModal').modal('show');
 }
@@ -81,24 +80,24 @@ function createConfirmationPopup(buttonId) {
     modalDiv.setAttribute('aria-labelledby', 'confirmationModalLabel');
     modalDiv.setAttribute('aria-hidden', 'true');
     modalDiv.innerHTML = `
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Are you sure you want to select ${buttonId}?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="handleConfirmation('${buttonId}')">Confirm</button>
-          </div>
-        </div>
-      </div>
-    `;
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to select ${buttonId}?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="handleConfirmation('${buttonId}')">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        `;
     document.body.appendChild(modalDiv);
     $('#confirmationModal').modal('show');
 }
@@ -111,19 +110,59 @@ function handleConfirmation(buttonId) {
 
 // Function to handle approval of the selection
 function approveSelection(buttonId) {
-    // Hide VoteScreen elements
-    document.getElementById('VoteScreen').style.display = 'none';
+    // Hide LawContentContainer
+    document.getElementById('LawContentContainer').style.display = 'none';
 
-    // Stop the countdown timer
+    // Show PieChartContainer
+    document.getElementById('PieChartContainer').style.display = 'block';
+
     stopCountdown();
-
-    // Show NewScreen elements
-    document.getElementById('NewScreen').style.display = 'block';
-
-    // Additional logic based on buttonId if needed
+    createPieChart();
 }
 
 // Add event listeners to the buttons
 document.getElementById('RedCard').addEventListener('click', handleButtonClick);
 document.getElementById('YellowCard').addEventListener('click', handleButtonClick);
 document.getElementById('GreenCard').addEventListener('click', handleButtonClick);
+
+
+
+// Function to create the pie chart
+function createPieChart() {
+    // Get the canvas element
+    var ctx = document.getElementById('myPieChart').getContext('2d');
+
+    // Define the data for the pie chart
+    var data = {
+        labels: ['Green', 'Red', 'Yellow'], // Labels for the pie chart
+        datasets: [{
+            label: 'Votes',
+            data: [30, 20, 10], // Default values (replace with your variables)
+            backgroundColor: [
+                'green',
+                'red',
+                'yellow'
+            ]
+        }]
+    };
+
+    // Create the pie chart
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+            legend: {
+                position: 'right', // Position of the legend
+            },
+            plugins: {
+                // Add plugin to display labels on the pie chart
+                datalabels: {
+                    color: '#fff', // Color of the labels
+                    formatter: (value, ctx) => {
+                        return ctx.chart.data.labels[ctx.dataIndex] + ': ' + value + '%'; // Display label and value
+                    }
+                }
+            }
+        }
+    });
+}

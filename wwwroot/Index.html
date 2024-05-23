@@ -13,6 +13,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 </head>
 <body>
@@ -31,13 +33,13 @@
 
     <div id="VoteScreen" class="screen">
 
-        <div id="SettingsContainer">
+        <div id="SettingsContainer" class="col">
 
-            <div id="timerAndTableContainer" class="d-flex justify-content-center align-items-center">
-                <div class="col text-center">
-                    <div id="countdown">10</div>
-                </div>
+            <div id="ForTimer">
+                <div id="countdown">10</div>
+            </div>
 
+            <div id="ForTable">
                 <table>
                     <thead>
                         <tr>
@@ -52,6 +54,7 @@
                         </tr>
                     </tbody>
                 </table>
+
             </div>
 
         </div>
@@ -91,30 +94,11 @@
     </div>
 
 
-    <div id="NewScreen" class="screen">
 
-        <div id="SettingsContainer">
-
-            <div class="row">
-                <div class="col text-center">
-                    <div id="countdown">10</div>
-                </div>
-            </div>
-
-
-
-        </div>
-
-
-        <div id="CharacterContainer">
-            <!-- Character content -->
-        </div>
-
-        <div id="PieChartContainer">
-            <!-- Pie chart content -->
-        </div>
-
+    <div id="PieChartContainer">
+        <canvas id="myPieChart"></canvas>
     </div>
+
 
 
 </body>

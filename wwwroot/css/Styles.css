@@ -35,7 +35,7 @@ header {
 
 .screen {
     position: absolute;
-    top: 0;
+    top: 10%;
     bottom: 0;
     left: 0;
     right: 0;
@@ -52,11 +52,14 @@ header {
 
 #PieChartContainer {
     position: absolute;
-    top: 10%; /* Adjust as needed */
+    top: 0;
     bottom: 0;
     left: 40%; /* Adjust as needed */
     right: 0;
     background-color: beige; /* Adjust as needed */
+    display: none; /* Initially hide the PieChartContainer */
+    width: 60%; /* Same width as LawContentContainer */
+    height: 100%; /* Same height as LawContentContainer */
 }
 
 
@@ -65,49 +68,61 @@ header {
 #SettingsContainer {
     background-color: chocolate;
     position: absolute;
-    top: 10%;
-    bottom: 0;
+    top: 0;
+    bottom: 60%;
     left: 0;
     width: 40%;
-}
-
-#timerAndTableContainer {
     display: flex;
-    justify-content: center;
+    justify-content:space-around;
     align-items: center;
-    gap: 20px;
     padding: 10px;
 }
 
+#ForTimer, #ForTable {
+    flex: 1; /* Split the space equally */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    width: 45%;
+    height: 100%;
+}
+
+
+#ForTimer{
+    text-align:center;
+}
+
+#ForTable{
+}
 
 #countdown {
     font-size: 4vw; /* Responsive font size */
+    width: 45%; /* Adjust width for responsiveness */
+    text-align: center; /* Center the text */
 }
-/* Center the countdown vertically and horizontally */
-/*.countdown-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}*/
-
 
 
 /* Additional styling for the table */
 table {
-    border-collapse: collapse;
+    border-collapse: separate; /* Change to separate to allow for rounded corners */
+    border-spacing: 0; /* Ensure no space between cells */
     margin: 0 auto;
+    border-radius: 10px; /* Add rounded corners to the table */
+    overflow: hidden; /* Ensure overflow is hidden to hide any content that exceeds the rounded corners */
+    position: relative; /* Ensure the table is positioned relatively for absolute positioning of pseudo-element */
 }
 
 th, td {
-    border: 1px solid black;
+    border: none; /* Remove border to prevent double border appearance */
     padding: 8px;
     text-align: center;
+    position: relative; /* Ensure the table cell is positioned relatively for absolute positioning of pseudo-element */
 }
 
 th {
     background-color: white;
     color: black;
+    position: relative; /* Ensure the table header is positioned relatively for absolute positioning of pseudo-element */
 }
 
 td {
@@ -115,9 +130,32 @@ td {
     color: black;
 }
 
-#pass{
-    color:green;
+/* Add vertical line using pseudo-element */
+table::after {
+    content: '';
+    position: absolute;
+    top: 10px; /* Adjust the top position to add spacing between line and table border */
+    bottom: 10px; /* Adjust the bottom position to add spacing between line and table border */
+    left: 50%; /* Position the line at the middle of the table */
+    transform: translateX(-50%); /* Move the line to the left by half its width */
+    width: 1px; /* Width of the line */
+    background-color: black; /* Color of the line */
 }
+
+/* Add horizontal lines under "pass" and "fall" headers */
+th#pass::after, th#fall::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: -10px; /* Adjust the bottom position to add spacing between line and table border */
+    border-bottom: 1px solid black; /* Add a bottom border */
+    z-index: 2; /* Ensure the lines are above the middle line */
+}
+
+
+
+
 #fall{
     color:red;
 }
@@ -150,6 +188,7 @@ td {
     #CharacterContainer img {
         max-width: 100%; /* Set maximum width to 100% of its container */
         max-height: 100%; /* Set maximum height to 100% of its container */
+        height:90%;
     }
 
 
@@ -158,7 +197,7 @@ td {
 #LawContentContainer {
     background-color: brown;
     position: absolute;
-    top: 10%; /* Height of the header */
+    top: 0; /* Height of the header */
     bottom: 0;
     right: 0;
     left: 40%; /* Width of Settings and Character */
