@@ -1,6 +1,7 @@
 ﻿
 const baseUrl = "https://localhost:7288/";
 const hubUrl = baseUrl + "ChatHub";
+// create connection.
 const chathub = new signalR.HubConnectionBuilder()
     .withUrl(hubUrl)
     .configureLogging(signalR.LogLevel.Information)
@@ -8,20 +9,23 @@ const chathub = new signalR.HubConnectionBuilder()
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    getHub();
+    startHubConnection();
 });
 
-function getHub() {
+// start the connection.
+function startHubConnection() {
     chathub.start()
         .then(() => {
-            subscribeToHubEvents();
+            handleReceivedMessages();
+            console.log(chathub);
         })
         .catch(error => {
             console.error(error.toString());
         });
 }
 
-function subscribeToHubEvents() {
+// Take care when we receive message.
+function handleReceivedMessages() {
     chathub.on("ReceiveMessage", (user, message) => {
         const li = document.createElement("li");
         li.innerText = `${user}: ${message} `;
@@ -30,7 +34,7 @@ function subscribeToHubEvents() {
 }
 
 
-function clickBTN() {
+function sendMessage () {
     const username = document.getElementById("userInput").value;
     const message = document.getElementById("messageInput").value;
 
@@ -38,3 +42,8 @@ function clickBTN() {
 
 }
 
+
+function SendVote(voteType) {
+    console.log("i am working");
+    chathub.invoke("SendVote", voteType);
+}

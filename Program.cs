@@ -24,19 +24,6 @@ var app = builder.Build();
 
 app.UseResponseCompression();
 
-//builder.Services.AddCors(options =>
-//{
-//    options.AddDefaultPolicy(
-//        builder =>
-//        {
-//            builder.WithOrigins("https://example.com")
-//                .AllowAnyHeader()
-//                .WithMethods("GET", "POST")
-//                .AllowCredentials();
-//        });
-//});
-
-//var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

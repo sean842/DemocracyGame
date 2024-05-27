@@ -53,7 +53,7 @@ function displayCurrentLaw() {
     const lawContentElement = document.getElementById('law');
     lawContentElement.textContent = currentLaw.content;
     // Start the countdown timer when the page is loaded
-//    startCountdown();
+    //    startCountdown();
 }
 
 displayCurrentLaw();
@@ -175,7 +175,10 @@ function createConfirmationPopup(buttonId) {
 // Function to handle confirmation of the selection
 function handleConfirmation(buttonId) {
     // Call approveSelection with the selected buttonId
-    approveSelection(buttonId);
+    alert(`בחרת ב:  ${buttonId} המתן לתוצאות.`);
+    // sent the selection to the lecture by calling a function from Chat.js.
+    SendVote(buttonId);
+//    approveSelection(buttonId);
 }
 
 
@@ -188,7 +191,7 @@ function approveSelection(buttonId) {
     document.getElementById('PieChartContainer').style.display = 'block';
 
     //stopCountdown();
-    createPieChart();
+//    createPieChart();
 }
 
 
@@ -277,11 +280,6 @@ document.getElementById('nextLawButton').addEventListener('click', goToNextLaw);
 
 
 
-
-
-
-
-// when we recive message:
 function handleReceivedMessages() {
     chathub.on("ReceiveVote", (voteType) => {
         // Process the received vote (e.g., update pie chart)
@@ -289,6 +287,5 @@ function handleReceivedMessages() {
         console.log(`recieved: ${voteType}`);
     });
 }
-
 
 
