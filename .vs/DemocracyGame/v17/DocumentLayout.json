@@ -3,28 +3,32 @@
   "WorkspaceRootPath": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\js\\chat.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\js\\chat.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\playerpage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\playerpage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\js\\javascript.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\js\\javascript.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\js\\user.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\js\\user.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\js\\javascript.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\js\\javascript.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\playerpage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\playerpage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\css\\styles.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\css\\styles.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\wwwroot\\js\\chat.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:wwwroot\\js\\chat.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\democracygamev5\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{78F42BC0-F446-4C37-91F5-5DC6787141AD}|DemocracyGame.csproj|solutionrelative:hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,84 +38,94 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "User.js",
-              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\js\\User.js",
-              "RelativeDocumentMoniker": "wwwroot\\js\\User.js",
-              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\js\\User.js",
-              "RelativeToolTip": "wwwroot\\js\\User.js",
-              "ViewState": "AQIAAKQAAAAAAAAAAAAgwCEBAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-05-14T12:01:54.441Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "PlayerPage.html",
               "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\PlayerPage.html",
               "RelativeDocumentMoniker": "wwwroot\\PlayerPage.html",
               "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\PlayerPage.html",
               "RelativeToolTip": "wwwroot\\PlayerPage.html",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAGAAAA",
+              "ViewState": "AQIAAE4AAAAAAAAAAAAuwF8AAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2024-05-14T11:22:06.446Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
+              "Title": "User.js",
+              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\js\\User.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\User.js",
+              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\js\\User.js",
+              "RelativeToolTip": "wwwroot\\js\\User.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAHsAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-05-14T12:01:54.441Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Index.html",
               "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\Index.html",
               "RelativeDocumentMoniker": "wwwroot\\Index.html",
               "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\Index.html",
               "RelativeToolTip": "wwwroot\\Index.html",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "ViewState": "AQIAAFUAAAAAAAAAAAAuwGUAAAAxAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-05-13T15:08:08.061Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-13T15:08:08.061Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "JavaScript.js",
               "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\js\\JavaScript.js",
               "RelativeDocumentMoniker": "wwwroot\\js\\JavaScript.js",
               "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\js\\JavaScript.js",
               "RelativeToolTip": "wwwroot\\js\\JavaScript.js",
-              "ViewState": "AQIAAP0AAAAAAAAAAADwvxgBAAAAAAAA",
+              "ViewState": "AQIAAIgAAAAAAAAAAAAkwO4AAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-05-13T15:12:00.267Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "Chat.js",
               "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\js\\Chat.js",
               "RelativeDocumentMoniker": "wwwroot\\js\\Chat.js",
               "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\js\\Chat.js",
               "RelativeToolTip": "wwwroot\\js\\Chat.js",
-              "ViewState": "AQIAABMAAAAAAAAAAAAQwCgAAAAQAAAA",
+              "ViewState": "AQIAABUAAAAAAAAAAAAiwCUAAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-05-13T08:29:10.544Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-13T08:29:10.544Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "ChatHub.cs",
               "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\Hubs\\ChatHub.cs",
               "RelativeDocumentMoniker": "Hubs\\ChatHub.cs",
               "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\Hubs\\ChatHub.cs",
               "RelativeToolTip": "Hubs\\ChatHub.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAABJAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAADwvxAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-13T08:18:52.091Z",
+              "WhenOpened": "2024-05-13T08:18:52.091Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Styles.css",
+              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\css\\Styles.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\Styles.css",
+              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\DemocracyGameV5\\wwwroot\\css\\Styles.css",
+              "RelativeToolTip": "wwwroot\\css\\Styles.css",
+              "ViewState": "AQIAAAUBAAAAAAAAAAAuwBYBAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-05-14T18:47:03.44Z",
               "EditorCaption": ""
             }
           ]

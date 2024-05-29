@@ -45,7 +45,7 @@
 
 
 let currentLawIndex = 0; // Variable to track the current law index
-//let countdownInterval;
+
 
 // Function to display the current law
 function displayCurrentLaw() {
@@ -58,65 +58,6 @@ function displayCurrentLaw() {
 
 displayCurrentLaw();
 
-
-
-// Function to start the countdown timer
-//function startCountdown() {
-//    // Get countdown element
-//    const countdownElement = document.getElementById('countdown');
-
-//    // Set initial countdown value
-//    let countdownValue = 10;
-
-//    // Update countdown display every second
-//    countdownInterval = setInterval(function () {
-//        countdownValue--;
-//        countdownElement.textContent = countdownValue;
-
-//        // Check if time is up
-//        if (countdownValue === 0) {
-//            clearInterval(countdownInterval); // Stop the countdown
-//            showPopup(); // Call the function to show the popup
-//        }
-//    }, 1000);
-//}
-
-
-// Function to show the Bootstrap modal popup
-//function showPopup() {
-//    // Create and show the Bootstrap modal dynamically
-//    const modalDiv = document.createElement('div');
-//    modalDiv.classList.add('modal', 'fade');
-//    modalDiv.setAttribute('id', 'popupModal');
-//    modalDiv.setAttribute('tabindex', '-1');
-//    modalDiv.setAttribute('role', 'dialog');
-//    modalDiv.setAttribute('aria-labelledby', 'popupModalLabel');
-//    modalDiv.setAttribute('aria-hidden', 'true');
-//    modalDiv.innerHTML = `
-//            <div class="modal-dialog" role="document">
-//                <div class="modal-content">
-//                    <div class="modal-header">
-//                        <h5 class="modal-title" id="popupModalLabel">Time's up!</h5>
-//                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-//                            <span aria-hidden="true">&times;</span>
-//                        </button>
-//                    </div>
-//                    <div class="modal-body">
-//                        <p>Sorry, your time has run out.</p>
-//                    </div>
-//                    <div class="modal-footer">
-//                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-//                    </div>
-//                </div>
-//            </div>
-//        `;
-//    document.body.appendChild(modalDiv);
-//    $('#popupModal').modal('show');
-//}
-
-
-
-// Add event listeners to the buttons
 
 
 document.getElementById('RedCard').addEventListener('click', handleButtonClick);
@@ -176,9 +117,20 @@ function createConfirmationPopup(buttonId) {
 function handleConfirmation(buttonId) {
     // Call approveSelection with the selected buttonId
     alert(`בחרת ב:  ${buttonId} המתן לתוצאות.`);
+    let selection;// the var we will send. represent the user selection.
+    switch (buttonId) {
+        case "GreenCard":
+            selection = "for";
+            break;
+        case "RedCard":
+            selection = "against";
+            break;
+        default:
+            selection = "avoid";
+    }
+
     // sent the selection to the lecture by calling a function from Chat.js.
-    SendVote(buttonId);
-//    approveSelection(buttonId);
+    SendVote(selection);
 }
 
 

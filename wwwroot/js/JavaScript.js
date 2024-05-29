@@ -60,64 +60,6 @@ displayCurrentLaw();
 
 
 
-// Function to start the countdown timer
-//function startCountdown() {
-//    // Get countdown element
-//    const countdownElement = document.getElementById('countdown');
-
-//    // Set initial countdown value
-//    let countdownValue = 10;
-
-//    // Update countdown display every second
-//    countdownInterval = setInterval(function () {
-//        countdownValue--;
-//        countdownElement.textContent = countdownValue;
-
-//        // Check if time is up
-//        if (countdownValue === 0) {
-//            clearInterval(countdownInterval); // Stop the countdown
-//            showPopup(); // Call the function to show the popup
-//        }
-//    }, 1000);
-//}
-
-
-// Function to show the Bootstrap modal popup
-//function showPopup() {
-//    // Create and show the Bootstrap modal dynamically
-//    const modalDiv = document.createElement('div');
-//    modalDiv.classList.add('modal', 'fade');
-//    modalDiv.setAttribute('id', 'popupModal');
-//    modalDiv.setAttribute('tabindex', '-1');
-//    modalDiv.setAttribute('role', 'dialog');
-//    modalDiv.setAttribute('aria-labelledby', 'popupModalLabel');
-//    modalDiv.setAttribute('aria-hidden', 'true');
-//    modalDiv.innerHTML = `
-//            <div class="modal-dialog" role="document">
-//                <div class="modal-content">
-//                    <div class="modal-header">
-//                        <h5 class="modal-title" id="popupModalLabel">Time's up!</h5>
-//                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-//                            <span aria-hidden="true">&times;</span>
-//                        </button>
-//                    </div>
-//                    <div class="modal-body">
-//                        <p>Sorry, your time has run out.</p>
-//                    </div>
-//                    <div class="modal-footer">
-//                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-//                    </div>
-//                </div>
-//            </div>
-//        `;
-//    document.body.appendChild(modalDiv);
-//    $('#popupModal').modal('show');
-//}
-
-
-
-// Add event listeners to the buttons
-
 
 document.getElementById('RedCard').addEventListener('click', handleButtonClick);
 document.getElementById('YellowCard').addEventListener('click', handleButtonClick);
@@ -190,14 +132,6 @@ function approveSelection(buttonId) {
     //stopCountdown();
     createPieChart();
 }
-
-
-// Function to stop the countdown timer
-//function stopCountdown() {
-//    clearInterval(countdownInterval);
-//}
-
-
 
 
 // Function to create the pie chart
@@ -287,8 +221,20 @@ function handleReceivedMessages() {
         // Process the received vote (e.g., update pie chart)
         // Example: updatePieChart(user, voteType);
         console.log(`recieved: ${voteType}`);
+        voteOnLaw(currentLawIndex, voteType);
     });
 }
 
 
+// Function to vote on a law
+function voteOnLaw(lawIndex, voteType) {
+    // Ensure voteType is valid (for, avoids, or against)
+    if (voteType !== 'for' && voteType !== 'avoids' && voteType !== 'against') {
+        console.error('Invalid vote type');
+        return;
+    }
 
+    // Increment the corresponding vote count for the selected law
+    lawsData.laws[lawIndex][voteType]++;
+    console.log(lawsData);
+}
