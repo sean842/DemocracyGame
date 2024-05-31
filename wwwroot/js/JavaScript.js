@@ -45,7 +45,7 @@
 
 
 let currentLawIndex = 0; // Variable to track the current law index
-//let countdownInterval;
+
 
 // Function to display the current law
 function displayCurrentLaw() {
@@ -60,82 +60,23 @@ displayCurrentLaw();
 
 
 
-
-document.getElementById('RedCard').addEventListener('click', handleButtonClick);
-document.getElementById('YellowCard').addEventListener('click', handleButtonClick);
-document.getElementById('GreenCard').addEventListener('click', handleButtonClick);
-
-// Function to handle button click event
-function handleButtonClick(event) {
-    const buttonId = event.target.id; // Get the id of the clicked button
-
-    // Call the function to create the popup dynamically
-    createConfirmationPopup(buttonId);
-}
-
-
-// Function to create the confirmation popup dynamically
-function createConfirmationPopup(buttonId) {
-    // Remove any existing modal with the same ID
-    const existingModal = document.getElementById('confirmationModal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-
-    // Create and show the Bootstrap modal dynamically
-    const modalDiv = document.createElement('div');
-    modalDiv.classList.add('modal', 'fade');
-    modalDiv.setAttribute('id', 'confirmationModal');
-    modalDiv.setAttribute('tabindex', '-1');
-    modalDiv.setAttribute('role', 'dialog');
-    modalDiv.setAttribute('aria-labelledby', 'confirmationModalLabel');
-    modalDiv.setAttribute('aria-hidden', 'true');
-    modalDiv.innerHTML = `
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to select ${buttonId}?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="handleConfirmation('${buttonId}')">Confirm</button>
-                    </div>
-                </div>
-            </div>
-        `;
-    document.body.appendChild(modalDiv);
-    $('#confirmationModal').modal('show');
-}
-
-
-// Function to handle confirmation of the selection
-function handleConfirmation(buttonId) {
-    // Call approveSelection with the selected buttonId
-    approveSelection(buttonId);
-}
-
-
 // Function to handle approval of the selection
-function approveSelection(buttonId) {
-    // Hide LawContentContainer
-    document.getElementById('LawContentContainer').style.display = 'none';
+//function approveSelection() {
+//    //// Hide LawContentContainer
+//    //document.getElementById('LawContentContainer').style.display = 'none';
 
-    // Show PieChartContainer
-    document.getElementById('PieChartContainer').style.display = 'block';
+//    //// Show PieChartContainer
+//    //document.getElementById('PieChartContainer').style.display = 'block';
+//    // call the pie chart from the hub
+//    callPieChart();
 
-    //stopCountdown();
-    createPieChart();
-}
+//    //stopCountdown();
+////    createPieChart(currentLawIndex);
+//}
 
 
-// Function to create the pie chart
-function createPieChart() {
+
+function createPieChart(currentLawIndex) {
     // Remove the existing canvas if it exists
     const existingCanvas = document.getElementById('myPieChart');
     if (existingCanvas) {
@@ -150,17 +91,19 @@ function createPieChart() {
     // Get the 2d context
     const ctx = canvas.getContext('2d');
 
+    // Extract data for the current law
+    const law = lawsData.laws[currentLawIndex];
+    const labels = ['For', 'Against', 'Avoids'];
+    const dataValues = [law.for, law.against, law.avoids];
+    const backgroundColors = ['green', 'red', 'yellow'];
+
     // Define the data for the pie chart
     const data = {
-        labels: ['Green', 'Red', 'Yellow'], // Labels for the pie chart
+        labels: labels, // Labels for the pie chart
         datasets: [{
             label: 'Votes',
-            data: [30, 20, 10], // Default values (replace with your variables)
-            backgroundColor: [
-                'green',
-                'red',
-                'yellow'
-            ]
+            data: dataValues,
+            backgroundColor: backgroundColors
         }]
     };
 
@@ -177,13 +120,15 @@ function createPieChart() {
                 datalabels: {
                     color: '#fff', // Color of the labels
                     formatter: (value, ctx) => {
-                        return ctx.chart.data.labels[ctx.dataIndex] + ': ' + value + '%'; // Display label and value
+                        return ctx.chart.data.labels[ctx.dataIndex] + ': ' + value; // Display label and value
                     }
                 }
             }
         }
     });
 }
+
+
 
 // Function to handle button click event to go to the next law
 function goToNextLaw() {
@@ -206,35 +151,35 @@ function goToNextLaw() {
 }
 
 
-document.getElementById('nextLawButton').addEventListener('click', goToNextLaw);
 
 
 
 
 
+
+
+//document.getElementById('nextLawButton').addEventListener('click', goToNextLaw);
 
 
 
 // when we recive message:
-function handleReceivedMessages() {
-    chathub.on("ReceiveVote", (voteType) => {
-        // Process the received vote (e.g., update pie chart)
-        // Example: updatePieChart(user, voteType);
-        console.log(`recieved: ${voteType}`);
-        voteOnLaw(currentLawIndex, voteType);
-    });
-}
+//function handleReceivedMessages() {
+//    chathub.on("ReceiveVote", (voteType) => {
+//        console.log(`recieved: ${voteType}`);
+//        voteOnLaw(currentLawIndex, voteType);
+//    });
+//}
 
 
 // Function to vote on a law
-function voteOnLaw(lawIndex, voteType) {
-    // Ensure voteType is valid (for, avoids, or against)
-    if (voteType !== 'for' && voteType !== 'avoids' && voteType !== 'against') {
-        console.error('Invalid vote type');
-        return;
-    }
+//function voteOnLaw(lawIndex, voteType) {
+//    // Ensure voteType is valid (for, avoids, or against)
+//    if (voteType !== 'for' && voteType !== 'avoids' && voteType !== 'against') {
+//        console.error('Invalid vote type');
+//        return;
+//    }
 
-    // Increment the corresponding vote count for the selected law
-    lawsData.laws[lawIndex][voteType]++;
-    console.log(lawsData);
-}
+//    // Increment the corresponding vote count for the selected law
+//    lawsData.laws[lawIndex][voteType]++;
+//    console.log(lawsData);
+//}

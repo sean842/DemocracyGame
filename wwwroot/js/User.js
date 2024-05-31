@@ -126,7 +126,7 @@ function handleConfirmation(buttonId) {
             selection = "against";
             break;
         default:
-            selection = "avoid";
+            selection = "avoids";
     }
 
     // sent the selection to the lecture by calling a function from Chat.js.
@@ -142,21 +142,13 @@ function approveSelection(buttonId) {
     // Show PieChartContainer
     document.getElementById('PieChartContainer').style.display = 'block';
 
-    //stopCountdown();
-//    createPieChart();
 }
-
-
-// Function to stop the countdown timer
-//function stopCountdown() {
-//    clearInterval(countdownInterval);
-//}
 
 
 
 
 // Function to create the pie chart
-function createPieChart() {
+function createPieChart(currentLawIndex) {
     // Remove the existing canvas if it exists
     const existingCanvas = document.getElementById('myPieChart');
     if (existingCanvas) {
@@ -171,17 +163,19 @@ function createPieChart() {
     // Get the 2d context
     const ctx = canvas.getContext('2d');
 
+    // Extract data for the current law
+    const law = lawsData.laws[currentLawIndex];
+    const labels = ['For', 'Against', 'Avoids'];
+    const dataValues = [law.for, law.against, law.avoids];
+    const backgroundColors = ['green', 'red', 'yellow'];
+
     // Define the data for the pie chart
     const data = {
-        labels: ['Green', 'Red', 'Yellow'], // Labels for the pie chart
+        labels: labels, // Labels for the pie chart
         datasets: [{
             label: 'Votes',
-            data: [30, 20, 10], // Default values (replace with your variables)
-            backgroundColor: [
-                'green',
-                'red',
-                'yellow'
-            ]
+            data: dataValues,
+            backgroundColor: backgroundColors
         }]
     };
 
@@ -198,13 +192,15 @@ function createPieChart() {
                 datalabels: {
                     color: '#fff', // Color of the labels
                     formatter: (value, ctx) => {
-                        return ctx.chart.data.labels[ctx.dataIndex] + ': ' + value + '%'; // Display label and value
+                        return ctx.chart.data.labels[ctx.dataIndex] + ': ' + value; // Display label and value
                     }
                 }
             }
         }
     });
 }
+
+
 
 // Function to handle button click event to go to the next law
 function goToNextLaw() {
@@ -231,13 +227,5 @@ document.getElementById('nextLawButton').addEventListener('click', goToNextLaw);
 
 
 
-
-function handleReceivedMessages() {
-    chathub.on("ReceiveVote", (voteType) => {
-        // Process the received vote (e.g., update pie chart)
-        // Example: updatePieChart(user, voteType);
-        console.log(`recieved: ${voteType}`);
-    });
-}
 
 
