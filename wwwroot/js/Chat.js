@@ -10,6 +10,7 @@ const chathub = new signalR.HubConnectionBuilder()
 
 chathub.start().catch(err => console.error(err));
 
+//-------------------------------------------------------------------------------------
 
 function SendVote(voteType) {
     console.log("i am working");
@@ -28,6 +29,7 @@ chathub.on("ReceiveVote", (voteType) => {
     console.log(lawsData);
 });
 
+//-------------------------------------------------------------------------------------
 
 
 // call everyone to crate the pie chart.
@@ -46,41 +48,16 @@ chathub.on("CreateThePieChart", () => {
     createPieChart(currentLawIndex);
 });
 
-
-//document.addEventListener("DOMContentLoaded", function (event) {
-//    startHubConnection();
-//});
+//-------------------------------------------------------------------------------------
 
 
+// call everyone to take the next law.
+function callForNextLaw() {
+    chathub.invoke("NextLaw");
+}
 
-// start the connection.
-//function startHubConnection() {
-//    chathub.start()
-//        .then(() => {
-//            handleReceivedMessages();
-//            console.log(chathub);
-//        })
-//        .catch(error => {
-//            console.error(error.toString());
-//        });
-//}
-
-//// Take care when we receive message.
-//function handleReceivedMessages() {
-//    chathub.on("ReceiveMessage", (user, message) => {
-//        const li = document.createElement("li");
-//        li.innerText = `${user}: ${message} `;
-//        document.getElementById("messageList").appendChild(li);
-//    });
-//}
-
-
-//function sendMessage () {
-//    const username = document.getElementById("userInput").value;
-//    const message = document.getElementById("messageInput").value;
-
-//    chathub.invoke("SendMessage", username, message);
-
-//}
-
+// recive the call and call the next law.
+chathub.on("GetNextLaw", () => {
+    goToNextLaw();
+});
 

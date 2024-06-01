@@ -25,10 +25,10 @@ namespace DemocracyGame.Hubs
         {
             await Clients.All.SendAsync("CreateThePieChart");
         }
-        //public async Task NextLaw(int nextLawIndex)
-        //{
-        //    await Clients.All.SendAsync("GetNextLaw", nextLawIndex);
-        //}
+        public async Task NextLaw()
+        {
+            await Clients.All.SendAsync("GetNextLaw");
+        }
 
     }
 }

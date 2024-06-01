@@ -60,20 +60,6 @@ displayCurrentLaw();
 
 
 
-// Function to handle approval of the selection
-//function approveSelection() {
-//    //// Hide LawContentContainer
-//    //document.getElementById('LawContentContainer').style.display = 'none';
-
-//    //// Show PieChartContainer
-//    //document.getElementById('PieChartContainer').style.display = 'block';
-//    // call the pie chart from the hub
-//    callPieChart();
-
-//    //stopCountdown();
-////    createPieChart(currentLawIndex);
-//}
-
 
 
 function createPieChart(currentLawIndex) {
@@ -154,32 +140,3 @@ function goToNextLaw() {
 
 
 
-
-
-
-
-//document.getElementById('nextLawButton').addEventListener('click', goToNextLaw);
-
-
-
-// when we recive message:
-//function handleReceivedMessages() {
-//    chathub.on("ReceiveVote", (voteType) => {
-//        console.log(`recieved: ${voteType}`);
-//        voteOnLaw(currentLawIndex, voteType);
-//    });
-//}
-
-
-// Function to vote on a law
-//function voteOnLaw(lawIndex, voteType) {
-//    // Ensure voteType is valid (for, avoids, or against)
-//    if (voteType !== 'for' && voteType !== 'avoids' && voteType !== 'against') {
-//        console.error('Invalid vote type');
-//        return;
-//    }
-
-//    // Increment the corresponding vote count for the selected law
-//    lawsData.laws[lawIndex][voteType]++;
-//    console.log(lawsData);
-//}

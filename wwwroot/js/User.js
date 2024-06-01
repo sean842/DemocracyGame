@@ -134,17 +134,6 @@ function handleConfirmation(buttonId) {
 }
 
 
-// Function to handle approval of the selection
-function approveSelection(buttonId) {
-    // Hide LawContentContainer
-    document.getElementById('LawContentContainer').style.display = 'none';
-
-    // Show PieChartContainer
-    document.getElementById('PieChartContainer').style.display = 'block';
-
-}
-
-
 
 
 // Function to create the pie chart
@@ -202,6 +191,7 @@ function createPieChart(currentLawIndex) {
 
 
 
+
 // Function to handle button click event to go to the next law
 function goToNextLaw() {
     currentLawIndex++;
@@ -221,10 +211,6 @@ function goToNextLaw() {
         canvas.remove();
     }
 }
-
-
-document.getElementById('nextLawButton').addEventListener('click', goToNextLaw);
-
 
 
 
