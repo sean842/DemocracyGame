@@ -43,7 +43,6 @@
     ]
 };
 
-
 let currentLawIndex = 0; // Variable to track the current law index
 
 
@@ -52,12 +51,9 @@ function displayCurrentLaw() {
     const currentLaw = lawsData.laws[currentLawIndex];
     const lawContentElement = document.getElementById('law');
     lawContentElement.textContent = currentLaw.content;
-    // Start the countdown timer when the page is loaded
-//    startCountdown();
 }
 
 displayCurrentLaw();
-
 
 
 
@@ -116,12 +112,12 @@ function createPieChart(currentLawIndex) {
 
 
 
-// Function to handle button click event to go to the next law
+
 function goToNextLaw() {
     currentLawIndex++;
     if (currentLawIndex >= lawsData.laws.length) {
         // Handle reaching the end of the laws array
-        return
+        FinishVote();
     }
     displayCurrentLaw();
     // Show LawContentContainer
@@ -137,6 +133,33 @@ function goToNextLaw() {
 }
 
 
+function FinishVote() {
+    //hide the game.
+    document.getElementById("VoteScreen").style.display = "none";
+    //show the results
+    document.getElementById("resultsContainer").style.display = "block";
+    displayLawsTable(lawsData);
 
+}
 
+function displayLawsTable(data) {
+    const tableContainer = document.getElementById('resultsContainer');
+    let tableHTML = '<table><tr><th>עברו</th><th>נפלו</th></tr>';
 
+    data.laws.forEach(law => {
+        const totalFor = law['for'];
+        const totalAgainst = law['against'] + law['avoids'];
+        const isPassed = totalFor > totalAgainst;
+
+        tableHTML += `
+            <tr>
+                <td>${totalFor}</td>
+                <td>${totalAgainst}</td>
+                <td>${isPassed ? 'Passed' : 'Failed'}</td>
+            </tr>
+        `;
+    });
+
+    tableHTML += '</table>';
+    tableContainer.innerHTML = tableHTML;
+}
