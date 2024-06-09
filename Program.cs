@@ -1,5 +1,6 @@
 using DemocracyGame.Hubs;
 using Microsoft.AspNetCore.ResponseCompression;
+using TriangleDbRepository;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +20,7 @@ builder.Services.AddResponseCompression(opts =>
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
        new[] { "application/octet-stream" });
 });
-
+builder.Services.AddScoped<DbRepository>();
 var app = builder.Build();
 
 app.UseResponseCompression();
