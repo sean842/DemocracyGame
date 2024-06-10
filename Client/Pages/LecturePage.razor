@@ -1,0 +1,308 @@
+﻿@page "/LecturePage"
+@inject HttpClient Http;
+@inject NavigationManager nav;
+
+@using Microsoft.AspNetCore.SignalR.Client;
+@implements IAsyncDisposable;
+@using NewBlazorProjecct.Shared.DTOs;
+@inject IJSRuntime JS
+
+
+
+<div id="FristCanvas" style="display:@firsatCanvasDisplay">
+    @if (msg != "") {
+        <p>@msg</p>
+    }
+
+    <h1>הקלד קוד משחק:</h1>
+    <input type="number" @bind="playerGameCode" />
+    <span>לדוגמה 101</span>
+    <button @onclick="GetGame"> כניסה למשחק</button>
+
+</div>
+
+<div id="secondCanvas" style="display:@secondCanvasDisplay">
+    @* עובר על הרשימת משתמשים ומציג אותם*@
+    משתמשים מחוברים:
+    <ul id="Userlist" style="display:flex;gap:1rem;">
+        @foreach (Group group in allGroups) {
+            <li>@group.GroupName</li>
+        }
+    </ul>
+    <button @onclick="StartGame">התחל משחק</button>
+</div>
+
+<div id="explenation" style="display:@explenationCanvasDisplay">
+    <h1>ברוכים הבאים למליאה!</h1>
+    <p>אנו הולכים להצביע על החוקים החדשים ולהשפיע על חיי הכיתה!</p>
+    <p>כל קבוצה תקבל מספר קולות אשר ישפיעו על עתידנו.</p>
+    <p>לחצו על הכפתור שבמסך שלכם לקבלת הקולות</p>
+    <button @onclick="DistributePoints">קבלת קולות</button>
+</div>
+
+<div id="gotVotes" style="display:@gotVotesDisplay">
+    <p>ברכותי! קיבלתם קולות!</p>
+    <p> בואו נתחיל להשביפע! </p>
+    @foreach(Group group in allGroups) {
+        <div>
+            <p>@group.GroupName</p>
+            <p>@group.Points</p>
+        </div>
+    }
+    <button @onclick="StartTheVote">התחילו!</button>
+</div>
+
+
+
+<div id="VoteScreen" class="screen" style="display:@voteScreenDisplay">
+    <div id="SettingsContainer" class="col">
+        <div id="ForTable">
+            <table>
+                <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
+                <tbody> <tr>   <td>0</td>  <td>0</td>   </tr> </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="CharacterContainer"> <div>his text</div> <img src="/imgs/mydiplo.png" /> </div>
+    
+
+    <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
+        <div class="half head">
+            <div id="lawWrapper">   <div id="law">@currentLawContent</div>   </div>
+        </div>
+
+        <div class="half bottom">
+            <div id="cardsContainer">
+                <button id="Against"> נגד </button>
+                <button id="Avoid"> נמנע </button>
+                <button id="For"> בעד </button>
+            </div>
+    <button @onclick="ShowPieChart">Show Pie Chart!</button>
+        </div>
+    </div>
+
+
+    <div id="PieChartContainer" style="display:@PieChartContainerDisplay">
+        <div id="canvasContainer"> <canvas id="myPieChart"></canvas> </div>
+    </div>
+
+</div>
+
+<!--  RESULTS SCREEN  -->
+<div id="resultsContainer">
+</div>
+
+
+
+@code {
+
+    private HubConnection? hub;// the connection to the Hub.
+    Group myGroup = new Group(); // My user, will save the id.
+    bool logged = false;
+    List<Group> allGroups = new List<Group>();// list for all the users.
+
+    int playerGameCode = 0;// the code from the input of the player.
+    string msg;// handle the error msg.
+    Game myGame = new Game(); // containe the game withe the laws.
+    string firsatCanvasDisplay = "block";
+    string secondCanvasDisplay = "none";
+    string explenationCanvasDisplay = "none";
+    string gotVotesDisplay = "none";
+    string voteScreenDisplay = "none";
+    string LawContentContainerDisplay = "flex";
+    string PieChartContainerDisplay = "none";
+
+    string currentLawContent = "the law content will be here";
+    int lawCouner = 0;
+
+
+    protected override async Task OnInitializedAsync() {
+        // make a connection.
+        hub = new HubConnectionBuilder()
+            .WithUrl(nav.ToAbsoluteUri("./chathub"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        await hub.StartAsync(); // start connection.
+
+        if (hub != null) {
+            myGroup.ConnectionID = hub.ConnectionId;
+        }
+        // when someone login we get the user detailes and add it to the user list(to show it on screen).
+        hub.On<Group>("GroupLogin", newGroup => {
+            allGroups.Add(newGroup);
+            StateHasChanged();
+        });
+        hub.On("StartTheGame", () => {
+            HandleStartGame();
+        });
+        hub.On("StartVote", () => {
+            StartVote();
+            StateHasChanged();
+        });
+
+    }
+
+    // if the user looged in:
+    public bool IsConnected =>
+    hub?.State == HubConnectionState.Connected;
+
+    // release connection.
+    public async ValueTask DisposeAsync() {
+        if (hub != null) {
+            await hub.DisposeAsync();
+        }
+    }
+
+    async Task LogIn() {
+        // קריאת Post
+        var post = await Http.PostAsJsonAsync("api/Laws/InsertGroup", myGroup);
+        if (post.IsSuccessStatusCode) {
+            //קבלת מזהה המשתמש
+            myGroup.GroupID = post.Content.ReadFromJsonAsync<int>().Result;
+            logged = true;
+        }
+        secondCanvasDisplay = "block";
+    }
+
+
+    async Task GetGame() {
+        var response = await Http.GetAsync("api/Laws/Game/" + playerGameCode);
+        if (response.IsSuccessStatusCode == true) {
+            myGame = response.Content.ReadFromJsonAsync<Game>().Result;
+            foreach(LawsDTO law in myGame.LawList) {
+                Console.WriteLine("Content: " + law.Content);
+                Console.WriteLine("For: " + law.For);
+                Console.WriteLine("Against: " + law.Against);
+                Console.WriteLine("Avoid: " + law.Avoid);
+
+            }
+            // Console.WriteLine("Got Game");
+            firsatCanvasDisplay = "none";
+            secondCanvasDisplay = "block";
+            // Retrieve all groups after logging in
+            await GetAllGroups();
+        }
+        else {
+            Console.WriteLine("wrong");
+            string error = response.Content.ReadAsStringAsync().Result;
+            switch (error) {
+                case "No Game Code":
+                    msg = "we do not have a game with this code.";
+                    break;
+                case "No Laws":
+                    msg = "this game do not have any laws";
+                    break;
+            }
+        }
+
+    }
+
+    async Task StartGame() {
+        if (hub != null) {
+            await hub.SendAsync("StartGame");
+        }
+    }
+
+    void HandleStartGame() {
+        secondCanvasDisplay = "none";
+        explenationCanvasDisplay = "block";
+        // Console.WriteLine("startgame");
+        InvokeAsync(StateHasChanged);
+
+    }
+
+
+    async Task GetAllGroups() {
+        var response = await Http.GetAsync("api/Laws/GetAllGroups/" + myGame.GameID);
+        if (response.IsSuccessStatusCode) {
+            allGroups = await response.Content.ReadFromJsonAsync<List<Group>>();
+            StateHasChanged();
+        }
+        else {
+            msg = "Failed to load groups.";
+        }
+    }
+
+    async Task DistributePoints() {
+        // Console.WriteLine("GameID = " + myGame.GameID);
+        int gameID = myGame.GameID;
+        // Console.WriteLine(gameID);
+        var response = await Http.GetAsync("api/Laws/DistributePoints/" + gameID);
+        if (response.IsSuccessStatusCode) {
+            Console.WriteLine("Points distributed successfully");
+            await GetAllGroups(); // Refresh the group list to show updated points
+            explenationCanvasDisplay = "none";
+            gotVotesDisplay = "block";
+        }
+        else {
+            Console.WriteLine("Failed to distribute points");
+            msg = "Failed to distribute points.";
+        }
+    }
+
+    async void StartTheVote() {
+        Console.WriteLine("start the game!");
+        await hub.SendAsync("StartVote");
+    }
+
+    void StartVote() {
+        gotVotesDisplay = "none";
+        voteScreenDisplay = "block";
+        GetLawContent();
+    }
+
+    void GetLawContent() {
+        if (lawCouner < myGame.LawList.Count) {
+            currentLawContent = myGame.LawList[lawCouner].Content;
+        }else {
+            currentLawContent = "finish Game!";
+        }
+    }
+
+
+
+    // private async Task ShowPieChart() {
+    //     Console.WriteLine("show th chart!");
+    //     LawContentContainerDisplay = "none";
+    //     PieChartContainerDisplay = "block";
+    //     Console.WriteLine("For: " + myGame.LawList[lawCouner].For + "Against: " + myGame.LawList[lawCouner].Against + "Avoid: " + myGame.LawList[lawCouner].Avoid);
+
+    //     if (myGame.LawList.Count > 0 && lawCouner < myGame.LawList.Count) {
+    //         var currentLaw = myGame.LawList[lawCouner];
+    //         await JSRuntime.InvokeVoidAsync("createOrUpdatePieChart", new[]
+    //         {
+    //         new object[] { "For", currentLaw.For },
+    //         new object[] { "Against", currentLaw.Against },
+    //         new object[] { "Avoid", currentLaw.Avoid }
+    //     });
+    //     }
+    // }
+
+    private async Task ShowPieChart() {
+        Console.WriteLine("show th chart!");
+        LawContentContainerDisplay = "none";
+        PieChartContainerDisplay = "block";
+
+        if (myGame.LawList.Count > 0 && lawCouner < myGame.LawList.Count) {
+            var currentLaw = myGame.LawList[lawCouner];
+            var data = new[]
+            {
+            new { label = "For", value = currentLaw.For },
+            new { label = "Against", value = currentLaw.Against },
+            new { label = "Avoid", value = currentLaw.Avoid }
+        };
+
+            var dataJson = System.Text.Json.JsonSerializer.Serialize(data);
+            Console.WriteLine("Data JSON being passed to JavaScript:", dataJson);
+
+            await JSRuntime.InvokeVoidAsync("createOrUpdatePieChart", dataJson);
+        }
+    }
+
+
+
+
+
+}
