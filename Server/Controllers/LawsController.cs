@@ -134,10 +134,6 @@ namespace NewBlazorProjecct.Server.Controllers {
 
         [HttpPost("Vote")]
         public async Task<IActionResult> Vote(VoteDTO vote) {
-            //object param = new {
-            //    LawID = vote.LawID,
-            //    GameID = vote.GameID
-            //};
             // Prepare the SQL update query based on the vote type
             string updateQuery;
             switch (vote.VoteType) {

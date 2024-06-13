@@ -78,19 +78,24 @@
                 <button id="Avoid"> נמנע </button>
                 <button id="For"> בעד </button>
             </div>
-    <button @onclick="ShowPieChart">Show Pie Chart!</button>
+            <button @onclick="TriggerPieChart">Show Pie Chart!</button>
         </div>
     </div>
 
 
     <div id="PieChartContainer" style="display:@PieChartContainerDisplay">
         <div id="canvasContainer"> <canvas id="myPieChart"></canvas> </div>
+        <button id="nextLawButton" @onclick="callForNextLaw">Next Law</button>
     </div>
 
 </div>
 
 <!--  RESULTS SCREEN  -->
-<div id="resultsContainer">
+<div id="resultsContainer" style="display:@resultsContainerDisplay">
+    <table>
+        <tr> <th>עברו</th> <th>נפלו</th> </tr>
+        <tr> <td>@lawAmountPass</td> <td>@lawAmountNotPass</td> </tr>
+    </table>
 </div>
 
 
@@ -112,10 +117,12 @@
     string voteScreenDisplay = "none";
     string LawContentContainerDisplay = "flex";
     string PieChartContainerDisplay = "none";
+    string resultsContainerDisplay = "none";
 
     string currentLawContent = "the law content will be here";
-    int lawCouner = 0;
-
+    int lawCounter = 0;
+    int lawAmountPass = 0;
+    int lawAmountNotPass = 0;
 
     protected override async Task OnInitializedAsync() {
         // make a connection.
@@ -141,6 +148,33 @@
             StartVote();
             StateHasChanged();
         });
+        hub.On<VoteDTO>("VoteUpdated", vote => {
+            var law = myGame.LawList.FirstOrDefault(l => l.LawID == vote.LawID);
+            if (law != null) {
+                switch (vote.VoteType) {
+                    case "For":
+                        law.For++;
+                        break;
+                    case "Against":
+                        law.Against++;
+                        break;
+                    case "Avoid":
+                        law.Avoid++;
+                        break;
+                }
+                StateHasChanged();
+            }
+        });
+
+        hub.On("showPieChart", async () => {
+            await ShowPieChart();
+            StateHasChanged();
+        });
+        hub.On("ShowNextLaw", () => {
+            GetNextLaw();
+            StateHasChanged();
+        });
+
 
     }
 
@@ -171,13 +205,13 @@
         var response = await Http.GetAsync("api/Laws/Game/" + playerGameCode);
         if (response.IsSuccessStatusCode == true) {
             myGame = response.Content.ReadFromJsonAsync<Game>().Result;
-            foreach(LawsDTO law in myGame.LawList) {
-                Console.WriteLine("Content: " + law.Content);
-                Console.WriteLine("For: " + law.For);
-                Console.WriteLine("Against: " + law.Against);
-                Console.WriteLine("Avoid: " + law.Avoid);
+            // foreach(LawsDTO law in myGame.LawList) {
+            //     Console.WriteLine("Content: " + law.Content);
+            //     Console.WriteLine("For: " + law.For);
+            //     Console.WriteLine("Against: " + law.Against);
+            //     Console.WriteLine("Avoid: " + law.Avoid);
 
-            }
+            // }
             // Console.WriteLine("Got Game");
             firsatCanvasDisplay = "none";
             secondCanvasDisplay = "block";
@@ -254,53 +288,78 @@
     }
 
     void GetLawContent() {
-        if (lawCouner < myGame.LawList.Count) {
-            currentLawContent = myGame.LawList[lawCouner].Content;
+        if (lawCounter < myGame.LawList.Count) {
+            currentLawContent = myGame.LawList[lawCounter].Content;
         }else {
             currentLawContent = "finish Game!";
         }
     }
 
+    private async Task TriggerPieChart() {
+        await hub.SendAsync("ShowChart");
+    }
 
-
-    // private async Task ShowPieChart() {
-    //     Console.WriteLine("show th chart!");
-    //     LawContentContainerDisplay = "none";
-    //     PieChartContainerDisplay = "block";
-    //     Console.WriteLine("For: " + myGame.LawList[lawCouner].For + "Against: " + myGame.LawList[lawCouner].Against + "Avoid: " + myGame.LawList[lawCouner].Avoid);
-
-    //     if (myGame.LawList.Count > 0 && lawCouner < myGame.LawList.Count) {
-    //         var currentLaw = myGame.LawList[lawCouner];
-    //         await JSRuntime.InvokeVoidAsync("createOrUpdatePieChart", new[]
-    //         {
-    //         new object[] { "For", currentLaw.For },
-    //         new object[] { "Against", currentLaw.Against },
-    //         new object[] { "Avoid", currentLaw.Avoid }
-    //     });
-    //     }
-    // }
+    private bool CalculateResult() {
+        if (myGame.LawList[lawCounter].For > myGame.LawList[lawCounter].Against) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     private async Task ShowPieChart() {
-        Console.WriteLine("show th chart!");
         LawContentContainerDisplay = "none";
         PieChartContainerDisplay = "block";
 
-        if (myGame.LawList.Count > 0 && lawCouner < myGame.LawList.Count) {
-            var currentLaw = myGame.LawList[lawCouner];
-            var data = new[]
-            {
-            new { label = "For", value = currentLaw.For },
-            new { label = "Against", value = currentLaw.Against },
-            new { label = "Avoid", value = currentLaw.Avoid }
-        };
-
-            var dataJson = System.Text.Json.JsonSerializer.Serialize(data);
-            Console.WriteLine("Data JSON being passed to JavaScript:", dataJson);
-
+        if (myGame.LawList.Count > 0 && lawCounter < myGame.LawList.Count) {
+            var currentLaw = myGame.LawList[lawCounter];
+            var data = new[] {
+                new { label = "For", value = currentLaw.For },
+                new { label = "Against", value = currentLaw.Against },
+                new { label = "Avoid", value = currentLaw.Avoid }
+            };
+            myGame.LawList[lawCounter].IsPass = CalculateResult();// return true/false.
+            var dataJson = System.Text.Json.JsonSerializer.Serialize(data);// make it json.
             await JSRuntime.InvokeVoidAsync("createOrUpdatePieChart", dataJson);
         }
     }
 
+
+    private async Task callForNextLaw() {
+        // דרך HUB לקרוא לכולם להציג את החוק הבא
+        await hub.SendAsync("ShowTheNextLaw");
+    }
+
+    void GetNextLaw() {
+        lawCounter++;
+        // לבדוק האם נגמרו החוקים
+        if (lawCounter >= myGame.LawList.Count) {
+            FinishGame();
+            return;
+        }
+        //להביא את החוק הבא
+        GetLawContent();
+        //להסתיר את הגרף ולהראות את הכפתורים
+        LawContentContainerDisplay = "flex";
+        PieChartContainerDisplay = "none";
+
+    }
+
+    void FinishGame() {
+        Console.WriteLine("we finish vote");
+        voteScreenDisplay = "none";
+        resultsContainerDisplay = "block";
+        foreach(LawsDTO law in myGame.LawList) {
+            if(law.IsPass == true) {
+                lawAmountPass++;
+            }
+            else {
+                lawAmountNotPass++;
+            }
+        }
+
+    }
 
 
 

@@ -12,7 +12,12 @@ namespace NewBlazorProjecct.Server.Hubs {
             await Clients.All.SendAsync("StartVote");
         }
 
-        // לא עובד
+        public async Task ShowChart() {
+            await Clients.All.SendAsync("showPieChart");
+        }
+        public async Task ShowTheNextLaw() {
+            await Clients.All.SendAsync("ShowNextLaw");
+        }
 
 
 

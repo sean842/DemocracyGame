@@ -59,7 +59,7 @@
     <div id="CharacterContainer"> <div>his text</div> <img src="/imgs/mydiplo.png" /> </div>
 
 
-    <div id="LawContentContainer">
+    <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
         <div class="half head">
             <div id="lawWrapper">   <div id="law">@currentLawContent</div>   </div>
         </div>
@@ -73,14 +73,18 @@
         </div>
     </div>
 
-    <div id="PieChartContainer">
+    <div id="PieChartContainer" style="display:@PieChartContainerDisplay" >
         <div id="canvasContainer"> <canvas id="myPieChart"></canvas> </div>
     </div>
 
 </div>
 
 <!--  RESULTS SCREEN  -->
-<div id="resultsContainer">
+<div id="resultsContainer" style="display:@resultsContainerDisplay">
+    <table>
+        <tr> <th>עברו</th> <th>נפלו</th> </tr>
+        <tr> <td>@lawAmountPass</td> <td>@lawAmountNotPass</td> </tr>
+    </table>
 </div>
 
 
@@ -93,23 +97,30 @@
     bool logged = false;
     List<Group> allGroups = new List<Group>();// list for all the users.
     int gamecode = 0;
-
-
+    Game myGame = new Game(); // containe the game withe the laws.
 
     int playerGameCode = 0;// the code from the input of the player.
     string msg;// handle the error msg.
-    Game myGame = new Game(); // containe the game withe the laws.
+    // styles for divs.
     string firsatCanvasDisplay = "block";
     string secondCanvasDisplay = "none";
     string thiredCanvasDisplay = "none";
     string explenationCanvasDisplay = "none";
     string gotVotesDisplay = "none";
-    // string points = " ";
     string voteScreenDisplay = "none";
+    string LawContentContainerDisplay = "flex";
+    string PieChartContainerDisplay = "none";
+    string resultsContainerDisplay = "none";
 
     string currentLawContent = "the law content will be here";
-    int lawCouner = 0;
-    bool canVote = true;// if we can vote or not(disable buttons).
+    int lawCounter = 0;
+    bool canVote = true;// if we can vote or not(disable buttons), true will disable!.
+    int lawAmountPass = 0;
+    int lawAmountNotPass = 0;
+
+
+
+
 
     protected override async Task OnInitializedAsync() {
         // make a connection.
@@ -162,18 +173,19 @@
                         break;
                 }
                 StateHasChanged();
-                SetVoteTrueOrFalse();
             }
+        });
+        hub.On("showPieChart", async () => {
+            await ShowPieChart();
+            StateHasChanged();
+        });
+        hub.On("ShowNextLaw", () => {
+            GetNextLaw();
+            StateHasChanged();
         });
 
     }
 
-    void SetVoteTrueOrFalse() {
-        // Console.WriteLine(canVote);
-        canVote = !canVote;
-        // Console.WriteLine(canVote);
-
-    }
 
     // if the user looged in:
     public bool IsConnected =>
@@ -259,30 +271,34 @@
     }
 
     void GetLawContent() {
-        if(lawCouner < myGame.LawList.Count) {
-            currentLawContent = myGame.LawList[lawCouner].Content;
+        if(lawCounter < myGame.LawList.Count) {
+            currentLawContent = myGame.LawList[lawCounter].Content;
         }
         else {
             currentLawContent = "finish Game!";
         }
-        SetVoteTrueOrFalse();
+        // SetVoteTrueOrFalse();
+        canVote = false;
     }
 
- 
+
+
 
     async Task SendVote(string voteType) {
         // Console.WriteLine(voteType);
 
-        if (myGame != null && myGame.LawList != null && lawCouner < myGame.LawList.Count) {
+        if (myGame != null && myGame.LawList != null && lawCounter < myGame.LawList.Count) {
             var vote = new VoteDTO {
                     GameID = myGame.GameID,
-                    LawID = myGame.LawList[lawCouner].LawID,
+                    LawID = myGame.LawList[lawCounter].LawID,
                     VoteType = voteType
                 };
 
             var response = await Http.PostAsJsonAsync("api/Laws/Vote", vote);
             if (response.IsSuccessStatusCode) {
                 Console.WriteLine("Vote submitted successfully");
+                // SetVoteTrueOrFalse();
+                canVote = true;
             }
             else {
                 Console.WriteLine("Failed to submit vote");
@@ -290,6 +306,65 @@
         }
     }
 
+
+    private bool CalculateResult() {
+        if (myGame.LawList[lawCounter].For > myGame.LawList[lawCounter].Against) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+
+    private async Task ShowPieChart() {
+        LawContentContainerDisplay = "none";
+        PieChartContainerDisplay = "block";
+
+        if (myGame.LawList.Count > 0 && lawCounter < myGame.LawList.Count) {
+            var currentLaw = myGame.LawList[lawCounter];
+            var data = new[] {
+                new { label = "For", value = currentLaw.For },
+                new { label = "Against", value = currentLaw.Against },
+                new { label = "Avoid", value = currentLaw.Avoid }
+            };
+            myGame.LawList[lawCounter].IsPass = CalculateResult();// return true/false.
+            var dataJson = System.Text.Json.JsonSerializer.Serialize(data);// make it json.
+            await JSRuntime.InvokeVoidAsync("createOrUpdatePieChart", dataJson);
+        }
+    }
+
+
+    void GetNextLaw() {
+        lawCounter++;
+        // לבדוק האם נגמרו החוקים
+        if (lawCounter >= myGame.LawList.Count) {
+            FinishGame();
+            return;
+        }
+        //להביא את החוק הבא
+        GetLawContent();
+        //להסתיר את הגרף ולהראות את הכפתורים
+        LawContentContainerDisplay = "flex";
+        PieChartContainerDisplay = "none";
+
+    }
+
+    void FinishGame() {
+        Console.WriteLine("we finish vote");
+        voteScreenDisplay = "none";
+        resultsContainerDisplay = "block";
+        foreach (LawsDTO law in myGame.LawList) {
+            if (law.IsPass == true) {
+                lawAmountPass++;
+            }
+            else {
+                lawAmountNotPass++;
+            }
+        }
+
+    }
 
 
 }
