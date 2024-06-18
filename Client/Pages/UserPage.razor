@@ -156,8 +156,11 @@
 
         hub.On("PointsDistributed", async () => {
             await GetAllGroups();
-            myGroup.Points = allGroups[0].Points;
-            // Console.WriteLine(myGroup.Points);
+            foreach (Group group in allGroups) {
+                if(myGroup.GroupName == group.GroupName) {
+                    myGroup.Points = group.Points;
+                }
+            }
             explenationCanvasDisplay = "none";
             gotVotesDisplay = "block";
             StateHasChanged();

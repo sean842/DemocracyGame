@@ -209,6 +209,7 @@
             myGame = response.Content.ReadFromJsonAsync<Game>().Result;
             firsatCanvasDisplay = "none";
             secondCanvasDisplay = "block";
+            Console.WriteLine(myGame.ScoreFormat);
             // Retrieve all groups after logging in
             await GetAllGroups();
         }
@@ -253,10 +254,15 @@
     }
 
     async Task DistributePoints() {
-        // Console.WriteLine("GameID = " + myGame.GameID);
         int gameID = myGame.GameID;
-        // Console.WriteLine(gameID);
-        var response = await Http.GetAsync("api/Laws/DistributePoints/" + gameID);
+        bool scoreFormat;
+        if(myGame.ScoreFormat == true) {
+            scoreFormat = true;
+        }
+        else {
+            scoreFormat = false;
+        }
+        var response = await Http.GetAsync("api/Laws/DistributePoints/" + gameID + "/" + scoreFormat);
         if (response.IsSuccessStatusCode) {
             Console.WriteLine("Points distributed successfully");
             await GetAllGroups(); // Refresh the group list to show updated points

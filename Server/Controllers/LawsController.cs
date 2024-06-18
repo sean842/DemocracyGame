@@ -77,7 +77,7 @@ namespace NewBlazorProjecct.Server.Controllers {
             };
             string insertQuery = "INSERT INTO Groups (GroupName, GameID, Points) VALUES (@groupName, @gameID, @points)";
             group.GroupID = await _db.InsertReturnId(insertQuery, param);
-            if(group.GroupID > 0) {
+            if (group.GroupID > 0) {
                 await _hub.Clients.All.SendAsync("GroupLogin", group);
                 return Ok(group.GroupID);
             }
@@ -87,192 +87,97 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
 
-
-        //[HttpGet("DistributePoints2/{gameID}")]
-        //public async Task<IActionResult> DistributePoints2(int gameID) {
-        //    // Fetch all groups for the game
-        //    object param = new {
-        //        GameID = gameID
-        //    };
-        //    string query = "SELECT * FROM Groups WHERE GameID = @GameID";
-        //    var groups = await _db.GetRecordsAsync<Group>(query, param);
-
-        //    if (groups == null || !groups.Any()) {
-        //        return NotFound("No groups found");
-        //    }
-
-        //    // Calculate points to distribute
-        //    int totalPoints = 120;
-        //    int pointsPerGroup = totalPoints / groups.Count();
-
-        //    // Update points for each group
-        //    foreach (var group in groups) {
-        //        object updateParam = new {
-        //            GroupID = group.GroupID,
-        //            Points = pointsPerGroup
-        //        };
-        //        string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
-        //        bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
-
-        //        if (!isUpdate) {
-        //            return BadRequest("Failed to update points for group: " + group.GroupName);
-        //        }
-        //    }
-
-        //    // Notify clients about the points distribution
-        //    await _hub.Clients.All.SendAsync("PointsDistributed");
-
-        //    return Ok("Points distributed successfully");
-        //}
-
-
-        //WORK ON IT!!!!!!_______________------------------------------
-
-
-
         [HttpGet("DistributePoints/{gameID}/{scoreFormat}")]
-        public async Task<IActionResult> DistributePoints(int gameID, bool scoreFormat) {
-            object param = new {
-                GameID = gameID
-            };
-            string query = "SELECT * FROM Groups WHERE GameID = @GameID";
-            var groups = await _db.GetRecordsAsync<Group>(query, param);
-            List<Group> groupsList = groups.ToList();
-            if (groupsList.Count > 0) {
-                int totalPoints = 120;
-                if (scoreFormat == true) {
-                    int pointsPerGroup = totalPoints / groups.Count();
-                    // Update points for each group
-                    foreach (Group group in groupsList) {
-                        object updateParam = new {
-                            GroupID = group.GroupID,
-                            Points = pointsPerGroup
-                        };
-                        string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
-                        bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
-                        if (!isUpdate) {
-                            return BadRequest("Failed to update points for group: " + group.GroupName);
-                        }
-                    }
-                }
-                else if (scoreFormat == false) {
-                    // Random distribution logic
-                    Random rnd = new Random();
-                    int remainingPoints = totalPoints;
-                    foreach (Group group in groupsList) {
-                        int pointsToDistribute = rnd.Next(5, Math.Min(21, remainingPoints));
-                        remainingPoints -= pointsToDistribute;
-                        object updateParam = new {
-                            GroupID = group.GroupID,
-                            Points = pointsToDistribute
-                        };
-                        string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
-                        bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
-                        if (!isUpdate) {
-                            return BadRequest("Failed to update points for group: " + group.GroupName);
-                        }
-                    }
-                    // Ensure last group gets any remaining points not yet distributed
-                    if (remainingPoints > 0) {
-                        var lastGroup = groups.Last();
-                        object updateParamLast = new {
-                            GroupID = lastGroup.GroupID,
-                            Points = remainingPoints
-                        };
-                        string updateQueryLast = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
-                        bool isUpdate = await _db.SaveDataAsync(updateQueryLast, updateParamLast);
-                        if (!isUpdate) {
-                            return BadRequest("Failed to update points for group: " + lastGroup.GroupName);
-                        }
-                    }
-                }
-                // Notify clients about the points distribution
-                await _hub.Clients.All.SendAsync("PointsDistributed");
-                string queryAllGrops = "SELECT * FROM Groups WHERE GameID = @GameID";
-                var allGroups = await _db.GetRecordsAsync<Group>(queryAllGrops, param);
-                List<Group> allGroupsList = allGroups.ToList();
-                if (allGroupsList.Count > 0) {
-                    return Ok(allGroupsList);
-                }
-                return BadRequest("didnt fint all groups");
-            }
-            return BadRequest("did not found groups");
+        public async Task<IActionResult> DistributePoints2(int gameID, bool scoreFormat) {
+            // Call GetAllGroups at the start
+            var allGroupsResult = await GetAllGroups(gameID);
+            if (allGroupsResult is OkObjectResult okResult) {
+                List<Group> groupsList = okResult.Value as List<Group>;
 
+                if (groupsList.Count > 0) {
+                    if (scoreFormat) {
+                        return await EvenDistribution(groupsList);                        
+                    }
+                    else {
+                        return await RandomDistribution(groupsList);
+                    }
+                }
+            }
+            return BadRequest("No groups found");
         }
 
+        private async Task<IActionResult> EvenDistribution(List<Group> groupsList) {
+            int totalPoints = 120;
+            int pointsPerGroup = totalPoints / groupsList.Count;
+            // ... your existing even distribution logic ...
+            foreach (Group group in groupsList) {
+                object updateParam = new {
+                    GroupID = group.GroupID,
+                    Points = pointsPerGroup
+                };
+                string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
+                bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
+                if (!isUpdate) {
+                    return BadRequest("Failed to update points for group: " + group.GroupName);
+                }
+            }
+            // Notify clients about the points distribution
+            await _hub.Clients.All.SendAsync("PointsDistributed");
+            return Ok(true);
+            //int gameID = groupsList[0].GameID;
+            //var allGroupsResult = await GetAllGroups(gameID);
+            //if (allGroupsResult is OkObjectResult okResult) {
+            //    List<Group> newGroupsList = okResult.Value as List<Group>;
+            //    return Ok(newGroupsList); // Assuming you want to return the updated list of groups
+            //}
+            //return BadRequest("didnt get the gropps");
+        }
 
-        //[HttpGet("DistributePointsran/{gameID}/{scoreFormat}")]
-        //public async Task<IActionResult> DistributePoints3(int gameID, bool scoreFormat) {
+        private async Task<IActionResult> RandomDistribution(List<Group> groupsList) {
+            int totalPoints = 120;
+            Random rnd = new Random();
+            int remainingPoints = totalPoints;
 
-        //    // Fetch all groups for the game
-        //    string query = "SELECT * FROM Groups WHERE GameID = @GameID";
-        //    var groups = await _db.GetRecordsAsync<Group>(query, new { GameID = gameID });
+            while (remainingPoints > 0) {// if i have points to give:
+                foreach (Group group in groupsList) {
+                    int pointsToDistribute;
+                    if (remainingPoints < 5) {
+                        pointsToDistribute = remainingPoints;
+                        remainingPoints = 0;
+                    }
+                    else {
+                        int maxPoints = Math.Min(21, remainingPoints);
+                        pointsToDistribute = rnd.Next(5, maxPoints + 1);
+                        remainingPoints -= pointsToDistribute;
+                    }
 
-        //    if (groups == null || !groups.Any()) {
-        //        return NotFound("No groups found");
-        //    }
+                    object updateParam = new {
+                        GroupID = group.GroupID,
+                        Points = pointsToDistribute
+                    };
+                    string updateQuery = "UPDATE Groups SET Points = Points + @Points WHERE GroupID = @GroupID";
+                    bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
+                    if (!isUpdate) {
+                        return BadRequest("Failed to update points for group: " + group.GroupName);
+                    }
 
-        //    int totalPoints = 120;
-        //    if (scoreFormat == true) {
-        //        // Equal distribution logic (same as before)
-        //        int pointsPerGroup = totalPoints / groups.Count();
-        //        // Update points for each group
-        //        foreach (var group in groups) {
-        //            object updateParam = new {
-        //                GroupID = group.GroupID,
-        //                Points = pointsPerGroup
-        //            };
-        //            string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
-        //            bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
+                    if (remainingPoints == 0) break; // Break out of the loop if all points have been distributed
+                }
+            }
 
-        //            if (!isUpdate) {
-        //                return BadRequest("Failed to update points for group: " + group.GroupName);
-        //            }
-        //        }
-        //    }
-        //    else if (scoreFormat == false) {
-        //        // Random distribution logic
-        //        Random rnd = new Random();
-        //        int remainingPoints = totalPoints;
-        //        foreach (var group in groups) {
-        //            int pointsToDistribute = rnd.Next(5, Math.Min(21, remainingPoints));
-        //            remainingPoints -= pointsToDistribute;
-        //            // ... rest of your update logic for each group
-        //            object updateParam = new {
-        //                GroupID = group.GroupID,
-        //                Points = pointsToDistribute
-        //            };
-        //            string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
-        //            bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
+            // Notify clients about the points distribution
+            await _hub.Clients.All.SendAsync("PointsDistributed");
+            return Ok(true);
 
-        //            if (!isUpdate) {
-        //                return BadRequest("Failed to update points for group: " + group.GroupName);
-        //            }
 
-        //        }
-        //        // Ensure last group gets any remaining points not yet distributed
-        //        if (remainingPoints > 0) {
-        //            var lastGroup = groups.Last();
-        //            // ... update last group with remaining points
-        //        }
-        //    }
-
-        //    // Notify clients about the points distribution
-        //    await _hub.Clients.All.SendAsync("PointsDistributed");
-        //    object param = new {
-        //        GameID = gameID
-        //    };
-        //    string query2 = "SELECT * FROM Groups WHERE GameID = @GameID";
-        //    var groups2 = await _db.GetRecordsAsync<Group>(query, param);
-        //    List<Group> groupsList = groups.ToList();
-        //    if (groupsList != null && groupsList.Any()) {
-        //        return Ok(groupsList);
-        //    }
-        //    else {
-        //        return NotFound("No groups found");
-        //    }
-        //    //return Ok("Points distributed successfully");
-        //}
+            //int gameID = groupsList[0].GameID;
+            //var allGroupsResult = await GetAllGroups(gameID);
+            //if (allGroupsResult is OkObjectResult okResult) {
+            //    List<Group> newGroupsList = okResult.Value as List<Group>;
+            //    return Ok(newGroupsList); // Assuming you want to return the updated list of groups
+            //}
+            //return BadRequest("Didn't get the groups");
+        }
 
 
 
@@ -297,13 +202,13 @@ namespace NewBlazorProjecct.Server.Controllers {
             }
             bool isUpdate = await _db.SaveDataAsync(updateQuery, vote);
 
-            if(isUpdate) {
+            if (isUpdate) {
                 // Notify clients about the vote update
                 await _hub.Clients.All.SendAsync("VoteUpdated", vote);
                 return Ok("Update");
             }
             else {
-                return BadRequest( "Failed to update the vote");
+                return BadRequest("Failed to update the vote");
             }
 
 
@@ -312,6 +217,44 @@ namespace NewBlazorProjecct.Server.Controllers {
 
 
 
+
+        // THE OG!!! NOT IN USE!
+        //private async Task<IActionResult> RandomDistribution2(List<Group> groupsList) {
+        //    int totalPoints = 120;
+        //    Random rnd = new Random();
+        //    int remainingPoints = totalPoints;
+
+        //    while (remainingPoints > 0) {
+        //        foreach (Group group in groupsList) {
+
+        //            int pointsToDistribute = rnd.Next(5, Math.Min(21, remainingPoints));
+        //            remainingPoints -= pointsToDistribute;
+
+
+        //            object updateParam = new {
+        //                GroupID = group.GroupID,
+        //                Points = pointsToDistribute
+        //            };
+        //            string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
+        //            bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
+        //            if (!isUpdate) {
+        //                return BadRequest("Failed to update points for group: " + group.GroupName);
+        //            }
+
+        //        }
+        //    }
+        //    // Notify clients about the points distribution
+        //    await _hub.Clients.All.SendAsync("PointsDistributed");
+
+        //    int gameID = groupsList[0].GameID;
+        //    var allGroupsResult = await GetAllGroups(gameID);
+        //    if (allGroupsResult is OkObjectResult okResult) {
+        //        List<Group> newGroupsList = okResult.Value as List<Group>;
+        //        return Ok(newGroupsList); // Assuming you want to return the updated list of groups
+        //    }
+        //    return BadRequest("didnt get the gropps");
+
+        //}
 
 
 

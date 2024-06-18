@@ -12,7 +12,7 @@ namespace NewBlazorProjecct.Shared.DTOs
         public int GameCode { get; set; }
         public string GameName { get; set; }
         public bool IsPublish { get; set; }
-        public int ScoreFormat { get; set; }
+        public bool ScoreFormat { get; set; }
         public int UserID { get; set; }
         public List<LawsDTO> LawList { get; set; }
     }
