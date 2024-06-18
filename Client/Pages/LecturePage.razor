@@ -18,7 +18,7 @@
     <input type="number" @bind="playerGameCode" />
     <span>לדוגמה 101</span>
     <button @onclick="GetGame"> כניסה למשחק</button>
-
+        
 </div>
 
 <div id="secondCanvas" style="display:@secondCanvasDisplay">
@@ -124,6 +124,8 @@
     int lawAmountPass = 0;
     int lawAmountNotPass = 0;
 
+    bool showPopUp = false;
+
     protected override async Task OnInitializedAsync() {
         // make a connection.
         hub = new HubConnectionBuilder()
@@ -205,14 +207,6 @@
         var response = await Http.GetAsync("api/Laws/Game/" + playerGameCode);
         if (response.IsSuccessStatusCode == true) {
             myGame = response.Content.ReadFromJsonAsync<Game>().Result;
-            // foreach(LawsDTO law in myGame.LawList) {
-            //     Console.WriteLine("Content: " + law.Content);
-            //     Console.WriteLine("For: " + law.For);
-            //     Console.WriteLine("Against: " + law.Against);
-            //     Console.WriteLine("Avoid: " + law.Avoid);
-
-            // }
-            // Console.WriteLine("Got Game");
             firsatCanvasDisplay = "none";
             secondCanvasDisplay = "block";
             // Retrieve all groups after logging in
@@ -230,7 +224,6 @@
                     break;
             }
         }
-
     }
 
     async Task StartGame() {
@@ -320,6 +313,7 @@
                 new { label = "Avoid", value = currentLaw.Avoid }
             };
             myGame.LawList[lawCounter].IsPass = CalculateResult();// return true/false.
+            Console.WriteLine(myGame.LawList[lawCounter].IsPass);
             var dataJson = System.Text.Json.JsonSerializer.Serialize(data);// make it json.
             await JSRuntime.InvokeVoidAsync("createOrUpdatePieChart", dataJson);
         }
@@ -360,7 +354,6 @@
         }
 
     }
-
 
 
 

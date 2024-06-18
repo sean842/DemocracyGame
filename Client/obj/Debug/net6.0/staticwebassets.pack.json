@@ -1,0 +1,109 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\bin\\Debug\\net6.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\obj\\Debug\\net6.0\\compressed\\x59xx8vcqt.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\obj\\Debug\\net6.0\\scopedcss\\bundle\\NewBlazorProjecct.Client.styles.css",
+      "PackagePath": "staticwebassets\\NewBlazorProjecct.Client.styles.css"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\Imgs\\FemaleDiplo.png",
+      "PackagePath": "staticwebassets\\Imgs\\FemaleDiplo.png"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\Imgs\\MyDiplo.png",
+      "PackagePath": "staticwebassets\\Imgs\\MyDiplo.png"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\Styles.css",
+      "PackagePath": "staticwebassets\\css\\Styles.css"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\open-iconic\\README.md",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\README.md"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Client\\wwwroot\\pieChart.js",
+      "PackagePath": "staticwebassets\\pieChart.js"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.NewBlazorProjecct.Client.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.NewBlazorProjecct.Client.props",
+      "PackagePath": "build\\NewBlazorProjecct.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.NewBlazorProjecct.Client.props",
+      "PackagePath": "buildMultiTargeting\\NewBlazorProjecct.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.NewBlazorProjecct.Client.props",
+      "PackagePath": "buildTransitive\\NewBlazorProjecct.Client.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

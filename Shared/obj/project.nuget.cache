@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "MOSjLhU4hz1BG4xL9IF+eHpHfiAOFlMvJZiWX5izWPp/tcWqr8Z/sqU2jD5VGaAYkWIAw9tiZ//Ti9/IACavqA==",
+  "success": true,
+  "projectFilePath": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject\\Shared\\NewBlazorProjecct.Shared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\seanb\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.28\\microsoft.windowsdesktop.app.ref.6.0.28.nupkg.sha512",
+    "C:\\Users\\seanb\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.28\\microsoft.netcore.app.ref.6.0.28.nupkg.sha512",
+    "C:\\Users\\seanb\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.28\\microsoft.aspnetcore.app.ref.6.0.28.nupkg.sha512"
+  ],
+  "logs": []
+}

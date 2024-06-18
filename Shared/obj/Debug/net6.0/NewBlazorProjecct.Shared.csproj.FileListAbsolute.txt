@@ -1,0 +1,11 @@
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\bin\Debug\net6.0\NewBlazorProjecct.Shared.deps.json
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\bin\Debug\net6.0\NewBlazorProjecct.Shared.dll
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\bin\Debug\net6.0\NewBlazorProjecct.Shared.pdb
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\obj\Debug\net6.0\NewBlazorProjecct.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\obj\Debug\net6.0\NewBlazorProjecct.Shared.AssemblyInfoInputs.cache
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\obj\Debug\net6.0\NewBlazorProjecct.Shared.AssemblyInfo.cs
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\obj\Debug\net6.0\NewBlazorProjecct.Shared.csproj.CoreCompileInputs.cache
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\obj\Debug\net6.0\NewBlazorProjecct.Shared.dll
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\obj\Debug\net6.0\refint\NewBlazorProjecct.Shared.dll
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\obj\Debug\net6.0\NewBlazorProjecct.Shared.pdb
+C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject\Shared\obj\Debug\net6.0\ref\NewBlazorProjecct.Shared.dll

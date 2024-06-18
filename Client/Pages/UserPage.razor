@@ -29,7 +29,9 @@
     @* עובר על הרשימת משתמשים ומציג אותם*@
     משתמשים מחוברים:
     <ul id="Userlist" style="display:flex;gap:1rem;">
-        @foreach (Group group in allGroups) {  <li>@group.GroupName</li>   }
+        @foreach (Group group in allGroups) {
+            <li>@group.GroupName</li>
+        }
     </ul>
 </div>
 
@@ -41,8 +43,8 @@
 </div>
 
 <div id="gotVotes" style="display:@gotVotesDisplay">
-   <p>ברכותי! קיבלתם @myGroup.Points קולות!</p>
-   <p> בואו נתחיל להשביפע! </p>
+    <p>ברכותי! קיבלתם @myGroup.Points קולות!</p>
+    <p> בואו נתחיל להשביפע! </p>
 </div>
 
 
@@ -65,15 +67,20 @@
         </div>
 
         <div class="half bottom">
-            <div id="cardsContainer">  
-                <button id="Against" @onclick='( () => SendVote("Against") )' disabled="@canVote" > נגד </button>
-                <button id="Avoid" @onclick='( () => SendVote("Avoid") )' disabled="@canVote" > נמנע </button>
-                <button id="For" @onclick='( () => SendVote("For") )' disabled="@canVote" > בעד </button>
+            <div id="cardsContainer">
+                <button id="Against" @onclick='( () => ShowPopup("Against") )' disabled="@DisableVoteButton"> נגד </button>
+                <button id="Avoid" @onclick='( () => ShowPopup("Avoid") )' disabled="@DisableVoteButton"> נמנע </button>
+                <button id="For" @onclick='( () => ShowPopup("For") )' disabled="@DisableVoteButton"> בעד </button>
             </div>
         </div>
+
     </div>
 
-    <div id="PieChartContainer" style="display:@PieChartContainerDisplay" >
+    @if (isPopupVisible) {
+        <PopUp Message="@popupMessage" OnConfirm="OnPopupConfirm" />
+    }
+
+    <div id="PieChartContainer" style="display:@PieChartContainerDisplay">
         <div id="canvasContainer"> <canvas id="myPieChart"></canvas> </div>
     </div>
 
@@ -101,7 +108,7 @@
 
     int playerGameCode = 0;// the code from the input of the player.
     string msg;// handle the error msg.
-    // styles for divs.
+               // styles for divs.
     string firsatCanvasDisplay = "block";
     string secondCanvasDisplay = "none";
     string thiredCanvasDisplay = "none";
@@ -114,11 +121,13 @@
 
     string currentLawContent = "the law content will be here";
     int lawCounter = 0;
-    bool canVote = true;// if we can vote or not(disable buttons), true will disable!.
     int lawAmountPass = 0;
     int lawAmountNotPass = 0;
 
-
+    bool DisableVoteButton = true;// if we can vote or not(disable buttons), true will disable!.
+    private bool isPopupVisible; // Flag to control popup visibility
+    private string popupMessage = ""; // Message to display in the popup
+    private string currentVoteType = ""; // The type of vote (For, Against, Avoid)
 
 
 
@@ -271,40 +280,50 @@
     }
 
     void GetLawContent() {
-        if(lawCounter < myGame.LawList.Count) {
+        if (lawCounter < myGame.LawList.Count) {
             currentLawContent = myGame.LawList[lawCounter].Content;
         }
         else {
             currentLawContent = "finish Game!";
         }
         // SetVoteTrueOrFalse();
-        canVote = false;
+        DisableVoteButton = false;// make the buttons clickable.
     }
 
+    private void ShowPopup(string voteType) {
+        currentVoteType = voteType; // Store the vote type
+        popupMessage = $"Are you sure you want to vote {voteType}?"; // Set the message
+        isPopupVisible = true; // Show the popup
+    }
 
-
+    private async Task OnPopupConfirm(bool isConfirmed) {
+        isPopupVisible = false; // Hide the popup
+        if (isConfirmed) {
+            await SendVote(currentVoteType); // If confirmed, send the vote
+        }
+    }
 
     async Task SendVote(string voteType) {
         // Console.WriteLine(voteType);
-
         if (myGame != null && myGame.LawList != null && lawCounter < myGame.LawList.Count) {
             var vote = new VoteDTO {
                     GameID = myGame.GameID,
                     LawID = myGame.LawList[lawCounter].LawID,
                     VoteType = voteType
-                };
+            };
 
             var response = await Http.PostAsJsonAsync("api/Laws/Vote", vote);
             if (response.IsSuccessStatusCode) {
                 Console.WriteLine("Vote submitted successfully");
-                // SetVoteTrueOrFalse();
-                canVote = true;
+                DisableVoteButton = true;
             }
             else {
                 Console.WriteLine("Failed to submit vote");
             }
         }
     }
+
+
 
 
     private bool CalculateResult() {
@@ -330,6 +349,7 @@
                 new { label = "Avoid", value = currentLaw.Avoid }
             };
             myGame.LawList[lawCounter].IsPass = CalculateResult();// return true/false.
+            Console.WriteLine(myGame.LawList[lawCounter].IsPass);
             var dataJson = System.Text.Json.JsonSerializer.Serialize(data);// make it json.
             await JSRuntime.InvokeVoidAsync("createOrUpdatePieChart", dataJson);
         }
@@ -365,6 +385,8 @@
         }
 
     }
+
+
 
 
 }

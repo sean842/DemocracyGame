@@ -1,0 +1,24 @@
+﻿@page "/PopUp";
+
+
+
+<div class="popup-backdrop" @onclick="@(async () => await Confirm(false))">
+    <div class="popup-content" @onclick:stopPropagation="true">
+        <p>@Message</p>
+        <button @onclick="@(async () => await Confirm(true))">Yes</button>
+        <button @onclick="@(async () => await Confirm(false))">No</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Message { get; set; } // Message to display in the popup
+
+    [Parameter]
+    public EventCallback<bool> OnConfirm { get; set; } // Callback to parent component
+
+    private async Task Confirm(bool isConfirmed) {
+        await OnConfirm.InvokeAsync(isConfirmed); // Invoke the callback with the user's choice
+    }
+
+}
