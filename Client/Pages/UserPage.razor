@@ -195,6 +195,10 @@
             GetNextLaw();
             StateHasChanged();
         });
+        hub.On("StartAgain", () => {
+            StartAgain();
+            StateHasChanged();
+        });
 
     }
 
@@ -389,6 +393,11 @@
 
     }
 
+    void StartAgain() {
+        firsatCanvasDisplay = "block";
+        resultsContainerDisplay = "none";
+        msg = "";
+    }
 
 
 

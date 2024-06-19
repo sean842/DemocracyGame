@@ -13,7 +13,7 @@
     @if (msg != "") {
         <p>@msg</p>
     }
-
+    <button @onclick="NavigateTo">nav to MyGames</button>
     <h1>הקלד קוד משחק:</h1>
     <input type="number" @bind="playerGameCode" />
     <span>לדוגמה 101</span>
@@ -96,6 +96,7 @@
         <tr> <th>עברו</th> <th>נפלו</th> </tr>
         <tr> <td>@lawAmountPass</td> <td>@lawAmountNotPass</td> </tr>
     </table>
+    <button id="gameFinished" @onclick="BackToStart"> GAME FINISHED! </button>
 </div>
 
 
@@ -176,7 +177,10 @@
             GetNextLaw();
             StateHasChanged();
         });
-
+        hub.On("StartAgain", async () => {
+            StartAgain();
+            StateHasChanged();
+        });
 
     }
 
@@ -362,5 +366,27 @@
     }
 
 
+    async Task BackToStart() {
+        var response = await Http.DeleteAsync("api/Laws/DeleteAllGroups");
+        if (response.IsSuccessStatusCode) {
+            await hub.SendAsync("StartAgain");
+        }
+        else {
+            msg = response.Content.ReadAsStringAsync().Result; ;
+            Console.WriteLine(msg);
+        }
+    }
+
+    void StartAgain() {
+        firsatCanvasDisplay = "block";
+        resultsContainerDisplay = "none";
+        msg = "";
+    }
+
+
+    void NavigateTo() {
+        int usrID = 1;
+        nav.NavigateTo("./MyGames/" + usrID);
+    }
 
 }

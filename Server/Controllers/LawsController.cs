@@ -124,13 +124,6 @@ namespace NewBlazorProjecct.Server.Controllers {
             // Notify clients about the points distribution
             await _hub.Clients.All.SendAsync("PointsDistributed");
             return Ok(true);
-            //int gameID = groupsList[0].GameID;
-            //var allGroupsResult = await GetAllGroups(gameID);
-            //if (allGroupsResult is OkObjectResult okResult) {
-            //    List<Group> newGroupsList = okResult.Value as List<Group>;
-            //    return Ok(newGroupsList); // Assuming you want to return the updated list of groups
-            //}
-            //return BadRequest("didnt get the gropps");
         }
 
         private async Task<IActionResult> RandomDistribution(List<Group> groupsList) {
@@ -168,20 +161,7 @@ namespace NewBlazorProjecct.Server.Controllers {
             // Notify clients about the points distribution
             await _hub.Clients.All.SendAsync("PointsDistributed");
             return Ok(true);
-
-
-            //int gameID = groupsList[0].GameID;
-            //var allGroupsResult = await GetAllGroups(gameID);
-            //if (allGroupsResult is OkObjectResult okResult) {
-            //    List<Group> newGroupsList = okResult.Value as List<Group>;
-            //    return Ok(newGroupsList); // Assuming you want to return the updated list of groups
-            //}
-            //return BadRequest("Didn't get the groups");
         }
-
-
-
-
 
         [HttpPost("Vote")]
         public async Task<IActionResult> Vote(VoteDTO vote) {
@@ -215,46 +195,18 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
 
+        [HttpDelete("DeleteAllGroups")]
+        public async Task<IActionResult> DeleteAllGroups() {
+            object param = new { };
+            string deleteQuery = "DELETE FROM Groups";
+            bool isDelete = await _db.SaveDataAsync(deleteQuery, param);
+            if(isDelete) {
+                return Ok();
+            }
+            return BadRequest("didnt delete!");
+        }
 
 
-
-        // THE OG!!! NOT IN USE!
-        //private async Task<IActionResult> RandomDistribution2(List<Group> groupsList) {
-        //    int totalPoints = 120;
-        //    Random rnd = new Random();
-        //    int remainingPoints = totalPoints;
-
-        //    while (remainingPoints > 0) {
-        //        foreach (Group group in groupsList) {
-
-        //            int pointsToDistribute = rnd.Next(5, Math.Min(21, remainingPoints));
-        //            remainingPoints -= pointsToDistribute;
-
-
-        //            object updateParam = new {
-        //                GroupID = group.GroupID,
-        //                Points = pointsToDistribute
-        //            };
-        //            string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
-        //            bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
-        //            if (!isUpdate) {
-        //                return BadRequest("Failed to update points for group: " + group.GroupName);
-        //            }
-
-        //        }
-        //    }
-        //    // Notify clients about the points distribution
-        //    await _hub.Clients.All.SendAsync("PointsDistributed");
-
-        //    int gameID = groupsList[0].GameID;
-        //    var allGroupsResult = await GetAllGroups(gameID);
-        //    if (allGroupsResult is OkObjectResult okResult) {
-        //        List<Group> newGroupsList = okResult.Value as List<Group>;
-        //        return Ok(newGroupsList); // Assuming you want to return the updated list of groups
-        //    }
-        //    return BadRequest("didnt get the gropps");
-
-        //}
 
 
 

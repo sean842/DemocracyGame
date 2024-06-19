@@ -1,0 +1,64 @@
+﻿@page "/MyGames/{UserID:int}"
+@inject HttpClient Http;
+@inject NavigationManager nav;
+@using NewBlazorProjecct.Shared.DTOs;
+
+
+
+<h3>UserID: @UserID</h3>
+@msg
+@if(myUser != null) {
+    <table>
+        <tr>
+            <th> Game Name </th>
+            <th> Game Code </th>
+            <th> Amount of Law's </th>
+            <th> Score Format </th>
+            <th> Is Publish </th>
+        </tr>
+        <tr>
+            @foreach (GameLawCount Game in myUser.GameList) {
+                <td> @Game.GameName </td>
+                <td> @Game.GameCode </td>
+                <td> @Game.LawsNumber </td>
+                <td> @Game.ScoreFormat </td>
+                <td> @Game.IsPublish </td>
+            }
+        </tr>
+    </table>
+}
+
+
+
+@code {
+
+    [Parameter]
+    public int UserID { get; set; }
+
+    User myUser = new User();
+
+    string msg = "";
+
+
+    protected override async Task OnInitializedAsync() {
+        var userResponse = await Http.GetAsync("api/Generator/" + UserID + "GetGames");
+        if (userResponse.IsSuccessStatusCode) {
+            myUser = await userResponse.Content.ReadFromJsonAsync<User>();
+            Console.WriteLine("wow!");
+        }
+        else {
+            string error = userResponse.Content.ReadAsStringAsync().Result;
+            switch (error) {
+                case "No User":
+                    msg = "Didnt Found The User";
+                    break;
+                case "No Games":
+                    msg = "Did Not Found Games";
+                    break;
+            }
+
+        }
+    }
+
+
+}
