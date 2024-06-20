@@ -7,7 +7,11 @@
 
 <h3>UserID: @UserID</h3>
 @msg
-@if(myUser != null) {
+
+<input type="text" placeholder="הקלד שם למשחק חדש" @bind="gameNameToAdd" />
+<button @onclick="AddNewGame">הוסף משחק</button>
+
+@if (myUser != null && myUser.GameList != null) {
     <table>
         <tr>
             <th> Game Name </th>
@@ -16,15 +20,19 @@
             <th> Score Format </th>
             <th> Is Publish </th>
         </tr>
-        <tr>
-            @foreach (GameLawCount Game in myUser.GameList) {
-                <td> @Game.GameName </td>
-                <td> @Game.GameCode </td>
-                <td> @Game.LawsNumber </td>
-                <td> @Game.ScoreFormat </td>
-                <td> @Game.IsPublish </td>
+
+        @if (myUser.GameList.Count > 0) {
+            foreach (GameLawCount Game in myUser.GameList) {
+                <tr>
+                    <td> @Game.GameName </td>
+                    <td> @Game.GameCode </td>
+                    <td> @Game.LawsNumber </td>
+                    <td> @Game.ScoreFormat </td>
+                    <td> @Game.IsPublish </td>
+                </tr>
             }
-        </tr>
+        }
+
     </table>
 }
 
@@ -34,31 +42,69 @@
 
     [Parameter]
     public int UserID { get; set; }
+    [Parameter]// צריך לבדוק האם זה צריך להיות פרמטר
+    public int GameID { get; set; }
 
     User myUser = new User();
-
+    string gameNameToAdd = "";
     string msg = "";
 
 
     protected override async Task OnInitializedAsync() {
-        var userResponse = await Http.GetAsync("api/Generator/" + UserID + "GetGames");
+        var userResponse = await Http.GetAsync("api/Generator/" + UserID + "/GetGames");
         if (userResponse.IsSuccessStatusCode) {
             myUser = await userResponse.Content.ReadFromJsonAsync<User>();
             Console.WriteLine("wow!");
         }
         else {
-            string error = userResponse.Content.ReadAsStringAsync().Result;
+            string error = await userResponse.Content.ReadAsStringAsync();
             switch (error) {
                 case "No User":
-                    msg = "Didnt Found The User";
+                    msg = "Didn't find the user.";
                     break;
                 case "No Games":
-                    msg = "Did Not Found Games";
+                    msg = "Did not find games.";
+                    break;
+                default:
+                    msg = "An error occurred.";
+                    break;
+
+            }
+
+        }
+    }
+
+
+
+    async Task AddNewGame() {
+        var response = await Http.GetAsync("api/Generator/" + UserID + "/AddGame/" + gameNameToAdd);
+        if (response.IsSuccessStatusCode) {
+            GameLawCount newGame = response.Content.ReadFromJsonAsync<GameLawCount>().Result;
+            myUser.GameList.Add(newGame);
+            GameID = newGame.GameID;
+            // Navigate(GameID);
+            Console.WriteLine("move to anoter page with the gameID");
+        }
+        else {
+            string error = await response.Content.ReadAsStringAsync();
+            switch (error) {
+                case "Not Insert":
+                    msg = "Didn't insert the game";
+                    break;
+                case "Not Update":
+                    msg = "Did not update the game code.";
+                    break;
+                case "Not Get":
+                    msg = "didn't got the game";
+                    break;
+                default:
+                    msg = "An error occurred.";
                     break;
             }
 
         }
     }
+
 
 
 }

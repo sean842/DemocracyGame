@@ -37,5 +37,47 @@ namespace NewBlazorProjecct.Server.Controllers {
 
 
 
+        [HttpGet("AddGame/{GameName}")]
+        public async Task<IActionResult> AddNewGame(int UserID, string GameName) {
+            object param = new {
+                GameCode = 0,
+                GameName,
+                IsPublish = false,
+                ScoreFormat = false,
+                UserID
+            };
+            string addGameQuery = "INSERT INTO Games (GameCode, GameName, IsPublish, ScoreFormat, UserID) VALUES (@GameCode, @GameName, @IsPublish, @ScoreFormat, @UserID)";
+            int gameID = await _db.InsertReturnId(addGameQuery, param);
+            if (gameID > 0) {
+                // We Update The GameCode.
+                int newGameCode = gameID + 100;
+                object param2 = new {
+                    GameID = gameID,
+                    GameCode = newGameCode
+                };
+                string query2 = "UPDATE Games SET GameCode = @GameCode WHERE GameID=@GameID";
+                bool isUpdate = await _db.SaveDataAsync(query2, param2);
+                if (isUpdate) {
+                    // Get the game and send it back.
+                    string getGameQuery = "SELECT GameID , GameName, GameCode, IsPublish, ScoreFormat, UserID FROM Games WHERE GameID = @GameID";
+                    var gameRecors = await _db.GetRecordsAsync<GameLawCount>(getGameQuery, param2);
+                    GameLawCount newGame = gameRecors.FirstOrDefault();
+                    if(newGame!= null) {
+                        return Ok(newGame);
+                    }
+                    return BadRequest("Not Get");
+                }
+                return BadRequest("Not Update");
+
+            }
+            return BadRequest("Not Insert");
+
+
+
+        }
+
+
+
+
     }
 }

@@ -369,7 +369,13 @@
     async Task BackToStart() {
         var response = await Http.DeleteAsync("api/Laws/DeleteAllGroups");
         if (response.IsSuccessStatusCode) {
-            await hub.SendAsync("StartAgain");
+            var resetVotesResponse = await Http.GetAsync("api/Laws/ResetVotes/" + myGame.GameID);
+            if (resetVotesResponse.IsSuccessStatusCode) {
+                await hub.SendAsync("StartAgain");
+            }
+            else {
+                msg = resetVotesResponse.Content.ReadAsStringAsync().Result;
+            }
         }
         else {
             msg = response.Content.ReadAsStringAsync().Result; ;

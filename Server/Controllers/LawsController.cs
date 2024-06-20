@@ -206,7 +206,16 @@ namespace NewBlazorProjecct.Server.Controllers {
             return BadRequest("didnt delete!");
         }
 
-
+        [HttpGet("ResetVotes/{GameID}")]
+        public async Task<IActionResult> ResetVotes(int GameID) {
+            object param = new { GameID };
+            string query = "UPDATE Laws SET For = 0, Avoid = 0, Against = 0 where GameID = @GameID";
+            bool isUpdate = await _db.SaveDataAsync(query, param);
+            if (isUpdate) {
+                return Ok();
+            }
+            return BadRequest("Not Update");
+        }
 
 
 
