@@ -1,0 +1,126 @@
+﻿@page "/EditGame/{GameCode:int}/{UserID:int}"
+@inject HttpClient Http;
+@inject NavigationManager nav;
+@using NewBlazorProjecct.Shared.DTOs
+
+
+@if(msg != "") {
+    <h1>@msg</h1>
+}
+
+<h3>GameID: @GameCode</h3>
+
+@if(myGame != null) {
+    
+    <ul>
+        <li> <span>GameID: </span> @myGame.GameID</li>
+        <li> <span>GameCode: </span> @myGame.GameCode</li>
+        <li> <span>GameName: </span> @myGame.GameName</li>
+        <li> <span>isPublish: </span> @myGame.IsPublish</li>
+        <li> <span>ScoreFormat: </span> @myGame.ScoreFormat</li>
+        <li> <span>UserID: </span> @myGame.UserID</li>
+    </ul>
+
+    <table>
+        <tr>
+            <th> הצעה </th>
+            <th> עריכה </th>
+            <th> מחיקה </th>
+        </tr>
+        @if (myGame.LawList == null) {
+            <span> אין חוקים במאגר </span>
+        }
+        else {
+            foreach(LawsDTO law in myGame.LawList) {
+                <tr>
+                    <td> @law.Content </td>
+                    <td> <button> עריכה </button> </td>
+                    <td> <button> מחיקה </button> </td>
+                </tr>
+            }
+        }
+    </table>
+    
+
+    @if(singleLaw == null) {
+        <div> עלייכם להוסיף הצעת חוק חדשה </div>
+        <button class="btn-primary" @onclick="AddLaw"> הצעת חוק+ </button>
+    }
+    else {
+        <h3>הצעת חוק:</h3>
+        <input type="text" @bind="singleLaw.Content" />
+        <button @onclick="SaveNewLaw" class="btn-primary"> שמירת חוק </button>
+    }
+
+
+
+
+
+
+
+}
+
+@code {
+
+    [Parameter]
+    public int UserID { get; set; }
+
+    [Parameter]
+    public int GameCode { get; set; }
+
+    string msg = "";
+    Game myGame; // contain the whole game.
+    LawsDTO singleLaw;// will contain a single law so we can update him.
+
+    protected override async Task OnInitializedAsync() {
+        var response = await Http.GetAsync("api/Generator/" + UserID + "/GetOneGame/" + GameCode);
+        if (response.IsSuccessStatusCode == true) {
+
+            myGame = response.Content.ReadFromJsonAsync<Game>().Result;
+            foreach(LawsDTO law in myGame.LawList) {
+                Console.WriteLine(law.Content);
+            }
+        }
+        else {
+            Console.WriteLine("wrong");
+            string error = response.Content.ReadAsStringAsync().Result;
+            switch (error) {
+                case "No Game Code":
+                    msg = "we do not have a game with this code.";
+                    break;
+                case "No Laws":
+                    msg = "this game do not have any laws";
+                    break;
+            }
+        }
+
+    }
+
+    public void AddLaw() {
+        Console.WriteLine("add");
+        singleLaw = new LawsDTO();
+    }
+    async Task SaveNewLaw() {
+        var response = await Http.GetAsync("api/Generator/" + UserID + "/SaveLaw/" + myGame.GameID + "/" + singleLaw.Content);
+        if (response.IsSuccessStatusCode) {
+            LawsDTO newLaw =  response.Content.ReadFromJsonAsync<LawsDTO>().Result;
+            myGame.LawList.Add(newLaw);
+            singleLaw = null;
+        }
+        else {
+            Console.WriteLine("wrong");
+            string error = response.Content.ReadAsStringAsync().Result;
+            switch (error) {
+                case "Not Save Law":
+                    msg = "We did not save the law";
+                    break;
+                case "Not Get Law":
+                    msg = "We did not Get the law";
+                    break;
+            }
+        }
+
+    }
+
+
+}

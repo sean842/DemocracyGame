@@ -77,6 +77,59 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
 
+        // Get one game and all his laws.
+        [HttpGet("GetOneGame/{gameCode}")]
+        public async Task<IActionResult> GetGame(int gameCode) {
+            object param = new {
+                GameCode = gameCode
+            };
+            string query = "SELECT * FROM Games WHERE GameCode = @GameCode";
+
+            var recordes = await _db.GetRecordsAsync<Game>(query, param);
+            Game game = recordes.FirstOrDefault();
+            if (game != null) {
+                // לשלוף את כל החוקים
+                object lawParam = new {
+                    gameID = game.GameID
+                };
+                string lawQuery = "SELECT * FROM Laws WHERE GameID = @gameID";
+                var Laws = await _db.GetRecordsAsync<LawsDTO>(lawQuery, lawParam);
+                game.LawList = Laws.ToList();
+                return Ok(game);
+            }
+            else {
+                return BadRequest("No Game Code");
+            }
+
+        }
+
+        [HttpGet("SaveLaw/{GameID}/{LawContent}")]
+        public async Task<IActionResult> SaveLaw(int GameID, string LawContent) {
+            object param = new {
+                GameID,
+                LawContent,
+                For = 0,
+                Againt = 0,
+                Avoid = 0,
+                IsPass = false
+            };
+            string query = "INSERT INTO Laws (GameID, Content, For, Against, Avoid, IsPass) VALUES (@GameID, @LawContent, @For, @Againt, @Avoid, @Avoid)";
+            int newLawID = await _db.InsertReturnId(query, param);
+            if (newLawID > 0) {
+                object IdParam = new { newLawID };
+                string getLawQuery = "SELECT * FROM Laws WHERE LawID = @newLawID";
+                var lawRecords = await _db.GetRecordsAsync<LawsDTO>(getLawQuery, IdParam);
+                LawsDTO newLaw = lawRecords.FirstOrDefault();
+                if (newLaw != null) {
+                    return Ok(newLaw);
+                }
+                return BadRequest("Not Get Law");
+            }
+            return BadRequest("Not Save Law");
+
+
+        }
+
 
 
     }

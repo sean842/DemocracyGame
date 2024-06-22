@@ -42,8 +42,8 @@
 
     [Parameter]
     public int UserID { get; set; }
-    [Parameter]// צריך לבדוק האם זה צריך להיות פרמטר
-    public int GameID { get; set; }
+    // [Parameter]// צריך לבדוק האם זה צריך להיות פרמטר
+    // public int GameID { get; set; }
 
     User myUser = new User();
     string gameNameToAdd = "";
@@ -81,9 +81,8 @@
         if (response.IsSuccessStatusCode) {
             GameLawCount newGame = response.Content.ReadFromJsonAsync<GameLawCount>().Result;
             myUser.GameList.Add(newGame);
-            GameID = newGame.GameID;
-            // Navigate(GameID);
-            Console.WriteLine("move to anoter page with the gameID");
+            // GameID = newGame.GameID;
+            Navigate(newGame.GameCode);
         }
         else {
             string error = await response.Content.ReadAsStringAsync();
@@ -106,5 +105,9 @@
     }
 
 
+    void Navigate(int gameCode) {
+        // GameID = Gameid;
+        nav.NavigateTo("./EditGame/" + gameCode + "/" + UserID);
+    }
 
 }

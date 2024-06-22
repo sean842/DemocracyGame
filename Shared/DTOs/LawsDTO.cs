@@ -8,6 +8,7 @@ namespace NewBlazorProjecct.Shared.DTOs
 {
 	public class LawsDTO
 	{
+        public int GameID { get; set; }
         public int LawID { get; set; }
         public string Content { get; set; }
         public int For { get; set; }

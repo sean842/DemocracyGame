@@ -29,13 +29,11 @@ namespace NewBlazorProjecct.Server.Controllers {
 
             var recordes = await _db.GetRecordsAsync<Game>(query, param);
             Game game = recordes.FirstOrDefault();
-            // לשלוף את כל החוקים
             if (game != null) {
-
+                // לשלוף את כל החוקים
                 object lawParam = new {
                     gameID = game.GameID
                 };
-
                 string lawQuery = "SELECT * FROM Laws WHERE GameID = @gameID";
                 var Laws = await _db.GetRecordsAsync<LawsDTO>(lawQuery, lawParam);
                 game.LawList = Laws.ToList();
