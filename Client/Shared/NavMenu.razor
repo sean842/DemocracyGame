@@ -1,39 +1,25 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">NewBlazorProjecct</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿<nav>
+    <div>
+        <NavLink href="" Match="NavLinkMatch.All">
+            משחק
+        </NavLink>
     </div>
-</div>
+    <div>
+        <NavLink href="" @onclick="ShowLoginPopup">
+            עורך
+        </NavLink>
+    </div>
+    <div>
+        <input class="btn-nav" type="button" value="אודות" />
+    </div>
+</nav>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-    </nav>
-</div>
+<LoginPopup @ref="loginPopup" />
 
 @code {
-    private bool collapseNavMenu = true;
+    private LoginPopup loginPopup;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
+    private void ShowLoginPopup() {
+        loginPopup?.Show();
     }
 }

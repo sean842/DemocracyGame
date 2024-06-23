@@ -11,16 +11,6 @@
 <h3>GameID: @GameCode</h3>
 
 @if(myGame != null) {
-    
-    <ul>
-        <li> <span>GameID: </span> @myGame.GameID</li>
-        <li> <span>GameCode: </span> @myGame.GameCode</li>
-        <li> <span>GameName: </span> @myGame.GameName</li>
-        <li> <span>isPublish: </span> @myGame.IsPublish</li>
-        <li> <span>ScoreFormat: </span> @myGame.ScoreFormat</li>
-        <li> <span>UserID: </span> @myGame.UserID</li>
-    </ul>
-
     <table>
         <tr>
             <th> הצעה </th>
@@ -34,7 +24,7 @@
             foreach(LawsDTO law in myGame.LawList) {
                 <tr>
                     <td> @law.Content </td>
-                    <td> <button> עריכה </button> </td>
+                    <td> <button @onclick="(()=> SendLawToUpdate(law) )"> עריכה </button> </td>
                     <td> <button> מחיקה </button> </td>
                 </tr>
             }
@@ -49,7 +39,7 @@
     else {
         <h3>הצעת חוק:</h3>
         <input type="text" @bind="singleLaw.Content" />
-        <button @onclick="SaveNewLaw" class="btn-primary"> שמירת חוק </button>
+        <button @onclick="CheckLawSaving" class="btn-primary"> שמירת חוק </button>
     }
 
 
@@ -71,6 +61,8 @@
     string msg = "";
     Game myGame; // contain the whole game.
     LawsDTO singleLaw;// will contain a single law so we can update him.
+
+    bool editState = false; // Add or Update law, true is for Update and false is for Add.
 
     protected override async Task OnInitializedAsync() {
         var response = await Http.GetAsync("api/Generator/" + UserID + "/GetOneGame/" + GameCode);
@@ -96,12 +88,30 @@
 
     }
 
+
+    // Create a new LawsDTO for adding a new Law. 
     public void AddLaw() {
-        Console.WriteLine("add");
         singleLaw = new LawsDTO();
     }
-    async Task SaveNewLaw() {
-        var response = await Http.GetAsync("api/Generator/" + UserID + "/SaveLaw/" + myGame.GameID + "/" + singleLaw.Content);
+    // Take the law we want to edit to singleLaw.
+    void SendLawToUpdate(LawsDTO lawToUpdate) {
+        singleLaw = lawToUpdate;
+        editState = true;
+    }
+    // When we click on save law we check if we edit or adding law and calling the right function.
+    async void CheckLawSaving() {
+        if (editState) {
+            Console.WriteLine("edit");
+            await UpdateLaw();
+        }
+        else {
+            Console.WriteLine("add");
+            await AddNewLaw();
+        }
+    }
+    // Func to add a new law.
+    async Task AddNewLaw() {
+        var response = await Http.GetAsync("api/Generator/" + UserID + "/AddNewLaw/" + myGame.GameID + "/" + singleLaw.Content);
         if (response.IsSuccessStatusCode) {
             LawsDTO newLaw =  response.Content.ReadFromJsonAsync<LawsDTO>().Result;
             myGame.LawList.Add(newLaw);
@@ -121,6 +131,34 @@
         }
 
     }
+    // Func to update the law we want.
+    async Task UpdateLaw() {
+        var response = await Http.PostAsJsonAsync("api/Generator/" + UserID + "/UpdateLaw", singleLaw);
+        if (response.IsSuccessStatusCode) {
+            LawsDTO newLaw = response.Content.ReadFromJsonAsync<LawsDTO>().Result;
+            int index = myGame.LawList.IndexOf(singleLaw);
+            myGame.LawList[index] = newLaw;
+            editState = false;
+            singleLaw = null;
+
+        }
+        else {
+            Console.WriteLine("wrong");
+            string error = response.Content.ReadAsStringAsync().Result;
+            switch (error) {
+                case "Didnt Update":
+                    msg = "We did not Update the law";
+                    break;
+                case "Didnt Get Law":
+                    msg = "We did not Get the law";
+                    break;
+            }
+        }
+
+    }
+
+
+
 
 
 }

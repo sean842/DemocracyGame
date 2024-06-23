@@ -17,8 +17,9 @@
             <th> Game Name </th>
             <th> Game Code </th>
             <th> Amount of Law's </th>
-            <th> Score Format </th>
+            <th> עריכה:  </th>
             <th> Is Publish </th>
+            <th> מחיקה: </th>
         </tr>
 
         @if (myUser.GameList.Count > 0) {
@@ -27,8 +28,16 @@
                     <td> @Game.GameName </td>
                     <td> @Game.GameCode </td>
                     <td> @Game.LawsNumber </td>
-                    <td> @Game.ScoreFormat </td>
-                    <td> @Game.IsPublish </td>
+                    <td> <button @onclick="(()=> Navigate(Game.GameCode))"> עריכה </button> </td>
+                    <td>
+                        @if (Game.CanPublish == false) {
+                            <input type="checkbox" disabled />
+                        }
+                        else {
+                            <input type="checkbox" checked="@Game.IsPublish" @onchange="(() =>changePublish( Game))" />
+                        }
+                    </td>
+                    <td> <button @onclick="( ()=> DeleteGame(Game) )"> מחיקה </button> </td>
                 </tr>
             }
         }
@@ -54,7 +63,6 @@
         var userResponse = await Http.GetAsync("api/Generator/" + UserID + "/GetGames");
         if (userResponse.IsSuccessStatusCode) {
             myUser = await userResponse.Content.ReadFromJsonAsync<User>();
-            Console.WriteLine("wow!");
         }
         else {
             string error = await userResponse.Content.ReadAsStringAsync();
@@ -110,4 +118,61 @@
         nav.NavigateTo("./EditGame/" + gameCode + "/" + UserID);
     }
 
+    public async Task DeleteGame(GameLawCount gameToDelete) {
+        var respons = await Http.DeleteAsync("api/Generator/" + UserID + "/DeleteGame/" + gameToDelete.GameID);
+        if (respons.IsSuccessStatusCode) {
+            myUser.GameList.Remove(gameToDelete);
+        }
+        else {
+            string error = await respons.Content.ReadAsStringAsync();
+            switch (error) {
+                case "Not Delete":
+                    msg = "Didn't delete the game.";
+                    break;
+                default:
+                    msg = "An error occurred.";
+                    break;
+
+            }
+
+        }
+    }
+
+
+    protected async Task changePublish(GameLawCount game) {
+        PublishGame gameToSend = new PublishGame();
+        gameToSend.GameID = game.GameID;
+        gameToSend.IsPublish = !game.IsPublish;
+
+        var userRes = await Http.PostAsJsonAsync("api/Generator/" + UserID + "/PublishGame", gameToSend);
+        if (userRes.IsSuccessStatusCode == true) {
+            GameLawCount updatedGame = userRes.Content.ReadFromJsonAsync<GameLawCount>().Result;
+            int index = myUser.GameList.IndexOf(game);
+            myUser.GameList[index] = updatedGame;
+
+            if (gameToSend.IsPublish != updatedGame.IsPublish) {
+                msg = "Can't publish the game";
+            }
+
+        }
+        else {
+            string error = userRes.Content.ReadAsStringAsync().Result;
+            switch (error) {
+                case "Update Failed":
+                    msg = "Failed to update";
+                    break;
+                case "not get game":
+                    msg = "we didnt got the game";
+                    break;
+                default:
+                    msg = "An error occurred.";
+                    break;
+            }
+
+        }
+    }
+
+
+
 }
+

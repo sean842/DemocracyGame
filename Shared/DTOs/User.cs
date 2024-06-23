@@ -9,6 +9,7 @@ namespace NewBlazorProjecct.Shared.DTOs {
 
         public int UserID { get; set; }
         public string Name { get; set; }
+        public int Password { get; set; }
         public List<GameLawCount> GameList { get; set; }
     }
 }
