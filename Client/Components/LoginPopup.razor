@@ -32,8 +32,11 @@
 
 @code {
     private Login loginModel = new Login();
-    private bool isVisible = false; // Change to false if you want it hidden initially
+    private bool isVisible = false;
     private string errorMessage = string.Empty;
+
+    [Parameter]
+    public EventCallback OnLoginSuccess { get; set; }
 
     private async Task HandleLogin() {
         errorMessage = string.Empty;
@@ -41,7 +44,9 @@
 
         if (response.IsSuccessStatusCode) {
             // Handle successful login
-            Navigation.NavigateTo("/MyGames/1"); // Change this to your desired page
+            await OnLoginSuccess.InvokeAsync();
+            Navigation.NavigateTo("/MyGames/1");
+            isVisible = false;
         }
         else {
             var errorResponse = await response.Content.ReadAsStringAsync();

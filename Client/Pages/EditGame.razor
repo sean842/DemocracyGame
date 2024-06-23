@@ -8,9 +8,25 @@
     <h1>@msg</h1>
 }
 
-<h3>GameID: @GameCode</h3>
 
 @if(myGame != null) {
+
+    <button @onclick="UpdateGame"> שמירת משחק </button>
+    <button @onclick="Navigate"> חזרה </button>
+    <input type="text" @bind="myGame.GameName" />
+    <label>
+        Score Format:
+    <input type="checkbox" checked="@myGame.ScoreFormat" @onchange="changeFormat" />
+    </label>
+
+
+@*     @if (Game.CanPublish == false) {
+        <input type="checkbox" disabled />
+    }
+    else {
+        <input type="checkbox" checked="@Game.IsPublish" @onchange="(() =>changePublish( Game))" />
+    }
+ *@
     <table>
         <tr>
             <th> הצעה </th>
@@ -67,11 +83,7 @@
     protected override async Task OnInitializedAsync() {
         var response = await Http.GetAsync("api/Generator/" + UserID + "/GetOneGame/" + GameCode);
         if (response.IsSuccessStatusCode == true) {
-
             myGame = response.Content.ReadFromJsonAsync<Game>().Result;
-            foreach(LawsDTO law in myGame.LawList) {
-                Console.WriteLine(law.Content);
-            }
         }
         else {
             Console.WriteLine("wrong");
@@ -109,28 +121,7 @@
             await AddNewLaw();
         }
     }
-    // Func to add a new law.
-    async Task AddNewLaw() {
-        var response = await Http.GetAsync("api/Generator/" + UserID + "/AddNewLaw/" + myGame.GameID + "/" + singleLaw.Content);
-        if (response.IsSuccessStatusCode) {
-            LawsDTO newLaw =  response.Content.ReadFromJsonAsync<LawsDTO>().Result;
-            myGame.LawList.Add(newLaw);
-            singleLaw = null;
-        }
-        else {
-            Console.WriteLine("wrong");
-            string error = response.Content.ReadAsStringAsync().Result;
-            switch (error) {
-                case "Not Save Law":
-                    msg = "We did not save the law";
-                    break;
-                case "Not Get Law":
-                    msg = "We did not Get the law";
-                    break;
-            }
-        }
 
-    }
     // Func to update the law we want.
     async Task UpdateLaw() {
         var response = await Http.PostAsJsonAsync("api/Generator/" + UserID + "/UpdateLaw", singleLaw);
@@ -157,6 +148,67 @@
 
     }
 
+    async Task AddNewLaw() {
+        var response = await Http.GetAsync("api/Generator/" + UserID + "/AddNewLaw/" + myGame.GameID + "/" + singleLaw.Content);
+        if (response.IsSuccessStatusCode) {
+            LawsDTO newLaw = await response.Content.ReadFromJsonAsync<LawsDTO>();
+            if (newLaw != null) {
+                myGame.LawList.Add(newLaw);
+                singleLaw = null;
+                StateHasChanged(); // Ensure the UI updates
+            }
+            else {
+                msg = "Failed to parse new law.";
+            }
+        }
+        else {
+            Console.WriteLine("wrong");
+            string error = await response.Content.ReadAsStringAsync();
+            switch (error) {
+                case "Not Save Law":
+                    msg = "We did not save the law";
+                    break;
+                case "Not Get Law":
+                    msg = "We did not Get the law";
+                    break;
+                default:
+                    msg = "An unknown error occurred.";
+                    break;
+            }
+        }
+    }
+
+
+    void changeFormat() {
+        myGame.ScoreFormat = !myGame.ScoreFormat;
+        Console.WriteLine(myGame.ScoreFormat);
+    }
+
+    async Task UpdateGame() {
+        var response = await Http.PostAsJsonAsync("api/Generator/" + UserID + "/UpdateGame", myGame);
+        if (response.IsSuccessStatusCode) {
+            Navigate();
+        }
+        else {
+            Console.WriteLine("wrong");
+            string error = response.Content.ReadAsStringAsync().Result;
+            switch (error) {
+                case "Not Update":
+                    msg = "We did not Update the game";
+                    break;
+                case "Didnt Get Law":
+                    msg = "We did not Get the law";
+                    break;
+            }
+        }
+
+    }
+
+
+    void Navigate() {
+        // GameID = Gameid;
+        nav.NavigateTo("./MyGames/" + UserID);
+    }
 
 
 

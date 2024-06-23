@@ -1,8 +1,15 @@
 ﻿<nav>
     <div>
-        <NavLink href="" Match="NavLinkMatch.All">
-            משחק
-        </NavLink>
+        @if (isLoggedIn) {
+            <NavLink href="LecturePage" Match="NavLinkMatch.All">
+                משחק
+            </NavLink>
+        }
+        else {
+            <NavLink href="UserPage" Match="NavLinkMatch.All">
+                משחק
+            </NavLink>
+        }
     </div>
     <div>
         <NavLink href="" @onclick="ShowLoginPopup">
@@ -14,12 +21,18 @@
     </div>
 </nav>
 
-<LoginPopup @ref="loginPopup" />
+<LoginPopup @ref="loginPopup" OnLoginSuccess="OnLoginSuccess" />
 
 @code {
     private LoginPopup loginPopup;
+    private bool isLoggedIn = false;
 
     private void ShowLoginPopup() {
         loginPopup?.Show();
+    }
+
+    private void OnLoginSuccess() {
+        isLoggedIn = true;
+        StateHasChanged();
     }
 }

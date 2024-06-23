@@ -54,9 +54,10 @@ namespace NewBlazorProjecct.Server.Controllers {
                 GameName,
                 IsPublish = false,
                 ScoreFormat = false,
-                UserID
+                UserID,
+                canPublish = false
             };
-            string addGameQuery = "INSERT INTO Games (GameCode, GameName, IsPublish, ScoreFormat, UserID) VALUES (@GameCode, @GameName, @IsPublish, @ScoreFormat, @UserID)";
+            string addGameQuery = "INSERT INTO Games (GameCode, GameName, IsPublish, ScoreFormat, UserID, CanPublish) VALUES (@GameCode, @GameName, @IsPublish, @ScoreFormat, @UserID, @canPublish)";
             int gameID = await _db.InsertReturnId(addGameQuery, param);
             if (gameID > 0) {
                 // We Update The GameCode.
@@ -214,7 +215,15 @@ namespace NewBlazorProjecct.Server.Controllers {
             return BadRequest("Didnt Update");
         }
 
-
+        [HttpPost("UpdateGame")]
+        public async Task<IActionResult> UpdateGame(GameToUpdate game) {
+            string updateQuery = "UPDATE Games SET GameName = @GameName, ScoreFormat = @ScoreFormat WHERE GameID = @GameID";
+            bool isUpdate = await _db.SaveDataAsync(updateQuery, game);
+            if(isUpdate) {
+                return Ok();
+            }
+            return BadRequest("Not Update");
+        }
 
 
 
