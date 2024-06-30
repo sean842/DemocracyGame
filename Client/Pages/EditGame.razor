@@ -41,7 +41,7 @@
                 <tr>
                     <td> @law.Content </td>
                     <td> <button @onclick="(()=> SendLawToUpdate(law) )"> עריכה </button> </td>
-                    <td> <button> מחיקה </button> </td>
+                    <td> <button @onclick="( ()=> DeleteLaw(law) )" > מחיקה </button> </td>
                 </tr>
             }
         }
@@ -131,7 +131,7 @@
             myGame.LawList[index] = newLaw;
             editState = false;
             singleLaw = null;
-
+            StateHasChanged(); // Ensure the UI updates
         }
         else {
             Console.WriteLine("wrong");
@@ -200,6 +200,26 @@
                     msg = "We did not Get the law";
                     break;
             }
+        }
+
+    }
+
+
+    async Task DeleteLaw(LawsDTO LawToDelete) {
+        var response = await Http.DeleteAsync("api/Generator/" + UserID + "/DeleteLaw/" + LawToDelete.LawID);
+        if (response.IsSuccessStatusCode) {
+            myGame.LawList.Remove(LawToDelete);
+            Console.WriteLine("remove law with id: " + LawToDelete.LawID + " when we gave hime id: " + LawToDelete.LawID);
+        }
+        else {
+            Console.WriteLine("wrong");
+            string error = response.Content.ReadAsStringAsync().Result;
+            switch (error) {
+                case "Not Delete":
+                    msg = "Didnt Delete the law";
+                    break;
+            }
+
         }
 
     }

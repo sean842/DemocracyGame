@@ -225,7 +225,19 @@ namespace NewBlazorProjecct.Server.Controllers {
             return BadRequest("Not Update");
         }
 
+        [HttpDelete("DeleteLaw/{LawId}")]
+        public async Task<IActionResult> DeleteLaw(int LawId) {
 
+            object param = new { LawID = LawId};
+            string query = "DELETE from Laws WHERE LawID = @LawID";
+            bool isDelete = await _db.SaveDataAsync(query, param);
+            if(isDelete) {
+                return Ok();
+            }
+            return BadRequest("Not Delete");
+
+
+        }
 
 
 

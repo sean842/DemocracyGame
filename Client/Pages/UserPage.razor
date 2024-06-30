@@ -53,12 +53,12 @@
         <div id="ForTable">
             <table>
                 <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
-                <tbody> <tr>   <td>0</td>  <td>0</td>   </tr> </tbody>
+                <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
             </table>
         </div>
     </div>
 
-    <div id="CharacterContainer"> <div>his text</div> <img src="/imgs/mydiplo.png" /> </div>
+    <div id="CharacterContainer"> <div>@characterText</div> <img src="./imgs/mydiplo.png" /> </div>
 
 
     <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
@@ -108,7 +108,8 @@
 
     int playerGameCode = 0;// the code from the input of the player.
     string msg;// handle the error msg.
-               // styles for divs.
+
+    // styles for divs.
     string firsatCanvasDisplay = "block";
     string secondCanvasDisplay = "none";
     string thiredCanvasDisplay = "none";
@@ -123,6 +124,7 @@
     int lawCounter = 0;
     int lawAmountPass = 0;
     int lawAmountNotPass = 0;
+    string characterText = "הצביעו עכשיו!";
 
     bool DisableVoteButton = true;// if we can vote or not(disable buttons), true will disable!.
     private bool isPopupVisible; // Flag to control popup visibility
@@ -175,13 +177,13 @@
             if (law != null) {
                 switch (vote.VoteType) {
                     case "For":
-                        law.For++;
+                        law.For += vote.Points;
                         break;
                     case "Against":
-                        law.Against++;
+                        law.Against += vote.Points;
                         break;
                     case "Avoid":
-                        law.Avoid++;
+                        law.Avoid += vote.Points;
                         break;
                 }
                 StateHasChanged();
@@ -316,7 +318,8 @@
             var vote = new VoteDTO {
                     GameID = myGame.GameID,
                     LawID = myGame.LawList[lawCounter].LawID,
-                    VoteType = voteType
+                    VoteType = voteType,
+                    Points = myGroup.Points
             };
 
             var response = await Http.PostAsJsonAsync("api/Laws/Vote", vote);
@@ -335,9 +338,13 @@
 
     private bool CalculateResult() {
         if (myGame.LawList[lawCounter].For > myGame.LawList[lawCounter].Against) {
+            lawAmountPass++;
+            characterText = "ברכותי! החוק עבר!";
             return true;
         }
         else {
+            lawAmountNotPass++;
+            characterText = "החוק לא עבר :(";
             return false;
         }
     }
@@ -375,6 +382,7 @@
         //להסתיר את הגרף ולהראות את הכפתורים
         LawContentContainerDisplay = "flex";
         PieChartContainerDisplay = "none";
+        characterText = "הצביעו עכשיו!";
 
     }
 

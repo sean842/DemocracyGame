@@ -2,11 +2,22 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    direction:rtl;
+    direction: rtl;
+    height: 100vh;  /*i added this*/
+}
+/* Ensure the app element takes up the full height */
+app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
 }
 
 main {
     flex: 1;
+    /*i added this*/
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar {

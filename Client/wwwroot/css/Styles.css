@@ -2,9 +2,24 @@
     direction: ltr;
     margin: 0;
     padding: 0;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
     background-color: lightblue; /* Adjust as needed */
+}
+/* Ensure the app element takes up the full height */
+app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+#page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+    height: 100%; /*i added this*/
 }
 
 /*:root {

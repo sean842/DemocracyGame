@@ -167,13 +167,13 @@ namespace NewBlazorProjecct.Server.Controllers {
             string updateQuery;
             switch (vote.VoteType) {
                 case "For":
-                    updateQuery = "UPDATE Laws SET For = For + 1 WHERE LawID = @LawID AND GameID = @GameID";
+                    updateQuery = "UPDATE Laws SET For = For + @Points WHERE LawID = @LawID AND GameID = @GameID";
                     break;
                 case "Against":
-                    updateQuery = "UPDATE Laws SET Against = Against + 1 WHERE LawID = @LawID AND GameID = @GameID";
+                    updateQuery = "UPDATE Laws SET Against = Against + @Points WHERE LawID = @LawID AND GameID = @GameID";
                     break;
                 case "Avoid":
-                    updateQuery = "UPDATE Laws SET Avoid = Avoid + 1 WHERE LawID = @LawID AND GameID = @GameID";
+                    updateQuery = "UPDATE Laws SET Avoid = Avoid + @Points WHERE LawID = @LawID AND GameID = @GameID";
                     break;
                 default:
                     return BadRequest("Invalid vote type");

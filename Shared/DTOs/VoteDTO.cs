@@ -9,5 +9,6 @@ namespace NewBlazorProjecct.Shared.DTOs {
         public int GameID { get; set; }
         public int LawID { get; set; }
         public string VoteType { get; set; } // "For", "Against", or "Avoid"
+        public int Points { get; set; }
     }
 }

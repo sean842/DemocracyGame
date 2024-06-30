@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F79FAAAF-4092-4E54-8912-372455C82FC6}|Client\\NewBlazorProjecct.Client.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\newblazorproject\\client\\shared\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{F79FAAAF-4092-4E54-8912-372455C82FC6}|Client\\NewBlazorProjecct.Client.csproj|solutionrelative:client\\shared\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{F79FAAAF-4092-4E54-8912-372455C82FC6}|Client\\NewBlazorProjecct.Client.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\newblazorproject\\client\\pages\\userpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F79FAAAF-4092-4E54-8912-372455C82FC6}|Client\\NewBlazorProjecct.Client.csproj|solutionrelative:client\\pages\\userpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F79FAAAF-4092-4E54-8912-372455C82FC6}|Client\\NewBlazorProjecct.Client.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\newblazorproject\\client\\components\\loginpopup.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{F79FAAAF-4092-4E54-8912-372455C82FC6}|Client\\NewBlazorProjecct.Client.csproj|solutionrelative:client\\components\\loginpopup.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{F79FAAAF-4092-4E54-8912-372455C82FC6}|Client\\NewBlazorProjecct.Client.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\newblazorproject\\client\\pages\\lecturepage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{F79FAAAF-4092-4E54-8912-372455C82FC6}|Client\\NewBlazorProjecct.Client.csproj|solutionrelative:client\\pages\\lecturepage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7897E79A-B412-430D-A498-BEBAC43BE827}|Server\\NewBlazorProjecct.Server.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\newblazorproject\\server\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7897E79A-B412-430D-A498-BEBAC43BE827}|Server\\NewBlazorProjecct.Server.csproj|solutionrelative:server\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7897E79A-B412-430D-A498-BEBAC43BE827}|Server\\NewBlazorProjecct.Server.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\newblazorproject\\server\\controllers\\lawscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7897E79A-B412-430D-A498-BEBAC43BE827}|Server\\NewBlazorProjecct.Server.csproj|solutionrelative:server\\controllers\\lawscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7897E79A-B412-430D-A498-BEBAC43BE827}|Server\\NewBlazorProjecct.Server.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\newblazorproject\\server\\controllers\\generatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7897E79A-B412-430D-A498-BEBAC43BE827}|Server\\NewBlazorProjecct.Server.csproj|solutionrelative:server\\controllers\\generatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F79FAAAF-4092-4E54-8912-372455C82FC6}|Client\\NewBlazorProjecct.Client.csproj|c:\\seandesktopdata\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\newblazorproject\\client\\pages\\editgame.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -26,58 +38,97 @@
       "DocumentGroups": [
         {
           "DockedWidth": 218,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "NavMenu.razor",
-              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Shared\\NavMenu.razor",
-              "RelativeDocumentMoniker": "Client\\Shared\\NavMenu.razor",
-              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Shared\\NavMenu.razor",
-              "RelativeToolTip": "Client\\Shared\\NavMenu.razor",
-              "ViewState": "AQIAABUAAAAAAAAAAAAAACYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-23T18:43:44.672Z",
+              "DocumentIndex": 2,
+              "Title": "ChatHub.cs",
+              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Server\\Hubs\\ChatHub.cs",
+              "RelativeDocumentMoniker": "Server\\Hubs\\ChatHub.cs",
+              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Server\\Hubs\\ChatHub.cs",
+              "RelativeToolTip": "Server\\Hubs\\ChatHub.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-30T17:26:29.568Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "LoginPopup.razor",
-              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Components\\LoginPopup.razor",
-              "RelativeDocumentMoniker": "Client\\Components\\LoginPopup.razor",
-              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Components\\LoginPopup.razor",
-              "RelativeToolTip": "Client\\Components\\LoginPopup.razor",
-              "ViewState": "AQIAACEAAAAAAAAAAAAAAC4AAAAcAAAA",
+              "Title": "LecturePage.razor",
+              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Pages\\LecturePage.razor",
+              "RelativeDocumentMoniker": "Client\\Pages\\LecturePage.razor",
+              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Pages\\LecturePage.razor",
+              "RelativeToolTip": "Client\\Pages\\LecturePage.razor",
+              "ViewState": "AQIAAOkAAAAAAAAAAADgvzoBAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-23T18:43:13.729Z",
+              "WhenOpened": "2024-06-30T16:46:44.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserPage.razor",
+              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Pages\\UserPage.razor",
+              "RelativeDocumentMoniker": "Client\\Pages\\UserPage.razor",
+              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Pages\\UserPage.razor",
+              "RelativeToolTip": "Client\\Pages\\UserPage.razor",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAH4AAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-06-30T16:46:43.642Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "LawsController.cs",
+              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Server\\Controllers\\LawsController.cs",
+              "RelativeDocumentMoniker": "Server\\Controllers\\LawsController.cs",
+              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Server\\Controllers\\LawsController.cs",
+              "RelativeToolTip": "Server\\Controllers\\LawsController.cs",
+              "ViewState": "AQIAADUAAAAAAAAAAIA1wK8AAAB2AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-30T15:06:44.038Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GeneratorController.cs",
+              "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Server\\Controllers\\GeneratorController.cs",
+              "RelativeDocumentMoniker": "Server\\Controllers\\GeneratorController.cs",
+              "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Server\\Controllers\\GeneratorController.cs",
+              "RelativeToolTip": "Server\\Controllers\\GeneratorController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAO8AAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-30T15:25:34.944Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "MyGames.razor",
               "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Pages\\MyGames.razor",
               "RelativeDocumentMoniker": "Client\\Pages\\MyGames.razor",
               "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Pages\\MyGames.razor",
               "RelativeToolTip": "Client\\Pages\\MyGames.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAHEAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAHkAAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-23T18:00:46.338Z",
+              "WhenOpened": "2024-06-30T15:55:32.341Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "EditGame.razor",
               "DocumentMoniker": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Pages\\EditGame.razor",
               "RelativeDocumentMoniker": "Client\\Pages\\EditGame.razor",
               "ToolTip": "C:\\SeanDesktopData\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D2\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8 \u05D2\u05DE\u05E8\\\u05E4\u05E8\u05D5\u05D9\u05D9\u05E7\u05D8\\NewBlazorProject\\Client\\Pages\\EditGame.razor",
               "RelativeToolTip": "Client\\Pages\\EditGame.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "ViewState": "AQIAAFIAAAAAAAAAAAAlwBIAAABLAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-23T17:39:34.946Z",
+              "WhenOpened": "2024-06-30T15:25:05.276Z",
               "EditorCaption": ""
             }
           ]

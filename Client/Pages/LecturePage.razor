@@ -59,12 +59,12 @@
         <div id="ForTable">
             <table>
                 <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
-                <tbody> <tr>   <td>0</td>  <td>0</td>   </tr> </tbody>
+                <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
             </table>
         </div>
     </div>
 
-    <div id="CharacterContainer"> <div>his text</div> <img src="/imgs/mydiplo.png" /> </div>
+    <div id="CharacterContainer"> <div>@characterText</div> <img src="/imgs/mydiplo.png" /> </div>
     
 
     <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
@@ -124,6 +124,7 @@
     int lawCounter = 0;
     int lawAmountPass = 0;
     int lawAmountNotPass = 0;
+    string characterText = "";
 
     bool showPopUp = false;
 
@@ -156,13 +157,13 @@
             if (law != null) {
                 switch (vote.VoteType) {
                     case "For":
-                        law.For++;
+                        law.For += vote.Points;
                         break;
                     case "Against":
-                        law.Against++;
+                        law.Against += vote.Points;
                         break;
                     case "Avoid":
-                        law.Avoid++;
+                        law.Avoid += vote.Points;
                         break;
                 }
                 StateHasChanged();
@@ -303,10 +304,14 @@
     }
 
     private bool CalculateResult() {
-        if (myGame.LawList[lawCounter].For > myGame.LawList[lawCounter].Against) {
+        if (myGame.LawList[lawCounter].For > 60) {
+            lawAmountPass++;
+            characterText = "ברכותי! החוק עבר!";
             return true;
         }
         else {
+            lawAmountNotPass++;
+            characterText = "החוק לא עבר :(";
             return false;
         }
     }
@@ -347,6 +352,7 @@
         //להסתיר את הגרף ולהראות את הכפתורים
         LawContentContainerDisplay = "flex";
         PieChartContainerDisplay = "none";
+        characterText = "הצביעו עכשיו!";
 
     }
 
