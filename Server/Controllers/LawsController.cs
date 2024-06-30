@@ -72,8 +72,9 @@ namespace NewBlazorProjecct.Server.Controllers {
                 groupName = group.GroupName,
                 gameID = group.GameID,
                 points = 0,
+                character = group.Character,
             };
-            string insertQuery = "INSERT INTO Groups (GroupName, GameID, Points) VALUES (@groupName, @gameID, @points)";
+            string insertQuery = "INSERT INTO Groups (GroupName, GameID, Points, Character) VALUES (@groupName, @gameID, @points, @character)";
             group.GroupID = await _db.InsertReturnId(insertQuery, param);
             if (group.GroupID > 0) {
                 await _hub.Clients.All.SendAsync("GroupLogin", group);

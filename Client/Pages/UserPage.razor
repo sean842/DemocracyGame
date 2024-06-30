@@ -18,8 +18,17 @@
     @* בשביל להתחבר אנו מכניסים שם משתמש, בעתיד נשנה את זה*@
     @if (!logged) {
         <div class="form-group">
-            <h1> איזה דמות תרצו שתללוה אותכם? </h1>  <button>דמות 1</button>  <button>דמות 2</button>
-            <label>  שם הקבוצה:  <input @bind="myGroup.GroupName" class="form-control" />  </label>
+            <h1> איזה דמות תרצו שתללוה אותכם? </h1>
+            <button @onclick='() => SetCharacter("./imgs/mydiplo.png")'>
+                <img src="./imgs/mydiplo.png" style="height:100px; width=100px;" />
+            </button>
+            <button @onclick='() => SetCharacter("./imgs/femalediplo.png")'>
+                <img src="./imgs/femalediplo.png" style="height:100px; width=100px;"  />
+            </button>
+            <label>
+                שם הקבוצה:
+                <input @bind="myGroup.GroupName" class="form-control" />
+            </label>
             <button class="btn btn-primary" @onclick="LogIn">התחברות</button>
         </div>
     }
@@ -58,7 +67,7 @@
         </div>
     </div>
 
-    <div id="CharacterContainer"> <div>@characterText</div> <img src="./imgs/mydiplo.png" /> </div>
+    <div id="CharacterContainer"> <div>@characterText</div> <img src="@myGroup.Character" /> </div>
 
 
     <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
@@ -237,6 +246,10 @@
             }
         }
 
+    }
+
+    void SetCharacter(string src) {
+        myGroup.Character = src;
     }
 
     async Task LogIn() {
