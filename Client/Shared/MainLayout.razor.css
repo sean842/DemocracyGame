@@ -18,6 +18,8 @@ main {
     /*i added this*/
     display: flex;
     flex-direction: column;
+    margin: 0 auto;
+    position: relative;
 }
 
 .sidebar {
@@ -63,10 +65,10 @@ main {
 }
 
 @media (min-width: 641px) {
-    .page {
+/*    .page {
         flex-direction: row;
     }
-
+*/
     .sidebar {
         width: 250px;
         height: 100vh;

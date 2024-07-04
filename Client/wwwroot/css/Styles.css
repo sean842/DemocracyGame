@@ -4,9 +4,9 @@
     padding: 0;
     height: 100%;
     overflow: hidden;
-    background-color: lightblue; /* Adjust as needed */
+    background-color: #E4F6FF; 
 }
-/* Ensure the app element takes up the full height */
+
 app {
     display: flex;
     flex-direction: column;
@@ -22,30 +22,89 @@ app {
     height: 100%; /*i added this*/
 }
 
-/*:root {
+:root {
     font-size: 24px;
-    --t: 20;
-}
+/*    --t: 20;
 */
-/* לבדוק אם צריך כי ההדר פה שונה!
-    header {
+
+}
+
+
+h1{
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+
+#FristCanvas {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    background-color: aquamarine;
-    height: 10%;
-    padding: 10px;
+    background-image: url(../imgs/screen.png);
+    background-size: 56%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background-position-y: top;
 }
 
-    .GoLeft {
-    margin-right: 10px; 
+
+.images {
+    width: 15%;
+    bottom: 20%;
+    position: absolute;
 }
 
-.ProgressBar {
-    margin-left: auto; 
+#FristCanvas > button {
+    background-color: white; /* White background */
+    border: 2px solid #ccc; /* Light grey border */
+    color: black; /* Black text */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make it inline-block */
+    font-size: 1rem; /* Font size */
+    margin: 10px 2px; /* Margin */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Shadow effect */
 }
 
-*/
+    #FristCanvas > button:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+
+
+
+#FristCanvas > input[type="number"] {
+    background-color: white; /* White background */
+    border: 2px solid #ccc; /* Light grey border */
+    color: black; /* Black text */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Center text */
+    display: inline-block; /* Make it inline-block */
+    font-size: 1rem; /* Font size */
+    margin: 10px 2px; /* Margin */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Inner shadow effect */
+    outline: none; /* Remove default outline */
+    width: 15%;
+    height: 7%;
+}
+
+    #FristCanvas > input[type="number"]:focus {
+        border-color: #aaa; /* Darker border on focus */
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Slightly darker inner shadow on focus */
+    }
+
+
+
 
 /* החלק של המשחק!*/
 .screen {
@@ -62,8 +121,8 @@ app {
 }
 
 #SettingsContainer {
-    background-color: chocolate;
-    position: absolute;
+/*    background-color: chocolate;
+*/  position: absolute;
     top: 0;
     bottom: 60%;
     left: 0;
@@ -74,23 +133,31 @@ app {
     padding: 10px;
 }
 
-#ForTimer, #ForTable {
+#ForTable {
     flex: 1; /* Split the space equally */
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     width: 45%;
     height: 100%;
-}
 
-/* Additional styling for the table */
-table {
     border-collapse: separate; /* Change to separate to allow for rounded corners */
     border-spacing: 0; /* Ensure no space between cells */
     margin: 0 auto;
     border-radius: 10px; /* Add rounded corners to the table */
     overflow: hidden; /* Ensure overflow is hidden to hide any content that exceeds the rounded corners */
     position: relative; /* Ensure the table is positioned relatively for absolute positioning of pseudo-element */
+
+}
+
+
+
+
+Additional styling for the table
+#ForTable table {
+    width: 50%;
+    height: 81%;
+    border-radius: 10px;
 }
 
 th, td {

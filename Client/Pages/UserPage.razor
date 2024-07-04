@@ -6,11 +6,17 @@
 @implements IAsyncDisposable;
 @using NewBlazorProjecct.Shared.DTOs;
 
-@if (msg != "") {
-    <p>@msg</p>
-}
+
+
 <div id="FristCanvas" style="display:@firsatCanvasDisplay">
-    <h1>הקלד קוד משחק:</h1>   <input type="number" @bind="playerGameCode" />   <span>לדוגמה 101</span>  <button @onclick="GetGame"> כניסה למשחק</button>
+    @if (msg != "") {
+        <p>@msg</p>
+    }
+    <h1>הקלד קוד משחק:</h1>
+    <input type="number" @bind="playerGameCode" />
+    <span>לדוגמה 101</span>
+    <button @onclick="GetGame"> כניסה למשחק</button>
+    <img class="images" src="./imgs/ballot-box.png" />
 </div>
 
 
@@ -119,7 +125,7 @@
     string msg;// handle the error msg.
 
     // styles for divs.
-    string firsatCanvasDisplay = "block";
+    string firsatCanvasDisplay = "flex";
     string secondCanvasDisplay = "none";
     string thiredCanvasDisplay = "none";
     string explenationCanvasDisplay = "none";

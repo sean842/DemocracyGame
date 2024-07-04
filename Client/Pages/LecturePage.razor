@@ -13,12 +13,11 @@
     @if (msg != "") {
         <p>@msg</p>
     }
-    <button @onclick="NavigateTo">nav to MyGames</button>
     <h1>הקלד קוד משחק:</h1>
     <input type="number" @bind="playerGameCode" />
     <span>לדוגמה 101</span>
     <button @onclick="GetGame"> כניסה למשחק</button>
-        
+    <img class="images" src="./imgs/ballot-box.png" />
 </div>
 
 <div id="secondCanvas" style="display:@secondCanvasDisplay">
@@ -111,7 +110,7 @@
     int playerGameCode = 0;// the code from the input of the player.
     string msg;// handle the error msg.
     Game myGame = new Game(); // containe the game withe the laws.
-    string firsatCanvasDisplay = "block";
+    string firsatCanvasDisplay = "flex";
     string secondCanvasDisplay = "none";
     string explenationCanvasDisplay = "none";
     string gotVotesDisplay = "none";
