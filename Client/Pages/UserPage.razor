@@ -20,35 +20,54 @@
 </div>
 
 
-<div id="secondCanvas" style="display:@secondCanvasDisplay">
-    @* בשביל להתחבר אנו מכניסים שם משתמש, בעתיד נשנה את זה*@
+ <div id="chooseCharacter" style="display:@chooseCharacterDisplay">
     @if (!logged) {
-        <div class="form-group">
-            <h1> איזה דמות תרצו שתללוה אותכם? </h1>
-            <button @onclick='() => SetCharacter("./imgs/mydiplo.png")'>
-                <img src="./imgs/mydiplo.png" style="height:100px; width=100px;" />
-            </button>
-            <button @onclick='() => SetCharacter("./imgs/femalediplo.png")'>
-                <img src="./imgs/femalediplo.png" style="height:100px; width=100px;"  />
-            </button>
-            <label>
-                שם הקבוצה:
-                <input @bind="myGroup.GroupName" class="form-control" />
-            </label>
-            <button class="btn btn-primary" @onclick="LogIn">התחברות</button>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col text-center">
+                    <h1>בחרו שם ונציג לקבוצה</h1>
+                </div>
+            </div>
+            <div class="row align-items-center" style="height: 100vh;">
+                <div class="col text-center">
+                    <img src="./imgs/mydiplo.png" style="height:80%; width:80%; cursor:pointer;" @onclick='() => SetCharacter("./imgs/mydiplo.png")' />
+                </div>
+                <div class="col text-center">
+                    <label>
+                        שם הקבוצה:
+                        <input @bind="myGroup.GroupName" class="form-control" />
+                    </label>
+                    <button class="btn btn-primary mt-2" @onclick="LogIn">התחברות</button>
+                </div>
+                <div class="col text-center">
+                    <img src="./imgs/femalediplo.png" style="height:80%; width:80%; cursor:pointer;" @onclick='() => SetCharacter("./imgs/femalediplo.png")' />
+                </div>
+            </div>
         </div>
     }
 </div>
 
-<div id="ThiredCanvas" style="display:@thiredCanvasDisplay">
-    @* עובר על הרשימת משתמשים ומציג אותם*@
+
+
+<div id="secondCanvas" style="display:@secondCanvasDisplay">
     משתמשים מחוברים:
-    <ul id="Userlist" style="display:flex;gap:1rem;">
-        @foreach (Group group in allGroups) {
-            <li>@group.GroupName</li>
-        }
-    </ul>
+    <div class="container">
+        <div class="row">
+            @foreach (Group group in allGroups) {
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <img src="@group.Character" class="character-img" alt="@group.GroupName" />
+                            <p class="mt-2">@group.GroupName</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
+
 
 
 <div id="explenation" style="display:@explenationCanvasDisplay">
@@ -126,8 +145,8 @@
 
     // styles for divs.
     string firsatCanvasDisplay = "flex";
+    string chooseCharacterDisplay = "none";
     string secondCanvasDisplay = "none";
-    string thiredCanvasDisplay = "none";
     string explenationCanvasDisplay = "none";
     string gotVotesDisplay = "none";
     string voteScreenDisplay = "none";
@@ -237,7 +256,7 @@
             myGame = response.Content.ReadFromJsonAsync<Game>().Result;
             // Console.WriteLine("Got Game" + "GameID: " + myGame.GameID);
             firsatCanvasDisplay = "none";
-            secondCanvasDisplay = "block";
+            chooseCharacterDisplay = "flex";
         }
         else {
             Console.WriteLine("wrong");
@@ -265,8 +284,8 @@
         if (post.IsSuccessStatusCode) {
             myGroup.GroupID = post.Content.ReadFromJsonAsync<int>().Result;
             logged = true;
-            secondCanvasDisplay = "none";
-            thiredCanvasDisplay = "block";
+            chooseCharacterDisplay = "none";
+            secondCanvasDisplay = "block";
 
             // Retrieve all groups after logging in
             await GetAllGroups();
@@ -295,7 +314,7 @@
 
 
     void HandleStartGame() {
-        thiredCanvasDisplay = "none";
+        secondCanvasDisplay = "none";
         explenationCanvasDisplay = "block";
         // Console.WriteLine("startgame");
         InvokeAsync(StateHasChanged);
