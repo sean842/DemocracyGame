@@ -39,6 +39,10 @@ h2 {
 }
 
 
+
+
+/*   ----------  START OF FIRST CANVAS DESIGN   ----------   */
+
 #FristCanvas {
     display: flex;
     flex-direction: column;
@@ -80,8 +84,6 @@ h2 {
     }
 
 
-
-
 #FristCanvas > input[type="number"] {
     background-color: white; /* White background */
     border: 2px solid #ccc; /* Light grey border */
@@ -103,6 +105,21 @@ h2 {
         box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Slightly darker inner shadow on focus */
     }
 
+/*   ----------   END OF FIRST CANVAS DESIGIN   ----------   */
+
+
+
+
+/*   ----------  START OF SECOND CANVAS DESIGN   ----------   */
+
+.character-img {
+    width: 100px;
+    height: auto;
+    object-fit: cover;
+    object-position: top;
+}
+
+/*   ----------   END OF SECOND CANVAS DESIGIN   ----------   */
 
 
 

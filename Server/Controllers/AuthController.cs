@@ -15,26 +15,27 @@ namespace NewBlazorProjecct.Server.Controllers {
         [HttpPost("login")]
         public async Task<IActionResult> UserLogin(Login userLoginDto) {
             object param = new {
-                UserId = 1,
                 UserName = userLoginDto.Name,
-                Password = userLoginDto.Password
+                password = userLoginDto.Password
             };
-            string Namequery = "SELECT * from Users where Name =@UserName";
+            string Namequery = "SELECT * FROM Users WHERE Name = @UserName And Password = @password";
             var userRecords = await _db.GetRecordsAsync<User>(Namequery, param);
             User userToLog = userRecords.FirstOrDefault();
             if (userToLog != null) {
                 if (userToLog.Password == userLoginDto.Password) {
-                    string Passwordquery = "SELECT Password from Users where Name =@UserName";
-                    var passwordRecord = await _db.GetRecordsAsync<User>(Passwordquery, param);
-                    return Ok(passwordRecord);
+                    if (userToLog.Name == userLoginDto.Name) {
+
+                        return Ok(userToLog);
+                    }
+                    else {  return BadRequest("השם משתמש לא תואם");  }
                 }
-                else {
-                    return BadRequest("אחד מהפרטים שהוזנו שגוי");
-                }
+                else { return BadRequest("הסיסמה לא תואמת"); }
             }
-            else {
-                return BadRequest("NotGood");
-            }
+            else { return BadRequest("אין משתמש כזה"); }
         }
+
+
+
+
     }
 }

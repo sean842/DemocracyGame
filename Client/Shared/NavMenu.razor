@@ -1,6 +1,10 @@
-﻿<nav>
+﻿@inject NewBlazorProjecct.Shared.Services.UserService UserService
+@inject NavigationManager Navigation
+@using NewBlazorProjecct.Client.Components
+
+<nav>
     <div>
-        @if (isLoggedIn) {
+        @if (UserService.IsLoggedIn) {
             <NavLink href="LecturePage" Match="NavLinkMatch.All">
                 משחק
             </NavLink>
@@ -12,27 +16,43 @@
         }
     </div>
     <div>
-        <NavLink href="" @onclick="ShowLoginPopup">
-            עורך
-        </NavLink>
+        <input class="btn-nav" type="button" value="עורך" @onclick="ShowLoginPopup" />
     </div>
     <div>
-        <input class="btn-nav" type="button" value="אודות" />
+        <input class="btn-nav" type="button" value="אודות" @onclick="ShowAboutPopup" />
     </div>
+    @if (UserService.IsLoggedIn) {
+        <div>
+            <input class="btn-nav" type="button" value="Logout" @onclick="Logout" />
+        </div>
+    }
 </nav>
 
 <LoginPopup @ref="loginPopup" OnLoginSuccess="OnLoginSuccess" />
+<AboutPopup @ref="aboutPopup" />
+
 
 @code {
     private LoginPopup loginPopup;
     private bool isLoggedIn = false;
+    private AboutPopup aboutPopup;
 
     private void ShowLoginPopup() {
         loginPopup?.Show();
     }
 
+    void ShowAboutPopup() {
+        aboutPopup?.Show();
+    }
+
     private void OnLoginSuccess() {
-        isLoggedIn = true;
+        // isLoggedIn = true;
+        StateHasChanged();
+    }
+    private void Logout() {
+        UserService.Logout();
+        Navigation.NavigateTo("/UserPage");
+
         StateHasChanged();
     }
 }

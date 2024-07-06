@@ -20,16 +20,29 @@
     <img class="images" src="./imgs/ballot-box.png" />
 </div>
 
+
 <div id="secondCanvas" style="display:@secondCanvasDisplay">
-    @* עובר על הרשימת משתמשים ומציג אותם*@
     משתמשים מחוברים:
-    <ul id="Userlist" style="display:flex;gap:1rem;">
-        @foreach (Group group in allGroups) {
-            <li>@group.GroupName</li>
-        }
-    </ul>
+    <div class="container">
+        <div class="row">
+            @foreach (Group group in allGroups) {
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <img src="@group.Character" class="character-img" alt="@group.GroupName" />
+                            <p class="mt-2">@group.GroupName</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
     <button @onclick="StartGame">התחל משחק</button>
+
 </div>
+
+
+
 
 <div id="explenation" style="display:@explenationCanvasDisplay">
     <h1>ברוכים הבאים למליאה!</h1>
@@ -203,7 +216,7 @@
             myGroup.GroupID = post.Content.ReadFromJsonAsync<int>().Result;
             logged = true;
         }
-        secondCanvasDisplay = "block";
+        secondCanvasDisplay = "flex";
     }
 
 

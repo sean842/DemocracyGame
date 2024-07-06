@@ -41,6 +41,9 @@
                 </tr>
             }
         }
+        else {
+            <td> אין משחקים </td>
+        }
 
     </table>
 }
@@ -69,9 +72,6 @@
             switch (error) {
                 case "No User":
                     msg = "Didn't find the user.";
-                    break;
-                case "No Games":
-                    msg = "Did not find games.";
                     break;
                 default:
                     msg = "An error occurred.";

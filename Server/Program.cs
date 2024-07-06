@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.ResponseCompression;
 using TriangleDbRepository;
 using NewBlazorProjecct.Server.Hubs;
+using NewBlazorProjecct.Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<DbRepository>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddSignalR();
 builder.Services.AddResponseCompression(opts =>

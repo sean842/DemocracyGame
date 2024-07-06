@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NewBlazorProjecct.Shared.DTOs {
     public class Login {
-        public int UserID { get; set; }
+
         [Required(ErrorMessage = "חובה להזין שם משתמש")]
         public string Name { get; set; }
 

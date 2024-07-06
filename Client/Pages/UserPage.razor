@@ -285,7 +285,7 @@
             myGroup.GroupID = post.Content.ReadFromJsonAsync<int>().Result;
             logged = true;
             chooseCharacterDisplay = "none";
-            secondCanvasDisplay = "block";
+            secondCanvasDisplay = "flex";
 
             // Retrieve all groups after logging in
             await GetAllGroups();

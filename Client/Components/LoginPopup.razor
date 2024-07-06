@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @using NewBlazorProjecct.Shared.DTOs
+@inject NewBlazorProjecct.Shared.Services.UserService UserService
 
 @if (isVisible) {
     <div class="modal" style="display:block;">
@@ -38,21 +39,28 @@
     [Parameter]
     public EventCallback OnLoginSuccess { get; set; }
 
+
+
     private async Task HandleLogin() {
         errorMessage = string.Empty;
         var response = await Http.PostAsJsonAsync("api/auth/login", loginModel);
 
         if (response.IsSuccessStatusCode) {
-            // Handle successful login
+            // Get the User from the response
+            var user = await response.Content.ReadFromJsonAsync<User>();
+            UserService.Login(user); // Update the UserService with logged in user
             await OnLoginSuccess.InvokeAsync();
-            Navigation.NavigateTo("/MyGames/1");
             isVisible = false;
+
+            // Navigate to MyGames with UserID
+            Navigation.NavigateTo($"/MyGames/{user.UserID}");
         }
         else {
             var errorResponse = await response.Content.ReadAsStringAsync();
             errorMessage = string.IsNullOrEmpty(errorResponse) ? "Invalid username or password" : errorResponse;
         }
     }
+
 
     public void Show() {
         isVisible = true;

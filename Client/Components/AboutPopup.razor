@@ -1,0 +1,78 @@
+﻿@if (isVisible) {
+    <div class="modal" style="display:block;">
+        <div class="modal-content" dir="rtl">
+            <span class="close" @onclick="Hide">&times;</span>
+            <h3>About</h3>
+            <p>ממשק למידה לדמוקרטיה</p>
+            <pre class="hebrew-text">
+                    פותח עבור התנועה לאיכות השלטון
+                    מפתחים: שון בלייר ויובל ולצר
+                    מנחה: ינאי זגורי
+                    שנה: תשפ"ד 2024
+                </pre>
+            <a href="https://www.hit.ac.il/academic/instructional-technologies/" target="_blank">לאתר הפקולטה</a>
+            <img src="./imgs/hit_logo.png" class="logo" />
+        </div>
+    </div>
+}
+
+@code {
+    private bool isVisible = false;
+
+    public void Show() {
+        isVisible = true;
+        StateHasChanged();
+    }
+
+    public void Hide() {
+        isVisible = false;
+        StateHasChanged();
+    }
+}
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    .logo {
+        max-width: 150px; /* Adjust the size as needed */
+        height: auto;
+    }
+
+    .hebrew-text {
+        direction: rtl;
+        unicode-bidi: bidi-override;
+    }
+</style>
