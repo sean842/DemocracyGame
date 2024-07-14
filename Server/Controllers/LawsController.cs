@@ -66,6 +66,22 @@ namespace NewBlazorProjecct.Server.Controllers {
             }
         }
 
+
+        //[HttpGet("GetAllGroups/{gameID}")]
+        //public async Task<IActionResult> GetAllGroups(int gameID) {
+        //    object param = new {
+        //        GameID = gameID
+        //    };
+        //    string query = "SELECT * FROM Groups WHERE GameID = @GameID";
+        //    var groups = await _db.GetRecordsAsync<Group>(query, param);
+        //    List<Group> groupsList = groups.ToList();
+        //    return Ok(groupsList);
+        //}
+
+
+
+
+
         [HttpPost("InsertGroup")]
         public async Task<IActionResult> InsertGroup(Group group) {
             object param = new {
@@ -92,6 +108,10 @@ namespace NewBlazorProjecct.Server.Controllers {
             var allGroupsResult = await GetAllGroups(gameID);
             if (allGroupsResult is OkObjectResult okResult) {
                 List<Group> groupsList = okResult.Value as List<Group>;
+                // reset the points.
+                object param = new { GameID = gameID };
+                string updateQuery = "UPDATE Groups SET Points = 0 WHERE GameID = @GameID";
+                bool isUpdate = await _db.SaveDataAsync(updateQuery, param);
 
                 if (groupsList.Count > 0) {
                     if (scoreFormat) {

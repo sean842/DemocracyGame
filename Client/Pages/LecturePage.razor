@@ -9,136 +9,204 @@
 
 
 
+
+
+ @if (msg != "") {
+    <p style="margin:0;">@msg</p>
+}
+
 <div id="FristCanvas" style="display:@firsatCanvasDisplay">
-    @if (msg != "") {
-        <p>@msg</p>
-    }
+
     <h1>הקלד קוד משחק:</h1>
     <input type="number" @bind="playerGameCode" />
     <span>לדוגמה 101</span>
     <button @onclick="GetGame"> כניסה למשחק</button>
     <img class="images" src="./imgs/ballot-box.png" />
+
 </div>
 
 
-<div id="secondCanvas" style="display:@secondCanvasDisplay">
-    משתמשים מחוברים:
-    <div class="container">
-        <div class="row">
-            @foreach (Group group in allGroups) {
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <img src="@group.Character" class="character-img" alt="@group.GroupName" />
-                            <p class="mt-2">@group.GroupName</p>
+
+
+
+<div class="container" style="display:@containerDisplay;">
+
+    <div class="left-column">
+        <div class="left-top">
+
+            <div class="col">
+                <div id="ForTable">
+                    <table>
+                        <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
+                        <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="col-4">
+                <button style="display:@startGameBtnDisplay" @onclick="StartGame">התחל משחק</button>
+                <button style="display:@explenationCanvasDisplay" @onclick="DistributePoints">קבלת קולות</button>
+                <button style="display:@startVoteBtnDisplay" @onclick="StartTheVote">התחילו!</button>
+                <button style="display:@pieChartBtnDisplay" @onclick="TriggerPieChart"> תוצאות! </button>
+                <button style="display:@PieChartContainerDisplay" @onclick="callForNextLaw" id="nextLawButton"> בואו נמשיך </button>
+                <button style="display:@resultsContainerDisplay" @onclick="BackToStart" id="gameFinished"> חזרה להתחלה </button>
+            </div>
+
+
+        </div>
+        <div class="left-middle">
+            <p> @characterText </p>
+        </div>
+        <div class="left-bottom">
+            <img src="./imgs/femalediplo.png" alt="myCharacter" />
+        </div>
+    </div>
+
+
+
+
+
+    <div class="right-column">
+        @if (msg != "") {
+            <p style="margin:0;">@msg</p>
+        }
+
+        <ul style="display:@groupListDisplay">
+            @foreach(Group group in allGroups) {
+                <li>
+                    <div class="header">
+                        <p> @group.GroupName </p>
+
+                    </div>
+
+                    <div class="body">
+                        <img src="@group.Character" />
+                    </div>
+
+                    <div class="footer">
+                        <p> קולות:  @group.Points.ToString() </p>
+                    </div>
+
+                </li>
+            }
+        </ul>
+
+        
+        <div id="explenation" style="display:@explenationCanvasDisplay">
+                <h1>ברוכים הבאים למליאה!</h1>
+                <p>אנו הולכים להצביע על החוקים החדשים ולהשפיע על חיי הכיתה!</p>
+                <p>כל קבוצה תקבל מספר קולות אשר ישפיעו על עתידנו.</p>
+        </div>
+
+
+
+
+
+        <div id="voteGameCanvas" style="display:@voteGameCanvasDisplay">
+
+
+@*             <div class="row smallerHalf">
+                <div id="ForTable">
+                    <table>
+                        <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
+                        <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
+                    </table>
+                </div>
+            </div>
+ *@
+
+            <div class="row  biggerHalf">
+
+
+
+                <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
+
+                    <div class="row half head">
+                        <div id="lawWrapper">   <div id="law">@currentLawContent</div>   </div>
+                    </div>
+
+                    <div class="row half bottom">
+                        <div id="cardsContainer">
+                            <button id="Against"> נגד </button>
+                            <button id="Avoid"> נמנע </button>
+                            <button id="For"> בעד </button>
                         </div>
                     </div>
+
                 </div>
-            }
-        </div>
-    </div>
-    <button @onclick="StartGame">התחל משחק</button>
 
-</div>
+                <div id="PieChartContainer" style="display:@PieChartContainerDisplay">
+                    <div id="canvasContainer"> <canvas id="myPieChart"></canvas> </div>
+                </div>
 
 
-
-
-<div id="explenation" style="display:@explenationCanvasDisplay">
-    <h1>ברוכים הבאים למליאה!</h1>
-    <p>אנו הולכים להצביע על החוקים החדשים ולהשפיע על חיי הכיתה!</p>
-    <p>כל קבוצה תקבל מספר קולות אשר ישפיעו על עתידנו.</p>
-    <p>לחצו על הכפתור שבמסך שלכם לקבלת הקולות</p>
-    <button @onclick="DistributePoints">קבלת קולות</button>
-</div>
-
-<div id="gotVotes" style="display:@gotVotesDisplay">
-    <p>ברכותי! קיבלתם קולות!</p>
-    <p> בואו נתחיל להשביפע! </p>
-    @foreach(Group group in allGroups) {
-        <div>
-            <p>@group.GroupName</p>
-            <p>@group.Points</p>
-        </div>
-    }
-    <button @onclick="StartTheVote">התחילו!</button>
-</div>
-
-
-
-<div id="VoteScreen" class="screen" style="display:@voteScreenDisplay">
-    <div id="SettingsContainer" class="col">
-        <div id="ForTable">
-            <table>
-                <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
-                <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="CharacterContainer"> <div>@characterText</div> <img src="/imgs/mydiplo.png" /> </div>
-    
-
-    <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
-        <div class="half head">
-            <div id="lawWrapper">   <div id="law">@currentLawContent</div>   </div>
-        </div>
-
-        <div class="half bottom">
-            <div id="cardsContainer">
-                <button id="Against"> נגד </button>
-                <button id="Avoid"> נמנע </button>
-                <button id="For"> בעד </button>
             </div>
-            <button @onclick="TriggerPieChart">Show Pie Chart!</button>
+
+
         </div>
+
+        <!--  RESULTS SCREEN  -->
+        <div id="resultsContainer" style="display:@resultsContainerDisplay">
+            <div id="ForTable">
+                <table>
+                    <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
+                    <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
     </div>
 
 
-    <div id="PieChartContainer" style="display:@PieChartContainerDisplay">
-        <div id="canvasContainer"> <canvas id="myPieChart"></canvas> </div>
-        <button id="nextLawButton" @onclick="callForNextLaw">Next Law</button>
-    </div>
 
 </div>
 
-<!--  RESULTS SCREEN  -->
-<div id="resultsContainer" style="display:@resultsContainerDisplay">
-    <table>
-        <tr> <th>עברו</th> <th>נפלו</th> </tr>
-        <tr> <td>@lawAmountPass</td> <td>@lawAmountNotPass</td> </tr>
-    </table>
-    <button id="gameFinished" @onclick="BackToStart"> GAME FINISHED! </button>
-</div>
+
 
 
 
 @code {
 
     private HubConnection? hub;// the connection to the Hub.
-    Group myGroup = new Group(); // My user, will save the id.
+                               // Group myGroup = new Group(); // My user, will save the id.
     bool logged = false;
     List<Group> allGroups = new List<Group>();// list for all the users.
 
     int playerGameCode = 0;// the code from the input of the player.
     string msg;// handle the error msg.
     Game myGame = new Game(); // containe the game withe the laws.
+
+
+    // display divs.
     string firsatCanvasDisplay = "flex";
-    string secondCanvasDisplay = "none";
+    string containerDisplay = "none";
     string explenationCanvasDisplay = "none";
-    string gotVotesDisplay = "none";
-    string voteScreenDisplay = "none";
+    string voteGameCanvasDisplay = "none"; 
+    string groupListDisplay = "none";
+
+    // display buttons
+    string startGameBtnDisplay = "none";
+    string startVoteBtnDisplay = "none";
+    string pieChartBtnDisplay = "none";
+
+    // check if they exist.
     string LawContentContainerDisplay = "flex";
     string PieChartContainerDisplay = "none";
     string resultsContainerDisplay = "none";
+
+
+    // string gotVotesDisplay = "none";
 
     string currentLawContent = "the law content will be here";
     int lawCounter = 0;
     int lawAmountPass = 0;
     int lawAmountNotPass = 0;
-    string characterText = "";
+    string characterText = "ברוכים הבאים למליאה";
 
-    bool showPopUp = false;
+    // bool showPopUp = false;
 
     protected override async Task OnInitializedAsync() {
         // make a connection.
@@ -149,12 +217,13 @@
 
         await hub.StartAsync(); // start connection.
 
-        if (hub != null) {
-            myGroup.ConnectionID = hub.ConnectionId;
-        }
+        // if (hub != null) {
+        //     myGroup.ConnectionID = hub.ConnectionId;
+        // }
         // when someone login we get the user detailes and add it to the user list(to show it on screen).
         hub.On<Group>("GroupLogin", newGroup => {
             allGroups.Add(newGroup);
+            msg = "";
             StateHasChanged();
         });
         hub.On("StartTheGame", () => {
@@ -208,16 +277,9 @@
         }
     }
 
-    async Task LogIn() {
-        // קריאת Post
-        var post = await Http.PostAsJsonAsync("api/Laws/InsertGroup", myGroup);
-        if (post.IsSuccessStatusCode) {
-            //קבלת מזהה המשתמש
-            myGroup.GroupID = post.Content.ReadFromJsonAsync<int>().Result;
-            logged = true;
-        }
-        secondCanvasDisplay = "flex";
-    }
+
+
+
 
 
     async Task GetGame() {
@@ -225,7 +287,9 @@
         if (response.IsSuccessStatusCode == true) {
             myGame = response.Content.ReadFromJsonAsync<Game>().Result;
             firsatCanvasDisplay = "none";
-            secondCanvasDisplay = "block";
+            containerDisplay = "flex";
+            groupListDisplay = "flex";
+            startGameBtnDisplay = "block";
             Console.WriteLine(myGame.ScoreFormat);
             // Retrieve all groups after logging in
             await GetAllGroups();
@@ -251,9 +315,11 @@
     }
 
     void HandleStartGame() {
-        secondCanvasDisplay = "none";
+        groupListDisplay = "none";
+        startGameBtnDisplay = "none";
         explenationCanvasDisplay = "block";
-        // Console.WriteLine("startgame");
+        characterText = ""; // no text to character when explaining.
+                            // Console.WriteLine("startgame");
         InvokeAsync(StateHasChanged);
 
     }
@@ -264,9 +330,10 @@
         if (response.IsSuccessStatusCode) {
             allGroups = await response.Content.ReadFromJsonAsync<List<Group>>();
             StateHasChanged();
+            msg = "";
         }
         else {
-            msg = "Failed to load groups.";
+            msg = "";
         }
     }
 
@@ -284,7 +351,10 @@
             Console.WriteLine("Points distributed successfully");
             await GetAllGroups(); // Refresh the group list to show updated points
             explenationCanvasDisplay = "none";
-            gotVotesDisplay = "block";
+            startVoteBtnDisplay = "block";
+            groupListDisplay = "flex";
+            characterText = "ברכותי! קיבלתם קולות, בואו נתחיל לשחק!";
+            // gotVotesDisplay = "block";
         }
         else {
             Console.WriteLine("Failed to distribute points");
@@ -298,8 +368,11 @@
     }
 
     void StartVote() {
-        gotVotesDisplay = "none";
-        voteScreenDisplay = "block";
+        startVoteBtnDisplay = "none";
+        groupListDisplay = "none";
+        voteGameCanvasDisplay = "flex";
+        pieChartBtnDisplay = "block";
+
         GetLawContent();
     }
 
@@ -309,6 +382,7 @@
         }else {
             currentLawContent = "finish Game!";
         }
+        characterText = "הצביעו עכשיו!";
     }
 
     private async Task TriggerPieChart() {
@@ -331,6 +405,8 @@
     private async Task ShowPieChart() {
         LawContentContainerDisplay = "none";
         PieChartContainerDisplay = "block";
+        pieChartBtnDisplay = "none";
+        characterText = "להלן התוצאות:";
 
         if (myGame.LawList.Count > 0 && lawCounter < myGame.LawList.Count) {
             var currentLaw = myGame.LawList[lawCounter];
@@ -365,21 +441,27 @@
         LawContentContainerDisplay = "flex";
         PieChartContainerDisplay = "none";
         characterText = "הצביעו עכשיו!";
+        pieChartBtnDisplay = "block";
+
 
     }
 
     void FinishGame() {
         Console.WriteLine("we finish vote");
-        voteScreenDisplay = "none";
+        voteGameCanvasDisplay = "none";
         resultsContainerDisplay = "block";
-        foreach(LawsDTO law in myGame.LawList) {
-            if(law.IsPass == true) {
-                lawAmountPass++;
-            }
-            else {
-                lawAmountNotPass++;
-            }
-        }
+
+        PieChartContainerDisplay = "none";
+        characterText = " סיימנו להצביע";
+
+        // foreach(LawsDTO law in myGame.LawList) {
+        //     if(law.IsPass == true) {
+        //         lawAmountPass++;
+        //     }
+        //     else {
+        //         lawAmountNotPass++;
+        //     }
+        // }
 
     }
 
@@ -402,7 +484,7 @@
     }
 
     void StartAgain() {
-        firsatCanvasDisplay = "block";
+        firsatCanvasDisplay = "flex";
         resultsContainerDisplay = "none";
         msg = "";
     }

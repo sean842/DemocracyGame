@@ -13,6 +13,9 @@ app {
     height: 100%;
     width: 100%;
 }
+#app, .page, main, article {
+    height: 100%;
+}
 
 #page {
     position: relative;
@@ -55,6 +58,7 @@ h2 {
     height: 100vh;
     position: relative;
     background-position-y: top;
+    bottom: 3%;
 }
 
 
@@ -110,45 +114,187 @@ h2 {
 
 
 
-/*   ----------  START OF SECOND CANVAS DESIGN   ----------   */
-
-.character-img {
-    width: 100px;
-    height: auto;
-    object-fit: cover;
-    object-position: top;
-}
-
-/*   ----------   END OF SECOND CANVAS DESIGIN   ----------   */
-
-
-
-/* החלק של המשחק!*/
-.screen {
-    position: absolute;
-    top: 10%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-#VoteScreen {
-    /*background-color: lightblue;*/ /* Adjust as needed */
-    display: none;
-}
-
-#SettingsContainer {
-/*    background-color: chocolate;
-*/  position: absolute;
-    top: 0;
-    bottom: 60%;
-    left: 0;
-    width: 40%;
+/* ------ START OF GENERAL DESIGN ------ */
+.container {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 10px;
+    flex-direction: row-reverse;
+    height: 100%;
+    direction: rtl; /* Right-to-left layout direction */
+    max-width: 100%;
 }
+
+
+.right-column {
+    width: 60%; /* Adjust as needed */
+    padding: 10px; /* Optional: add some padding */
+    overflow-y: hidden; /* Ensure content doesn't overflow */
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    width: 40%; /* Adjust as needed */
+    border-left: 1px solid #ccc; /* Optional: to separate the columns visually */
+}
+
+/* ------ END OF GENERAL DESIGN ------ */
+
+
+/*   ----------   START OF LAYOUT CANVAS DESIGIN   ----------   */
+
+/*  thea right aside elements form showing thead groups  */
+
+    .right-column ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        height: 90%;
+        margin: 0;
+    }
+
+        .right-column ul li {
+            list-style: none;
+            width: 25%;
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            border: solid 1px;
+            border-radius: 20px;
+            background-color: white;
+            backdrop-filter: blur(10px);
+            padding: 0 10px;
+            margin: 0 1%;
+        }
+
+            .right-column ul li img {
+                width: 50%;
+            }
+
+            .right-column ul li div {
+                display: flex;
+                justify-content: center;
+            }
+
+.header {
+    display: flex;
+    justify-content: center;
+}
+
+    .header p {
+        font-size: .7rem;
+        margin: 0;
+    }
+
+.body {
+    display: flex;
+    justify-content: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+}
+
+    .footer p {
+        font-size: .7rem;
+        margin: 0;
+    }
+
+ul li.my-group {
+    background-color: antiquewhite !important; /* Choose your desired color */
+}
+
+/*  End of right side  */
+
+/*  thea left aside elements, thead image, text & buttons  */
+.left-top {
+    height: 25%;
+    border-bottom: 1px solid #ccc; /* Optional: to separate the sections visually */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-middle {
+    height: 25%;
+    border-bottom: 1px solid #ccc; /* Optional: to separate the sections visually */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-bottom {
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .left-bottom img {
+        max-height: 100%; /* Ensures the image scales properly within the bottom section */
+        max-width: 100%; /* Ensures the image scales properly within the bottom section */
+    }
+
+/*  End of left side  */
+
+/*   ----------   END OF LAYOUT CANVAS DESIGIN   ----------   */
+
+
+
+
+
+
+/*   ----------   START OF VOTE GAME CANVAS DESIGIN   ----------   */
+
+
+#voteGameCanvas {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+}
+
+#LawContentContainer {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.smallerHalf {
+    height: 30%;
+    width: 100%;
+}
+
+.biggerHalf {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.half {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.head {
+    flex: 35%; /* Set the top part to take up 35% of the height */
+}
+
+.bottom {
+    flex: 65%; /* Set the bottom part to take up the remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+/* Start of table design */
 
 #ForTable {
     flex: 1; /* Split the space equally */
@@ -157,25 +303,23 @@ h2 {
     align-items: center; /* Center vertically */
     width: 45%;
     height: 100%;
-
     border-collapse: separate; /* Change to separate to allow for rounded corners */
     border-spacing: 0; /* Ensure no space between cells */
     margin: 0 auto;
     border-radius: 10px; /* Add rounded corners to the table */
     overflow: hidden; /* Ensure overflow is hidden to hide any content that exceeds the rounded corners */
     position: relative; /* Ensure the table is positioned relatively for absolute positioning of pseudo-element */
-
 }
 
 
 
 
-Additional styling for the table
-#ForTable table {
-    width: 50%;
-    height: 81%;
-    border-radius: 10px;
-}
+    #ForTable table {
+        width: 25%;
+        height: 81%;
+        border-radius: 10px;
+        border:solid 1px;
+    }
 
 th, td {
     border: none; /* Remove border to prevent double border appearance */
@@ -199,9 +343,9 @@ td {
 table::after {
     content: '';
     position: absolute;
-    top: 10px; /* Adjust the top position to add spacing between line and table border */
-    bottom: 10px; /* Adjust the bottom position to add spacing between line and table border */
-    left: 50%; /* Position the line at the middle of the table */
+    top: 24%; /* Adjust the top position to add spacing between line and table border */
+    bottom: 24%; /* Adjust the bottom position to add spacing between line and table border */
+    left: 49%; /* Position the line at the middle of the table */
     transform: translateX(-50%); /* Move the line to the left by half its width */
     width: 1px; /* Width of the line */
     background-color: black; /* Color of the line */
@@ -222,57 +366,7 @@ th#pass::after, th#fall::after {
     color: red;
 }
 
-#CharacterContainer {
-    background-color: aqua;
-    position: absolute;
-    top: 40%; /* 10% (header) + 30% (Settings) */
-    bottom: 0;
-    left: 0;
-    width: 40%;
-}
-
-    #CharacterContainer img {
-        max-width: 100%; /* Set maximum width to 100% of its container */
-        max-height: 100%; /* Set maximum height to 100% of its container */
-        height: 90%;
-    }
-
-
-
-
-#LawContentContainer {
-    background-color: brown;
-    position: absolute;
-    top: 0; /* Height of the header */
-    bottom: 0;
-    right: 0;
-    left: 40%; /* Width of Settings and Character */
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    /*  justify-content: center;
-    align-items: center;
-    gap:10vh;
-*/
-}
-
-
-.half {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.head {
-    flex: 35%; /* Set the top part to take up 35% of the height */
-}
-
-.bottom {
-    flex: 65%; /* Set the bottom part to take up the remaining space */
-    display: flex;
-    flex-direction: column;
-}
+/* End of table design */
 
 
 #lawWrapper {
@@ -280,17 +374,19 @@ th#pass::after, th#fall::after {
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     width: 80%; /* Make it fill the width of its parent */
-    height: 80%;
+    height: 100%;
 }
 
 #law {
     background-color: aliceblue;
-    width: 70%; /* Set the desired width */
-    height: 70%;
+    width: 80%; /* Set the desired width */
+    height: 85%;
     padding: 2%;
     border: 1px solid black; /* Add a 1px solid black border */
     border-radius: 10px; /* Add rounded corners with a radius of 10px */
 }
+
+
 
 #cardsContainer {
     display: flex;
@@ -305,7 +401,7 @@ th#pass::after, th#fall::after {
 #Avoid,
 #Against {
     width: 25%;
-    height: 65%;
+    height: 80%;
     border: none; /* Remove the border */
     font-size: 2rem;
     border-radius: 10px;
@@ -331,20 +427,45 @@ th#pass::after, th#fall::after {
 
 
 
-
+/*  pie chart design */
 #PieChartContainer {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 40%; /* Same left position as LawContentContainer */
-    right: 0;
-    background-color: beige; /* Adjust as needed */
     display: none; /* Initially hide the PieChartContainer */
-    width: 60%; /* Same width as LawContentContainer */
+    width: 100%; /* Same width as LawContentContainer */
     height: 100%; /* Same height as LawContentContainer */
+    justify-content: center;
 }
 
 #canvasContainer {
-    width: 70%;
-    height: 70%;
+    width: 100%;
+    height: 100%;
 }
+
+
+
+#resultsContainer {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#resultsContainer div{
+    width:100%;
+    height:100%;
+}
+
+
+    #resultsContainer table {
+        width: 80%;
+        height: 60%;
+    }
+
+/* --------------- */
+
+
+/*   ----------   END OF VOTE GAME CANVAS DESIGIN   ----------   */
+
+
+
+
+

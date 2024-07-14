@@ -8,125 +8,175 @@
 
 
 
+@if (msg != "") {
+    <p style="margin:0;">@msg</p>
+}
+
 <div id="FristCanvas" style="display:@firsatCanvasDisplay">
-    @if (msg != "") {
-        <p>@msg</p>
-    }
+
     <h1>הקלד קוד משחק:</h1>
     <input type="number" @bind="playerGameCode" />
     <span>לדוגמה 101</span>
     <button @onclick="GetGame"> כניסה למשחק</button>
     <img class="images" src="./imgs/ballot-box.png" />
+
 </div>
 
 
  <div id="chooseCharacter" style="display:@chooseCharacterDisplay">
     @if (!logged) {
-        <div class="container">
+
             <div class="row justify-content-center">
                 <div class="col text-center">
                     <h1>בחרו שם ונציג לקבוצה</h1>
                 </div>
             </div>
-            <div class="row align-items-center" style="height: 100vh;">
-                <div class="col text-center">
-                    <img src="./imgs/mydiplo.png" style="height:80%; width:80%; cursor:pointer;" @onclick='() => SetCharacter("./imgs/mydiplo.png")' />
+
+            <div class="row align-items-center" style="height: 100vh; align-self: baseline; max-height:70%">
+                <div  class="col text-center characterColumm">
+                    <img src="./imgs/mydiplo.png" style=" width:100%; cursor:pointer;" @onclick='() => SetCharacter("./imgs/mydiplo.png")' />
                 </div>
-                <div class="col text-center">
+
+                <div class="col text-center" style="align-content: center; height:100%">
                     <label>
                         שם הקבוצה:
                         <input @bind="myGroup.GroupName" class="form-control" />
                     </label>
                     <button class="btn btn-primary mt-2" @onclick="LogIn">התחברות</button>
                 </div>
-                <div class="col text-center">
-                    <img src="./imgs/femalediplo.png" style="height:80%; width:80%; cursor:pointer;" @onclick='() => SetCharacter("./imgs/femalediplo.png")' />
+
+                <div class="col text-center characterColumm">
+                    <img src="./imgs/femalediplo.png" style=" width:100%; cursor:pointer;" @onclick='() => SetCharacter("./imgs/femalediplo.png")' />
                 </div>
             </div>
-        </div>
     }
 </div>
 
 
 
-<div id="secondCanvas" style="display:@secondCanvasDisplay">
-    משתמשים מחוברים:
-    <div class="container">
-        <div class="row">
+
+
+
+
+
+<div class="container" style="display:@containerDisplay;">
+
+    <div class="left-column">
+        <div class="left-top">
+
+                <div id="ForTable">
+                    <table>
+                        <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
+                        <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
+                    </table>
+                </div>
+        </div>
+        <div class="left-middle">
+            <p>This is some text in the middle section.</p>
+        </div>
+        <div class="left-bottom">
+            <img src="@myGroup.Character"  />
+        </div>
+    </div>
+
+
+
+
+
+    <div class="right-column">
+        @if (msg != "") {
+            <p style="margin:0;">@msg</p>
+        }
+
+
+
+        <ul style="display:@groupListDisplay">
             @foreach (Group group in allGroups) {
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <img src="@group.Character" class="character-img" alt="@group.GroupName" />
-                            <p class="mt-2">@group.GroupName</p>
+                string myGroupClass = group.GroupID == myGroup.GroupID ? "my-group" : "";
+
+                <li class="@myGroupClass">
+                    <div class="header">
+                        <p>@group.GroupName</p>
+                    </div>
+                    <div class="body">
+                        <img src="@group.Character" />
+                    </div>
+                    <div class="footer">
+                        <p>קולות: @group.Points.ToString()</p>
+                    </div>
+                </li>
+            }
+        </ul>
+
+
+        <div id="explenation" style="display:@explenationCanvasDisplay">
+            <h1>ברוכים הבאים למליאה!</h1>
+            <p>אנו הולכים להצביע על החוקים החדשים ולהשפיע על חיי הכיתה!</p>
+            <p>כל קבוצה תקבל מספר קולות אשר ישפיעו על עתידנו.</p>
+        </div>
+
+
+
+
+
+        <div id="voteGameCanvas" style="display:@voteGameCanvasDisplay">
+
+            <div class="row  biggerHalf">
+
+                <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
+
+                    <div class="row half head">
+                        <div id="lawWrapper">   <div id="law">@currentLawContent</div>   </div>
+                    </div>
+
+                    <div class="row half bottom">
+                        <div id="cardsContainer">
+                            <button id="Against" @onclick='( () => ShowPopup("Against") )' disabled="@DisableVoteButton"> נגד </button>
+                            <button id="Avoid" @onclick='( () => ShowPopup("Avoid") )' disabled="@DisableVoteButton"> נמנע </button>
+                            <button id="For" @onclick='( () => ShowPopup("For") )' disabled="@DisableVoteButton"> בעד </button>
                         </div>
                     </div>
+                    @if (isPopupVisible) {
+                        <PopUp Message="@popupMessage" OnConfirm="OnPopupConfirm" />
+                    }
+
+
+
                 </div>
-            }
-        </div>
-    </div>
-</div>
+
+                <div id="PieChartContainer" style="display:@PieChartContainerDisplay">
+                    <div id="canvasContainer"> <canvas id="myPieChart"></canvas> </div>
+                </div>
 
 
+            </div>
 
 
-<div id="explenation" style="display:@explenationCanvasDisplay">
-    <h1>ברוכים הבאים למליאה!</h1>
-    <p>אנו הולכים להצביע על החוקים החדשים ולהשפיע על חיי הכיתה!</p>
-    <p>כל קבוצה תקבל מספר קולות אשר ישפיעו על עתידנו.</p>
-</div>
-
-<div id="gotVotes" style="display:@gotVotesDisplay">
-    <p>ברכותי! קיבלתם @myGroup.Points קולות!</p>
-    <p> בואו נתחיל להשביפע! </p>
-</div>
-
-
-<div id="VoteScreen" class="screen" style="display:@voteScreenDisplay">
-    <div id="SettingsContainer" class="col">
-        <div id="ForTable">
-            <table>
-                <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
-                <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="CharacterContainer"> <div>@characterText</div> <img src="@myGroup.Character" /> </div>
-
-
-    <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
-        <div class="half head">
-            <div id="lawWrapper">   <div id="law">@currentLawContent</div>   </div>
         </div>
 
-        <div class="half bottom">
-            <div id="cardsContainer">
-                <button id="Against" @onclick='( () => ShowPopup("Against") )' disabled="@DisableVoteButton"> נגד </button>
-                <button id="Avoid" @onclick='( () => ShowPopup("Avoid") )' disabled="@DisableVoteButton"> נמנע </button>
-                <button id="For" @onclick='( () => ShowPopup("For") )' disabled="@DisableVoteButton"> בעד </button>
+        <!--  RESULTS SCREEN  -->
+        <div id="resultsContainer" style="display:@resultsContainerDisplay">
+            <div id="ForTable">
+                <table>
+                    <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
+                    <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
+                </table>
             </div>
         </div>
 
+
+
     </div>
 
-    @if (isPopupVisible) {
-        <PopUp Message="@popupMessage" OnConfirm="OnPopupConfirm" />
-    }
 
-    <div id="PieChartContainer" style="display:@PieChartContainerDisplay">
-        <div id="canvasContainer"> <canvas id="myPieChart"></canvas> </div>
-    </div>
 
 </div>
 
-<!--  RESULTS SCREEN  -->
-<div id="resultsContainer" style="display:@resultsContainerDisplay">
-    <table>
-        <tr> <th>עברו</th> <th>נפלו</th> </tr>
-        <tr> <td>@lawAmountPass</td> <td>@lawAmountNotPass</td> </tr>
-    </table>
-</div>
+
+
+
+
+
 
 
 
@@ -137,22 +187,35 @@
     Group myGroup = new Group(); // My user, will save the id.
     bool logged = false;
     List<Group> allGroups = new List<Group>();// list for all the users.
-    int gamecode = 0;
+    int playerGameCode = 0;// the code from the input of the player.
     Game myGame = new Game(); // containe the game withe the laws.
 
-    int playerGameCode = 0;// the code from the input of the player.
     string msg;// handle the error msg.
 
-    // styles for divs.
+    // display divs.
     string firsatCanvasDisplay = "flex";
+    string containerDisplay = "none";
+    string explenationCanvasDisplay = "none";
+    string voteGameCanvasDisplay = "none";
+    string groupListDisplay = "none";
+
+    // display buttons
+    string startGameBtnDisplay = "none";
+    string startVoteBtnDisplay = "none";
+    string pieChartBtnDisplay = "none";
+
+
+    // check if they exist
     string chooseCharacterDisplay = "none";
     string secondCanvasDisplay = "none";
-    string explenationCanvasDisplay = "none";
+    // string explenationCanvasDisplay = "none";
     string gotVotesDisplay = "none";
     string voteScreenDisplay = "none";
     string LawContentContainerDisplay = "flex";
     string PieChartContainerDisplay = "none";
     string resultsContainerDisplay = "none";
+
+    // string myGroupClass = ""; // defaine the class of our group only.
 
     string currentLawContent = "the law content will be here";
     int lawCounter = 0;
@@ -182,6 +245,7 @@
         // when someone login we get the user detailes and add it to the user list(to show it on screen).
         hub.On<Group>("GroupLogin", newGroup => {
             allGroups.Add(newGroup);
+            msg = "";
             StateHasChanged();
             // Console.WriteLine("Added Group");
         });
@@ -198,7 +262,10 @@
                 }
             }
             explenationCanvasDisplay = "none";
-            gotVotesDisplay = "block";
+            groupListDisplay = "flex";
+
+
+            // voteGameCanvasDisplay = "flex";
             StateHasChanged();
         });
 
@@ -254,8 +321,9 @@
         var response = await Http.GetAsync("api/Laws/Game/" + playerGameCode);
         if (response.IsSuccessStatusCode == true) {
             myGame = response.Content.ReadFromJsonAsync<Game>().Result;
-            // Console.WriteLine("Got Game" + "GameID: " + myGame.GameID);
             firsatCanvasDisplay = "none";
+            // containerDisplay = "flex";
+
             chooseCharacterDisplay = "flex";
         }
         else {
@@ -278,6 +346,15 @@
     }
 
     async Task LogIn() {
+        if (string.IsNullOrEmpty(myGroup.GroupName)) {
+            msg = "שם הקבוצה הוא שדה חובה.";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(myGroup.Character)) {
+            msg = "נא לבחור נציג לקבוצה.";
+            return;
+        }
         // Console.WriteLine("Login");
         myGroup.GameID = myGame.GameID;
         var post = await Http.PostAsJsonAsync("api/Laws/InsertGroup", myGroup);
@@ -285,8 +362,10 @@
             myGroup.GroupID = post.Content.ReadFromJsonAsync<int>().Result;
             logged = true;
             chooseCharacterDisplay = "none";
-            secondCanvasDisplay = "flex";
-
+            containerDisplay = "flex";
+            groupListDisplay = "flex";
+            // secondCanvasDisplay = "flex";
+            msg = "";
             // Retrieve all groups after logging in
             await GetAllGroups();
         }
@@ -306,23 +385,28 @@
         if (response.IsSuccessStatusCode) {
             allGroups = await response.Content.ReadFromJsonAsync<List<Group>>();
             StateHasChanged();
+            msg = "";
         }
         else {
-            msg = "Failed to load groups.";
+            msg = "";
         }
     }
 
 
     void HandleStartGame() {
-        secondCanvasDisplay = "none";
+        groupListDisplay = "none";
         explenationCanvasDisplay = "block";
         // Console.WriteLine("startgame");
         InvokeAsync(StateHasChanged);
     }
 
     void StartVote() {
-        gotVotesDisplay = "none";
-        voteScreenDisplay = "block";
+        // gotVotesDisplay = "none";
+        // voteScreenDisplay = "block";
+        groupListDisplay = "none";
+        voteGameCanvasDisplay = "flex";
+
+
         GetLawContent();
     }
 
@@ -426,21 +510,23 @@
 
     void FinishGame() {
         Console.WriteLine("we finish vote");
-        voteScreenDisplay = "none";
+        voteGameCanvasDisplay = "none";
         resultsContainerDisplay = "block";
-        foreach (LawsDTO law in myGame.LawList) {
-            if (law.IsPass == true) {
-                lawAmountPass++;
-            }
-            else {
-                lawAmountNotPass++;
-            }
-        }
+        PieChartContainerDisplay = "none";
+
+        // foreach (LawsDTO law in myGame.LawList) {
+        //     if (law.IsPass == true) {
+        //         lawAmountPass++;
+        //     }
+        //     else {
+        //         lawAmountNotPass++;
+        //     }
+        // }
 
     }
 
     void StartAgain() {
-        firsatCanvasDisplay = "block";
+        firsatCanvasDisplay = "flex";
         resultsContainerDisplay = "none";
         msg = "";
     }
