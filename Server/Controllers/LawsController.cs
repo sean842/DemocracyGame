@@ -38,7 +38,16 @@ namespace NewBlazorProjecct.Server.Controllers {
                 var Laws = await _db.GetRecordsAsync<LawsDTO>(lawQuery, lawParam);
                 game.LawList = Laws.ToList();
                 if (game.LawList.Count > 0) {
-                    return Ok(game);
+                    if (game.LawList.Count > 2) {
+                        if(game.IsPublish == true) {
+
+                            return Ok(game);
+                        }
+                        else { return BadRequest("Didnt Publish Game"); }
+                    }
+                    else {
+                        return BadRequest("Not Enough Laws");
+                    }
                 }
                 else {
                     return BadRequest("No Laws");
@@ -67,16 +76,6 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
 
-        //[HttpGet("GetAllGroups/{gameID}")]
-        //public async Task<IActionResult> GetAllGroups(int gameID) {
-        //    object param = new {
-        //        GameID = gameID
-        //    };
-        //    string query = "SELECT * FROM Groups WHERE GameID = @GameID";
-        //    var groups = await _db.GetRecordsAsync<Group>(query, param);
-        //    List<Group> groupsList = groups.ToList();
-        //    return Ok(groupsList);
-        //}
 
 
 

@@ -1,0 +1,80 @@
+﻿
+/* Optional: Adjust body padding */
+body {
+    padding: 20px;
+}
+
+/* TOOLTIP  */
+
+/* Tooltip */
+.info-icon {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.info-circle {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/*    .info-circle:hover {
+        background-color: #0056b3;
+    }
+*//* End */
+
+
+
+.upperRow {
+    height: 30%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+
+
+
+/* Optional: Style for headings */
+h3 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Style for the table */
+.table-container {
+    margin-top: 10px; /* Adjust the top margin to move the table up */
+    margin-bottom: 10px; /* Adjust the bottom margin to reduce space */
+    overflow-y: auto; /* Add vertical scroll if needed */
+    max-height: 100%; /* Limit the height and add scroll if content exceeds */
+    width:90%;
+}
+
+/* Optional: Style for table headers */
+.table th {
+    background-color: #f8f9fa; /* Light gray background */
+    text-align: center; /* Center-align text */
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Optional: Style for table cells */
+.table td {
+    text-align: center; /* Center-align text */
+    font-size: .7rem;
+}
+
+/* Optional: Style for buttons */
+.btn {
+    margin-right: 5px; /* Optional margin between buttons */
+    font-size: .7rem;
+    padding: 0.2rem .6rem;
+}

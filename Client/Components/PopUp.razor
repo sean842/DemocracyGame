@@ -5,8 +5,8 @@
 <div class="popup-backdrop" @onclick="@(async () => await Confirm(false))">
     <div class="popup-content" @onclick:stopPropagation="true">
         <p>@Message</p>
-        <button @onclick="@(async () => await Confirm(true))">Yes</button>
-        <button @onclick="@(async () => await Confirm(false))">No</button>
+        <button @onclick="@(async () => await Confirm(true))">אישור</button>
+        <button @onclick="@(async () => await Confirm(false))">ביטול</button>
     </div>
 </div>
 

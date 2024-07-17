@@ -20,7 +20,16 @@ namespace NewBlazorProjecct.Server.Hubs {
             await Clients.All.SendAsync("StartAgain");
         }
 
+        // פונקציה המעדכנת את מזהה המשתמש לאחר התחברות מחדש
+        public async Task Reconnected(Group group) {
+            //שליחת המשתמש
+            await Clients.All.SendAsync("GroupReconnected", group);
+        }
 
+        public async Task SendLawCounter(ReconnectingData Data, string TargetConnectionId) {
+            
+            await Clients.Client(TargetConnectionId).SendAsync("GetData", Data);
+        }
 
 
     }

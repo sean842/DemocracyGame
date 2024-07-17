@@ -71,11 +71,13 @@
                     </table>
                 </div>
         </div>
+
         <div class="left-middle">
-            <p>This is some text in the middle section.</p>
+            <p> @characterText </p>
         </div>
+
         <div class="left-bottom">
-            <img src="@myGroup.Character"  />
+            <img src="@myGroup.Character" alt="myCharacter"  />
         </div>
     </div>
 
@@ -221,7 +223,7 @@
     int lawCounter = 0;
     int lawAmountPass = 0;
     int lawAmountNotPass = 0;
-    string characterText = "הצביעו עכשיו!";
+    string characterText = "ברוכים הבאים למליאה";
 
     bool DisableVoteButton = true;// if we can vote or not(disable buttons), true will disable!.
     private bool isPopupVisible; // Flag to control popup visibility
@@ -241,6 +243,7 @@
 
         if (hub != null) {
             myGroup.ConnectionID = hub.ConnectionId;
+            hub.Reconnected += (newConnectionId) => ReConnect(newConnectionId);
         }
         // when someone login we get the user detailes and add it to the user list(to show it on screen).
         hub.On<Group>("GroupLogin", newGroup => {
@@ -258,11 +261,12 @@
             await GetAllGroups();
             foreach (Group group in allGroups) {
                 if(myGroup.GroupName == group.GroupName) {
-                    myGroup.Points = group.Points;
+                    myGroup = group;
                 }
             }
             explenationCanvasDisplay = "none";
             groupListDisplay = "flex";
+            characterText = "קיבלנו: " + myGroup.Points.ToString() + " קולות!";
 
 
             // voteGameCanvasDisplay = "flex";
@@ -303,6 +307,22 @@
             StateHasChanged();
         });
 
+        hub.On<Group>("GroupReconnected", reconnectedGroup => {
+            Group userToUpdate = allGroups.Where(g => g.GroupID == reconnectedGroup.GroupID).FirstOrDefault();
+            userToUpdate.ConnectionID = reconnectedGroup.ConnectionID;
+            StateHasChanged();
+        });
+        hub.On<ReconnectingData>("GetData", Data => {
+            lawCounter = Data.LawCounter;
+            lawAmountPass = Data.LawAmountPass;
+            lawAmountNotPass = Data.LawAmountNotPass;
+            GetLawContent();
+            // אולי להעביר אותו לשלב שלנו במשחק(חוקים או מסך התחלה))
+            StateHasChanged();
+        });
+
+
+
     }
 
 
@@ -316,6 +336,12 @@
             await hub.DisposeAsync();
         }
     }
+
+    async Task ReConnect(string newConnectionId) {
+        myGroup.ConnectionID = newConnectionId;
+        await hub.SendAsync("Reconnected", myGroup);
+    }
+
 
     async Task GetGame() {
         var response = await Http.GetAsync("api/Laws/Game/" + playerGameCode);
@@ -331,10 +357,20 @@
             string error = response.Content.ReadAsStringAsync().Result;
             switch (error) {
                 case "No Game Code":
-                    msg = "we do not have a game with this code.";
+                    msg = "קוד המשחק לא תקין";
+                    Console.WriteLine("we do not have a game with this code.");
                     break;
                 case "No Laws":
-                    msg = "this game do not have any laws";
+                    msg = "קוד המשחק לא תקין";
+                    Console.WriteLine("this game do not have any laws");
+                    break;
+                case "Not Enough Laws":
+                    msg = "המשחק לא זמין";
+                    Console.WriteLine("אין מספיק חוקים במשחק");
+                    break;
+                case "Didnt Publish Game":
+                    msg = "המשחק לא זמין";
+                    Console.WriteLine("המשחק לא פורסם");
                     break;
             }
         }
@@ -346,13 +382,16 @@
     }
 
     async Task LogIn() {
+        if (string.IsNullOrEmpty(myGroup.Character)) {
+            msg = "נא לבחור נציג לקבוצה.";
+            return;
+        }
         if (string.IsNullOrEmpty(myGroup.GroupName)) {
             msg = "שם הקבוצה הוא שדה חובה.";
             return;
         }
-
-        if (string.IsNullOrEmpty(myGroup.Character)) {
-            msg = "נא לבחור נציג לקבוצה.";
+        else if (myGroup.GroupName.Length < 3 || myGroup.GroupName.Length > 15) {
+            msg = "שם הקבוצה צריך להיות בין 3-15 תווים.";
             return;
         }
         // Console.WriteLine("Login");
@@ -396,7 +435,7 @@
     void HandleStartGame() {
         groupListDisplay = "none";
         explenationCanvasDisplay = "block";
-        // Console.WriteLine("startgame");
+        characterText = ""; // no text to character when explaining.
         InvokeAsync(StateHasChanged);
     }
 
@@ -405,6 +444,7 @@
         // voteScreenDisplay = "block";
         groupListDisplay = "none";
         voteGameCanvasDisplay = "flex";
+        LawContentContainerDisplay = "flex";
 
 
         GetLawContent();
@@ -417,14 +457,30 @@
         else {
             currentLawContent = "finish Game!";
         }
+        characterText = "בואו נצביע";
+
         // SetVoteTrueOrFalse();
         DisableVoteButton = false;// make the buttons clickable.
     }
 
     private void ShowPopup(string voteType) {
         currentVoteType = voteType; // Store the vote type
-        popupMessage = $"Are you sure you want to vote {voteType}?"; // Set the message
+        // popupMessage = $"Are you sure you want to vote {voteType}?"; // Set the message
         isPopupVisible = true; // Show the popup
+        switch (voteType) {
+            case "For":
+                popupMessage = "נצביע בעד?";
+                break;
+            case "Against":
+                popupMessage = "נצביע נגד?";
+                break;
+            case "Avoid":
+                popupMessage = "נצביע נמנע?";
+                break;
+        }
+
+        // popupMessage = $"נצביע {voteType} ?"; // Set the message
+
     }
 
     private async Task OnPopupConfirm(bool isConfirmed) {
@@ -466,7 +522,7 @@
         }
         else {
             lawAmountNotPass++;
-            characterText = "החוק לא עבר :(";
+            characterText = "החוק לא עבר, נמשיך לנסות ";
             return false;
         }
     }
@@ -476,6 +532,7 @@
     private async Task ShowPieChart() {
         LawContentContainerDisplay = "none";
         PieChartContainerDisplay = "block";
+        // characterText = "להלן התוצאות:";
 
         if (myGame.LawList.Count > 0 && lawCounter < myGame.LawList.Count) {
             var currentLaw = myGame.LawList[lawCounter];
@@ -513,6 +570,7 @@
         voteGameCanvasDisplay = "none";
         resultsContainerDisplay = "block";
         PieChartContainerDisplay = "none";
+        characterText = " סיימנו להצביע";
 
         // foreach (LawsDTO law in myGame.LawList) {
         //     if (law.IsPass == true) {
@@ -529,6 +587,11 @@
         firsatCanvasDisplay = "flex";
         resultsContainerDisplay = "none";
         msg = "";
+        myGroup = new Group(); // reset the group.
+        allGroups = new List<Group>(); // reset the groups list.
+        playerGameCode = 0;
+        myGame = new Game();
+        logged = false;
     }
 
 

@@ -1,157 +1,170 @@
 ﻿@page "/EditGame/{GameCode:int}/{UserID:int}"
-@inject HttpClient Http;
-@inject NavigationManager nav;
+@inject HttpClient Http
+@inject NavigationManager nav
 @using NewBlazorProjecct.Shared.DTOs
 
-
-@if(msg != "") {
+@if (msg != "") {
     <h1>@msg</h1>
 }
 
+@if (myGame != null) {
+    <div class="container" >
+        <header class="d-flex justify-content-between align-items-center py-3 border-bottom h-20">
+            <button class="btn btn-secondary returnbutton" @onclick="ShowReturnPopup">חזרה לטבלת המשחקים </button>
+            <h1>עריכת משחק</h1>
+            <button class="btn btn-primary updatebutton" @onclick="UpdateGame">עדכון משחק</button>
+        </header>
 
-@if(myGame != null) {
+        <div class="row h-70" style="max-height:70%;">
 
-    <button @onclick="UpdateGame"> שמירת משחק </button>
-    <button @onclick="Navigate"> חזרה </button>
-    <input type="text" @bind="myGame.GameName" />
-    <label>
-        Score Format:
-    <input type="checkbox" checked="@myGame.ScoreFormat" @onchange="changeFormat" />
-    </label>
+            <div class="col-md-6 h-100 rightSide">
 
+                <div class="gamenamebox p-2 border">
+                    <div class="col">
+                        <p style="margin:0;">שם המשחק</p>
+                        <input type="text" class="form-control h-60 mb-1 mt-1" @bind="myGame.GameName" placeholder="Game Name">
+                    </div>
+                    <div class="col">
+                        <label class="d-flex align-items-center">
+                            <span class="me-2">חלוקת ניקוד אקראית</span>
+                            <input type="checkbox" checked="@myGame.ScoreFormat" @onchange="changeFormat">
+                        </label>
+                    </div>
+                </div>
 
-@*     @if (Game.CanPublish == false) {
-        <input type="checkbox" disabled />
-    }
-    else {
-        <input type="checkbox" checked="@Game.IsPublish" @onchange="(() =>changePublish( Game))" />
-    }
- *@
-    <table>
-        <tr>
-            <th> הצעה </th>
-            <th> עריכה </th>
-            <th> מחיקה </th>
-        </tr>
-        @if (myGame.LawList == null) {
-            <span> אין חוקים במאגר </span>
-        }
-        else {
-            foreach(LawsDTO law in myGame.LawList) {
-                <tr>
-                    <td> @law.Content </td>
-                    <td> <button @onclick="(()=> SendLawToUpdate(law) )"> עריכה </button> </td>
-                    <td> <button @onclick="( ()=> DeleteLaw(law) )" > מחיקה </button> </td>
-                </tr>
-            }
-        }
-    </table>
-    
+                <div class="newrule  p-2 border">
+                    @if (singleLaw == null) {
+                        <p> @updateOrNewLawText </p>
+                        <button class="btn btn-primary" @onclick="AddLaw">הוספת חוק חדש </button>
+                    }
+                    else {
+                        <p style="margin:0;"> @updateOrNewLawText </p>
+                        <input type="text" class="form-control mb-1 mt-1" @bind="singleLaw.Content">
+                        <button class="btn btn-primary" @onclick="CheckLawSaving">שמירת החוק</button>
+                    }
+                </div>
+            </div>
 
-    @if(singleLaw == null) {
-        <div> עלייכם להוסיף הצעת חוק חדשה </div>
-        <button class="btn-primary" @onclick="AddLaw"> הצעת חוק+ </button>
-    }
-    else {
-        <h3>הצעת חוק:</h3>
-        <input type="text" @bind="singleLaw.Content" />
-        <button @onclick="CheckLawSaving" class="btn-primary"> שמירת חוק </button>
-    }
+            <div class="col-md-6 h-100">
+                <div class="rulestable p-3 border">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>חוק</th>
+                                <th>עריכה</th>
+                                <th>מחיקה</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (myGame?.LawList == null || myGame.LawList.Count == 0) {
+                                <tr>
+                                    <td colspan="3">אין חוקים קיימים. </td>
+                                </tr>
+                            }
+                            else {
+                                @foreach (var law in myGame.LawList) {
+                                    <tr>
+                                        <td>@law.Content</td>
+                                        <td><button class="btn btn-warning" @onclick="(() => SendLawToUpdate(law))">עריכה</button></td>
+                                        <td><button class="btn btn-danger" @onclick="(() => ShowPopUp(law))">מחיקה</button></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else {
+    <p>טוען נתוני משחק.. </p>
+}
 
-
-
-
-
-
+@if (isPopupVisible) {
+    <PopUp Message="@popupMessage" OnConfirm="OnPopupConfirm" />
 
 }
 
+
+
 @code {
-
-    [Parameter]
-    public int UserID { get; set; }
-
-    [Parameter]
-    public int GameCode { get; set; }
-
+    [Parameter] public int UserID { get; set; }
+    [Parameter] public int GameCode { get; set; }
     string msg = "";
     Game myGame; // contain the whole game.
-    LawsDTO singleLaw;// will contain a single law so we can update him.
-
+    LawsDTO singleLaw; // will contain a single law so we can update him.
     bool editState = false; // Add or Update law, true is for Update and false is for Add.
 
+    LawsDTO lawToDelete = new LawsDTO();
+    string updateOrNewLawText = "הוספת חוק חדש";
+    string popupMessage = "";
+    bool isPopupVisible = false;
+
+    bool goBack = false; // to check if we go back page or delete law. false = delete law, trou = go back.
+
     protected override async Task OnInitializedAsync() {
-        var response = await Http.GetAsync("api/Generator/" + UserID + "/GetOneGame/" + GameCode);
-        if (response.IsSuccessStatusCode == true) {
-            myGame = response.Content.ReadFromJsonAsync<Game>().Result;
+        var response = await Http.GetAsync($"api/Generator/{UserID}/GetOneGame/{GameCode}");
+        if (response.IsSuccessStatusCode) {
+            myGame = await response.Content.ReadFromJsonAsync<Game>();
         }
         else {
-            Console.WriteLine("wrong");
-            string error = response.Content.ReadAsStringAsync().Result;
-            switch (error) {
-                case "No Game Code":
-                    msg = "we do not have a game with this code.";
-                    break;
-                case "No Laws":
-                    msg = "this game do not have any laws";
-                    break;
-            }
+            string error = await response.Content.ReadAsStringAsync();
+            msg = error switch {
+                "No Game Code" => "We do not have a game with this code.",
+                "No Laws" => "This game does not have any laws",
+                _ => "An unknown error occurred."
+            };
         }
-
     }
 
+    public void AddLaw() => singleLaw = new LawsDTO();
 
-    // Create a new LawsDTO for adding a new Law. 
-    public void AddLaw() {
-        singleLaw = new LawsDTO();
-    }
-    // Take the law we want to edit to singleLaw.
     void SendLawToUpdate(LawsDTO lawToUpdate) {
         singleLaw = lawToUpdate;
         editState = true;
     }
-    // When we click on save law we check if we edit or adding law and calling the right function.
     async void CheckLawSaving() {
+        if (string.IsNullOrEmpty(singleLaw.Content) || singleLaw.Content.Length < 3 || singleLaw.Content.Length > 15) {
+            msg = "שם המשחק צריך להיות בין 3-15 תווים.";
+            return;
+        }
+
         if (editState) {
-            Console.WriteLine("edit");
+            updateOrNewLawText = "עדכון חוק";
             await UpdateLaw();
         }
         else {
-            Console.WriteLine("add");
+            updateOrNewLawText = "הוספת חוק חדש";
             await AddNewLaw();
         }
     }
 
-    // Func to update the law we want.
     async Task UpdateLaw() {
-        var response = await Http.PostAsJsonAsync("api/Generator/" + UserID + "/UpdateLaw", singleLaw);
+        var response = await Http.PostAsJsonAsync($"api/Generator/{UserID}/UpdateLaw", singleLaw);
         if (response.IsSuccessStatusCode) {
-            LawsDTO newLaw = response.Content.ReadFromJsonAsync<LawsDTO>().Result;
+            var newLaw = await response.Content.ReadFromJsonAsync<LawsDTO>();
             int index = myGame.LawList.IndexOf(singleLaw);
             myGame.LawList[index] = newLaw;
             editState = false;
             singleLaw = null;
+            updateOrNewLawText = "הוספת חוק חדש";
             StateHasChanged(); // Ensure the UI updates
         }
         else {
-            Console.WriteLine("wrong");
-            string error = response.Content.ReadAsStringAsync().Result;
-            switch (error) {
-                case "Didnt Update":
-                    msg = "We did not Update the law";
-                    break;
-                case "Didnt Get Law":
-                    msg = "We did not Get the law";
-                    break;
-            }
+            string error = await response.Content.ReadAsStringAsync();
+            msg = error switch {
+                "Didnt Update" => "We did not update the law.",
+                "Didnt Get Law" => "We did not get the law.",
+                _ => "An unknown error occurred."
+            };
         }
-
     }
 
     async Task AddNewLaw() {
-        var response = await Http.GetAsync("api/Generator/" + UserID + "/AddNewLaw/" + myGame.GameID + "/" + singleLaw.Content);
+        var response = await Http.GetAsync($"api/Generator/{UserID}/AddNewLaw/{myGame.GameID}/{singleLaw.Content}");
         if (response.IsSuccessStatusCode) {
-            LawsDTO newLaw = await response.Content.ReadFromJsonAsync<LawsDTO>();
+            var newLaw = await response.Content.ReadFromJsonAsync<LawsDTO>();
             if (newLaw != null) {
                 myGame.LawList.Add(newLaw);
                 singleLaw = null;
@@ -162,43 +175,61 @@
             }
         }
         else {
-            Console.WriteLine("wrong");
             string error = await response.Content.ReadAsStringAsync();
-            switch (error) {
-                case "Not Save Law":
-                    msg = "We did not save the law";
-                    break;
-                case "Not Get Law":
-                    msg = "We did not Get the law";
-                    break;
-                default:
-                    msg = "An unknown error occurred.";
-                    break;
-            }
+            msg = error switch {
+                "Not Save Law" => "We did not save the law.",
+                "Not Get Law" => "We did not get the law.",
+                _ => "An unknown error occurred."
+            };
         }
     }
 
-
     void changeFormat() {
         myGame.ScoreFormat = !myGame.ScoreFormat;
-        Console.WriteLine(myGame.ScoreFormat);
     }
 
     async Task UpdateGame() {
-        var response = await Http.PostAsJsonAsync("api/Generator/" + UserID + "/UpdateGame", myGame);
+        if (string.IsNullOrEmpty(myGame.GameName) || myGame.GameName.Length < 3 || myGame.GameName.Length > 15) {
+            msg = "שם המשחק צריך להיות בין 3-15 תווים.";
+            return;
+        }
+
+        var response = await Http.PostAsJsonAsync($"api/Generator/{UserID}/UpdateGame", myGame);
         if (response.IsSuccessStatusCode) {
             Navigate();
         }
         else {
-            Console.WriteLine("wrong");
-            string error = response.Content.ReadAsStringAsync().Result;
-            switch (error) {
-                case "Not Update":
-                    msg = "We did not Update the game";
-                    break;
-                case "Didnt Get Law":
-                    msg = "We did not Get the law";
-                    break;
+            string error = await response.Content.ReadAsStringAsync();
+            msg = error switch {
+                "Not Update" => "We did not update the game.",
+                "Didnt Get Law" => "We did not get the law.",
+                _ => "An unknown error occurred."
+            };
+        }
+    }
+
+
+    void ShowPopUp(LawsDTO LawToDelete) {
+        lawToDelete = LawToDelete;
+        popupMessage = "למחוק את החוק: " + lawToDelete.Content + "?";
+        goBack = false;
+        isPopupVisible = true; // Show the popup
+    }
+
+    void ShowReturnPopup() {
+        popupMessage = "לחזור לדף המשחקים מבלי לשמור את שם ופרומט המשחק?";
+        goBack = true;
+        isPopupVisible = true; // Show the popup
+    }
+
+    private async Task OnPopupConfirm(bool isConfirmed) {
+        isPopupVisible = false; // Hide the popup
+        if (isConfirmed) {
+            if (goBack) {
+                Navigate();
+            }
+            else {
+                await DeleteLaw(lawToDelete); // If confirmed, delete the law.
             }
         }
 
@@ -206,31 +237,18 @@
 
 
     async Task DeleteLaw(LawsDTO LawToDelete) {
-        var response = await Http.DeleteAsync("api/Generator/" + UserID + "/DeleteLaw/" + LawToDelete.LawID);
+        var response = await Http.DeleteAsync($"api/Generator/{UserID}/DeleteLaw/{LawToDelete.LawID}");
         if (response.IsSuccessStatusCode) {
             myGame.LawList.Remove(LawToDelete);
-            Console.WriteLine("remove law with id: " + LawToDelete.LawID + " when we gave hime id: " + LawToDelete.LawID);
         }
         else {
-            Console.WriteLine("wrong");
-            string error = response.Content.ReadAsStringAsync().Result;
-            switch (error) {
-                case "Not Delete":
-                    msg = "Didnt Delete the law";
-                    break;
-            }
-
+            string error = await response.Content.ReadAsStringAsync();
+            msg = error switch {
+                "Not Delete" => "Did not delete the law.",
+                _ => "An unknown error occurred."
+            };
         }
-
     }
 
-
-    void Navigate() {
-        // GameID = Gameid;
-        nav.NavigateTo("./MyGames/" + UserID);
-    }
-
-
-
-
+    void Navigate() => nav.NavigateTo($"./MyGames/{UserID}");
 }

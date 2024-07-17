@@ -1,0 +1,83 @@
+﻿/* Ensure proper padding and styling for the body */
+body {
+    padding: 20px;
+    font-size:0.7rem;
+}
+
+/* Header styling */
+.container {
+    /*    background-color: #f8f9fa;
+*/ flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 5%
+}
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    max-height: 25%;
+    background-color: #f8f9fa;
+}
+.pageHeader button{
+    font-size:0.7rem;
+}
+.pageHeader h1{
+    font-size: 1.5rem;
+}
+    .secondRow{
+    height:70%;
+    max-height:70%;
+    background-color:antiquewhite;
+}
+
+.firstColumn{
+    width:50%;
+    height:100%;
+    background-color:aqua;
+}
+
+.secondColumn {
+    width: 50%;
+    height: 100%;
+    background-color:aquamarine;
+}
+
+.rightSide {
+    height: 100%;
+    gap: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+/* Styling for content sections */
+.gamenamebox, .newrule, .rulestable {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.gamenamebox {
+    display: flex;
+    height: 50%;
+}
+    /* Ensure the rules table scrolls if it overflows */
+    .rulestable {
+        max-height: 100%; /* Adjust as needed */
+        overflow-y: auto;
+    }
+
+.newrule {
+    /*margin-top: 10px;*/ /* Adjust the top margin to move it up */
+    /*margin-bottom: 20px;*/ /* Adjust the bottom margin if needed */
+    padding: 10px; /* Optional padding */
+    border: 1px solid #ccc; /* Optional border */
+}
+
+button {
+    font-size: 0.7rem;
+}

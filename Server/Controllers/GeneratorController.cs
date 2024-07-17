@@ -24,7 +24,7 @@ namespace NewBlazorProjecct.Server.Controllers {
             User myUser = userRecords.FirstOrDefault();
             if (myUser != null) {
                 // GET all his games.
-                string gameQuery = "SELECT g.GameID, g.GameCode, g.GameName, g.IsPublish, g.ScoreFormat, g.UserID, COUNT(l.LawID) AS LawCount, g.CanPublish FROM  Games as g LEFT JOIN  Laws l ON g.GameID = l.GameID WHERE  g.UserID = @UserID GROUP BY  g.GameID, g.GameCode, g.GameName, g.IsPublish, g.ScoreFormat, g.UserID, g.CanPublish";
+                string gameQuery = "SELECT g.GameID, g.GameCode, g.GameName, g.IsPublish, g.ScoreFormat, g.UserID, COUNT(l.LawID) AS LawsNumber, g.CanPublish FROM  Games as g LEFT JOIN  Laws l ON g.GameID = l.GameID WHERE  g.UserID = @UserID GROUP BY  g.GameID, g.GameCode, g.GameName, g.IsPublish, g.ScoreFormat, g.UserID, g.CanPublish";
                 var gameRecords = await _db.GetRecordsAsync<GameLawCount>(gameQuery, param);
                 myUser.GameList = gameRecords.ToList();
                 if(myUser.GameList.Count > 0) {

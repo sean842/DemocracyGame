@@ -340,7 +340,7 @@ td {
 }
 
 /* Add vertical line using pseudo-element */
-table::after {
+#ForTable table::after {
     content: '';
     position: absolute;
     top: 24%; /* Adjust the top position to add spacing between line and table border */
@@ -352,7 +352,7 @@ table::after {
 }
 
 /* Add horizontal lines under "pass" and "fall" headers */
-th#pass::after, th#fall::after {
+#ForTable th#pass::after, th#fall::after {
     content: '';
     position: absolute;
     left: 10px;

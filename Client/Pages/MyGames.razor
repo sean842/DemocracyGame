@@ -3,51 +3,75 @@
 @inject NavigationManager nav;
 @using NewBlazorProjecct.Shared.DTOs;
 
+@if(msg != null) { @msg; }
 
+<div class="upperRow" >
+    <h3> שלום @myUser.Name </h3>
 
-<h3>UserID: @UserID</h3>
-@msg
+    <input type="text" placeholder="הקלד שם למשחק חדש" @bind="gameNameToAdd" />
+    <button class="btn btn-primary"  @onclick="AddNewGame">הוסף משחק</button>
 
-<input type="text" placeholder="הקלד שם למשחק חדש" @bind="gameNameToAdd" />
-<button @onclick="AddNewGame">הוסף משחק</button>
+</div>
+<div style="height:70%;display: flex; justify-content: center">
 
-@if (myUser != null && myUser.GameList != null) {
-    <table>
-        <tr>
-            <th> Game Name </th>
-            <th> Game Code </th>
-            <th> Amount of Law's </th>
-            <th> עריכה:  </th>
-            <th> Is Publish </th>
-            <th> מחיקה: </th>
-        </tr>
-
-        @if (myUser.GameList.Count > 0) {
-            foreach (GameLawCount Game in myUser.GameList) {
-                <tr>
-                    <td> @Game.GameName </td>
-                    <td> @Game.GameCode </td>
-                    <td> @Game.LawsNumber </td>
-                    <td> <button @onclick="(()=> Navigate(Game.GameCode))"> עריכה </button> </td>
-                    <td>
-                        @if (Game.CanPublish == false) {
-                            <input type="checkbox" disabled />
+    @if (myUser != null && myUser.GameList != null) {
+        <div class="table-container">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>שם המשחק</th>
+                        <th>קוד המשחק</th>
+                        <th>מספר חוקים</th>
+                        <th>עריכה</th>
+                        <th>
+                            מצב פרסום
+                            
+                                <Tooltip Title="משחק יפורסם עם 3 חוקים ויותר">
+                                    <span class="info-icon">
+                                        <span class="info-circle">i</span>
+                                    </span>
+                                </Tooltip>
+                            
+                        </th>
+                        <th>מחיקה</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (myUser.GameList.Count > 0) {
+                        @foreach (GameLawCount game in myUser.GameList) {
+                            <tr>
+                                <td>@game.GameName</td>
+                                <td>@game.GameCode</td>
+                                <td>@game.LawsNumber</td>
+                                <td><button class="btn btn-info" @onclick="(() => Navigate(game.GameCode))">עריכה</button></td>
+                                <td>
+                                    @if (game.CanPublish == false) {
+                                        <input type="checkbox" disabled />
+                                    }
+                                    else {
+                                        <input type="checkbox" checked="@game.IsPublish" @onchange="(() => changePublish(game))" />
+                                    }
+                                </td>
+                                <td><button class="btn btn-danger" @onclick="(() => ShowPopUp(game))">מחיקה</button></td>
+                            </tr>
                         }
-                        else {
-                            <input type="checkbox" checked="@Game.IsPublish" @onchange="(() =>changePublish( Game))" />
-                        }
-                    </td>
-                    <td> <button @onclick="( ()=> DeleteGame(Game) )"> מחיקה </button> </td>
-                </tr>
-            }
-        }
-        else {
-            <td> אין משחקים </td>
-        }
+                    }
+                    else {
+                        <tr>
+                            <td colspan="6">אין משחקים</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 
-    </table>
+
+</div>
+@if (isPopupVisible) {
+    <PopUp Message="@popupMessage" OnConfirm="OnPopupConfirm" />
+
 }
-
 
 
 @code {
@@ -58,8 +82,14 @@
     // public int GameID { get; set; }
 
     User myUser = new User();
+    GameLawCount gameToDelete = new GameLawCount();
+
     string gameNameToAdd = "";
     string msg = "";
+    string popupMessage = "";
+    bool isPopupVisible = false;
+
+
 
 
     protected override async Task OnInitializedAsync() {
@@ -85,6 +115,11 @@
 
 
     async Task AddNewGame() {
+        if (string.IsNullOrEmpty(gameNameToAdd) || gameNameToAdd.Length < 3 || gameNameToAdd.Length > 15) {
+            msg = "שם המשחק צריך להיות בין 3-15 תווים.";
+            return;
+        }
+
         var response = await Http.GetAsync("api/Generator/" + UserID + "/AddGame/" + gameNameToAdd);
         if (response.IsSuccessStatusCode) {
             GameLawCount newGame = response.Content.ReadFromJsonAsync<GameLawCount>().Result;
@@ -116,6 +151,21 @@
     void Navigate(int gameCode) {
         // GameID = Gameid;
         nav.NavigateTo("./EditGame/" + gameCode + "/" + UserID);
+    }
+
+
+    void ShowPopUp(GameLawCount game) {
+        popupMessage = "למחוק את המשחק: " + game.GameName + "?";
+        gameToDelete = game;
+        isPopupVisible = true; // Show the popup
+    }
+
+    private async Task OnPopupConfirm(bool isConfirmed) {
+        isPopupVisible = false; // Hide the popup
+        if (isConfirmed) {
+            await DeleteGame(gameToDelete); // If confirmed, sent the game to delete.
+        }
+
     }
 
     public async Task DeleteGame(GameLawCount gameToDelete) {

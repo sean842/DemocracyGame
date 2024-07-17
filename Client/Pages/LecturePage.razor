@@ -55,9 +55,11 @@
 
 
         </div>
+
         <div class="left-middle">
             <p> @characterText </p>
         </div>
+
         <div class="left-bottom">
             <img src="./imgs/femalediplo.png" alt="myCharacter" />
         </div>
@@ -172,6 +174,7 @@
 
     private HubConnection? hub;// the connection to the Hub.
                                // Group myGroup = new Group(); // My user, will save the id.
+    string ConnectionID;
     bool logged = false;
     List<Group> allGroups = new List<Group>();// list for all the users.
 
@@ -216,10 +219,11 @@
             .Build();
 
         await hub.StartAsync(); // start connection.
+        if (hub != null) {
+            ConnectionID = hub.ConnectionId;
+            // hub.Reconnected += (newConnectionId) => ReConnect(newConnectionId);
+        }
 
-        // if (hub != null) {
-        //     myGroup.ConnectionID = hub.ConnectionId;
-        // }
         // when someone login we get the user detailes and add it to the user list(to show it on screen).
         hub.On<Group>("GroupLogin", newGroup => {
             allGroups.Add(newGroup);
@@ -263,6 +267,19 @@
             StartAgain();
             StateHasChanged();
         });
+        hub.On<Group>("GroupReconnected", reconnectedGroup => {
+            Group userToUpdate = allGroups.Where(g => g.GroupID == reconnectedGroup.GroupID).FirstOrDefault();
+            userToUpdate.ConnectionID = reconnectedGroup.ConnectionID;
+            // get the necessaryData to send reconnected group.
+            ReconnectingData data = new ReconnectingData {
+                LawCounter = lawCounter,
+                LawAmountPass = lawAmountPass,
+                LawAmountNotPass = lawAmountNotPass
+            };
+            hub.SendAsync("SendLawCounter", data , reconnectedGroup.ConnectionID);// we send the lawcounter.
+            StateHasChanged();
+        });
+
 
     }
 
@@ -278,6 +295,10 @@
     }
 
 
+    // async Task ReConnect(string newConnectionId) {
+    //     ConnectionID = newConnectionId;
+    //     await hub.SendAsync("LecturerReconnected", ConnectionID);
+    // }
 
 
 
@@ -290,6 +311,7 @@
             containerDisplay = "flex";
             groupListDisplay = "flex";
             startGameBtnDisplay = "block";
+            msg = "";
             Console.WriteLine(myGame.ScoreFormat);
             // Retrieve all groups after logging in
             await GetAllGroups();
@@ -299,11 +321,22 @@
             string error = response.Content.ReadAsStringAsync().Result;
             switch (error) {
                 case "No Game Code":
-                    msg = "we do not have a game with this code.";
+                    msg = "קוד המשחק לא תקין";
+                    Console.WriteLine("we do not have a game with this code.");
                     break;
                 case "No Laws":
-                    msg = "this game do not have any laws";
+                    msg = "קוד המשחק לא תקין";
+                    Console.WriteLine("this game do not have any laws");
                     break;
+                case "Not Enough Laws":
+                    msg = "המשחק לא זמין";
+                    Console.WriteLine("אין מספיק חוקים במשחק");
+                    break;
+                case "Didnt Publish Game":
+                    msg = "המשחק לא זמין";
+                    Console.WriteLine("המשחק לא פורסם");
+                    break;
+
             }
         }
     }
@@ -372,6 +405,7 @@
         groupListDisplay = "none";
         voteGameCanvasDisplay = "flex";
         pieChartBtnDisplay = "block";
+        LawContentContainerDisplay = "flex";
 
         GetLawContent();
     }
@@ -397,7 +431,7 @@
         }
         else {
             lawAmountNotPass++;
-            characterText = "החוק לא עבר :(";
+            characterText = "החוק לא עבר ";
             return false;
         }
     }
@@ -406,7 +440,7 @@
         LawContentContainerDisplay = "none";
         PieChartContainerDisplay = "block";
         pieChartBtnDisplay = "none";
-        characterText = "להלן התוצאות:";
+        // characterText = "להלן התוצאות:";
 
         if (myGame.LawList.Count > 0 && lawCounter < myGame.LawList.Count) {
             var currentLaw = myGame.LawList[lawCounter];
@@ -487,6 +521,14 @@
         firsatCanvasDisplay = "flex";
         resultsContainerDisplay = "none";
         msg = "";
+
+        allGroups = new List<Group>(); // reset the groups list.
+        playerGameCode = 0;
+        myGame = new Game();
+        lawAmountNotPass = 0;
+        lawAmountPass = 0;
+        lawCounter = 0;
+
     }
 
 
