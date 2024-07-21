@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <div class="row align-items-center" style="height: 100vh; align-self: baseline; max-height:70%">
+            <div class="row align-items-center" style="height: 100vh; width:100%; align-self: baseline; max-height:70%">
                 <div  class="col text-center characterColumm">
                     <img src="./imgs/mydiplo.png" style=" width:100%; cursor:pointer;" @onclick='() => SetCharacter("./imgs/mydiplo.png")' />
                 </div>
@@ -347,6 +347,11 @@
         var response = await Http.GetAsync("api/Laws/Game/" + playerGameCode);
         if (response.IsSuccessStatusCode == true) {
             myGame = response.Content.ReadFromJsonAsync<Game>().Result;
+            if (myGame.GameStarted == false) {
+                msg = "המשחק לא התחיל, חכו למרצה.";
+                return;
+            }
+
             firsatCanvasDisplay = "none";
             // containerDisplay = "flex";
 
@@ -592,6 +597,11 @@
         playerGameCode = 0;
         myGame = new Game();
         logged = false;
+        lawAmountNotPass = 0;
+        lawAmountPass = 0;
+        lawCounter = 0;
+        characterText = "ברוכים הבאים למליאה";
+
     }
 
 

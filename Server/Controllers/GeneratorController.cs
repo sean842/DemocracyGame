@@ -54,9 +54,10 @@ namespace NewBlazorProjecct.Server.Controllers {
                 IsPublish = false,
                 ScoreFormat = false,
                 UserID,
-                canPublish = false
+                canPublish = false,
+                GameStarted = false
             };
-            string addGameQuery = "INSERT INTO Games (GameCode, GameName, IsPublish, ScoreFormat, UserID, CanPublish) VALUES (@GameCode, @GameName, @IsPublish, @ScoreFormat, @UserID, @canPublish)";
+            string addGameQuery = "INSERT INTO Games (GameCode, GameName, IsPublish, ScoreFormat, UserID, CanPublish, GameStarted) VALUES (@GameCode, @GameName, @IsPublish, @ScoreFormat, @UserID, @canPublish, @GameStarted)";
             int gameID = await _db.InsertReturnId(addGameQuery, param);
             if (gameID > 0) {
                 // We Update The GameCode.
@@ -69,7 +70,7 @@ namespace NewBlazorProjecct.Server.Controllers {
                 bool isUpdate = await _db.SaveDataAsync(query2, param2);
                 if (isUpdate) {
                     // Get the game and send it back.
-                    string getGameQuery = "SELECT GameID , GameName, GameCode, IsPublish, ScoreFormat, UserID FROM Games WHERE GameID = @GameID";
+                    string getGameQuery = "SELECT GameID , GameName, GameCode, IsPublish, ScoreFormat, UserID, GameStarted FROM Games WHERE GameID = @GameID";
                     var gameRecors = await _db.GetRecordsAsync<GameLawCount>(getGameQuery, param2);
                     GameLawCount newGame = gameRecors.FirstOrDefault();
                     if(newGame!= null) {

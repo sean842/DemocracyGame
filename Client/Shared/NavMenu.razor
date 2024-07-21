@@ -5,7 +5,7 @@
 <nav>
     <div>
         @if (UserService.IsLoggedIn) {
-            <NavLink href="LecturePage" Match="NavLinkMatch.All">
+            <NavLink href="@($"./LecturePage/{UserService.LoggedInUser.UserID}")" Match="NavLinkMatch.All">
                 משחק
             </NavLink>
         }
@@ -40,6 +40,10 @@
 
 
 @code {
+
+    [Parameter]
+    public int UserID { get; set; }
+
     private LoginPopup loginPopup;
     private bool isLoggedIn = false;
     private AboutPopup aboutPopup;
@@ -58,12 +62,12 @@
     }
     private void Logout() {
         UserService.Logout();
-        Navigation.NavigateTo("/UserPage");
+        Navigation.NavigateTo("./UserPage");
 
         StateHasChanged();
     }
     void NavTo() {
-        Navigation.NavigateTo("/MyGames/" + UserService.LoggedInUser.UserID);
+        Navigation.NavigateTo("./MyGames/" + UserService.LoggedInUser.UserID);
 
     }
 }

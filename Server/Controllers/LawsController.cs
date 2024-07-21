@@ -59,11 +59,47 @@ namespace NewBlazorProjecct.Server.Controllers {
 
         }
 
+
+        [HttpGet("CloseAllGames/{userID}")]
+        public async Task<IActionResult> CloseAllGames(int userID) {
+            object param = new {
+                userID,
+                gameStarted = false
+            };
+            string updateQuery = "UPDATE Games SET GameStarted = @gameStarted WHERE UserID =@userID";
+            bool isUpdate = await _db.SaveDataAsync(updateQuery, param);
+            if (isUpdate) {
+                return Ok();
+            }
+            return BadRequest("Did Not Update All Games");
+
+        }
+
+
+
+
+        // לעשות איפוז לכל המשחקים של השחקן
+        [HttpGet("ChangeGameStarted/{userID}/{gameStarted}")]
+        public async Task<IActionResult> ChangeGameStarted(int userID, bool gameStarted) {
+            object param = new {
+                userID,
+                gameStarted
+            };
+            string updateQuery = "UPDATE Games SET GameStarted = @gameStarted WHERE UserID =@userID";
+            bool isUpdate = await _db.SaveDataAsync(updateQuery, param);
+            if (isUpdate) {
+                return Ok();
+            }
+            return BadRequest("Did Not Update GameStarted");
+
+        }
+
+
+
+
         [HttpGet("GetAllGroups/{gameID}")]
         public async Task<IActionResult> GetAllGroups(int gameID) {
-            object param = new {
-                GameID = gameID
-            };
+            object param = new { GameID = gameID };
             string query = "SELECT * FROM Groups WHERE GameID = @GameID";
             var groups = await _db.GetRecordsAsync<Group>(query, param);
             List<Group> groupsList = groups.ToList();
@@ -71,12 +107,27 @@ namespace NewBlazorProjecct.Server.Controllers {
                 return Ok(groupsList);
             }
             else {
-                return NotFound("No groups found");
+                // Log the error or return a more descriptive message
+                return BadRequest("No Groups In Game or invalid GameID");
             }
         }
 
 
-
+        //[HttpGet("GetAllGroups/{gameID}")]
+        //public async Task<IActionResult> GetAllGroups(int gameID) {
+        //    object param = new {
+        //        GameID = gameID
+        //    };
+        //    string query = "SELECT * FROM Groups WHERE GameID = @GameID";
+        //    var groups = await _db.GetRecordsAsync<Group>(query, param);
+        //    List<Group> groupsList = groups.ToList();
+        //    if (groupsList != null && groupsList.Any()) {
+        //        return Ok(groupsList);
+        //    }
+        //    else {
+        //        return BadRequest("No Groups In Game");
+        //    }
+        //}
 
 
 
@@ -213,16 +264,23 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
 
-        [HttpDelete("DeleteAllGroups")]
-        public async Task<IActionResult> DeleteAllGroups() {
-            object param = new { };
-            string deleteQuery = "DELETE FROM Groups";
+
+        [HttpDelete("DeleteAllGroups/{gameID}")]
+        public async Task<IActionResult> DeleteAllGroups(int gameID) {
+            object param = new { GameID = gameID };
+            string deleteQuery = "DELETE FROM Groups WHERE GameID = @GameID";
             bool isDelete = await _db.SaveDataAsync(deleteQuery, param);
-            if(isDelete) {
+            if (isDelete) {
                 return Ok();
             }
-            return BadRequest("didnt delete!");
+            return BadRequest("didnt delete groups!");
         }
+
+
+
+
+
+
 
         [HttpGet("ResetVotes/{GameID}")]
         public async Task<IActionResult> ResetVotes(int GameID) {

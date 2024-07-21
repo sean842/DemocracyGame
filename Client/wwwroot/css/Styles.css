@@ -408,15 +408,15 @@ td {
 }
 
 #For {
-    background-color: green;
+    background-color: #42EB9A;
 }
 
 #Avoid {
-    background-color: yellow;
+    background-color: #EBE142;
 }
 
 #Against {
-    background-color: red;
+    background-color: #EB3121;
 }
 
 /* When button is hovered */

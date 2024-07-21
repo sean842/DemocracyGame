@@ -15,5 +15,6 @@ namespace NewBlazorProjecct.Shared.DTOs
         public bool ScoreFormat { get; set; }
         public int UserID { get; set; }
         public List<LawsDTO> LawList { get; set; }
+        public bool GameStarted { get; set; }
     }
 }
