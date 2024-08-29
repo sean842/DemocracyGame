@@ -1,32 +1,29 @@
 ﻿@page "/LecturePage/{UserID:int}"
 @inject HttpClient Http;
 @inject NavigationManager nav;
-
+@using System.Text.Json
 @using Microsoft.AspNetCore.SignalR.Client;
 @implements IAsyncDisposable;
 @using NewBlazorProjecct.Shared.DTOs;
 @inject IJSRuntime JS
+@using NewBlazorProjecct.Client.Components
 
 
+<div id="FristCanvas" style="display:@firstCanvasDisplay">
 
-
-
- @if (msg != "") {
-    <p style="margin:0;">@msg</p>
-}
-
-<div id="FristCanvas" style="display:@firsatCanvasDisplay">
-
-    <h1>הקלד קוד משחק:</h1>
+    <h1>הקלידו קוד משחק</h1>
     <input type="number" @bind="playerGameCode" />
-    <span>לדוגמה 101</span>
-    <button @onclick="GetGame"> כניסה למשחק</button>
+    <span>לדוגמה: 101</span>
+    <button @onclick="HandleGetGame"> כניסה למשחק</button>
     <img class="images" src="./imgs/ballot-box.png" />
 
 </div>
 
-
-
+<GroupListCompo Groups="allGroups"> </GroupListCompo>
+<div class="vote-count">
+    <i class="fas fa-check-circle"></i> <!-- Use FontAwesome for the icon -->
+    <span>@totalGroupsCount</span> / <span>@votedGroupsCount</span>
+</div>
 
 
 <div class="container" style="display:@containerDisplay;">
@@ -36,7 +33,7 @@
 
             <div class="col">
                 <div id="ForTable">
-                    <table>
+                    <table style="display:@scoreTableContainer">
                         <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
                         <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
                     </table>
@@ -57,11 +54,13 @@
         </div>
 
         <div class="left-middle">
-            <p> @characterText </p>
+            <div class="speech-bubble-container" style="display:@speechBubbleDisplay">
+                <p class="character-text"> @characterText </p>
+            </div>
         </div>
 
         <div class="left-bottom">
-            <img src="./imgs/femalediplo.png" alt="myCharacter" />
+            <img src=@myCharaterSrc alt="myCharacter"   />
         </div>
     </div>
 
@@ -83,7 +82,7 @@
                     </div>
 
                     <div class="body">
-                        <img src="@group.Character" />
+                        <img class="smallImg" src="@group.Character" />
                     </div>
 
                     <div class="footer">
@@ -176,7 +175,7 @@
 
 
     // display divs.
-    string firsatCanvasDisplay = "flex";
+    string firstCanvasDisplay = "flex";
     string containerDisplay = "none";
     string explenationCanvasDisplay = "none";
     string voteGameCanvasDisplay = "none"; 
@@ -186,14 +185,14 @@
     string startGameBtnDisplay = "none";
     string startVoteBtnDisplay = "none";
     string pieChartBtnDisplay = "none";
-
+    string speechBubbleDisplay = "flex";
+    string scoreTableContainer = "table";
     // check if they exist.
     string LawContentContainerDisplay = "flex";
     string PieChartContainerDisplay = "none";
     string resultsContainerDisplay = "none";
 
 
-    // string gotVotesDisplay = "none";
 
     string currentLawContent = "the law content will be here";
     int lawCounter = 0;
@@ -201,7 +200,14 @@
     int lawAmountNotPass = 0;
     string characterText = "ברוכים הבאים למליאה";
 
-    // bool showPopUp = false;
+
+    string myCharacter = "";
+    string normalCharacter = "";
+    string happyCharacter = "";
+    string sadCharacter = "";
+
+    private int votedGroupsCount = 0; // Tracks how many groups have voted
+    private int totalGroupsCount = 0; // The total number of groups
 
     protected override async Task OnInitializedAsync() {
         // make a connection.
@@ -220,6 +226,7 @@
         hub.On<Group>("GroupLogin", newGroup => {
             allGroups.Add(newGroup);
             msg = "";
+            totalGroupsCount++;
             StateHasChanged();
         });
         hub.On("StartTheGame", () => {
@@ -243,6 +250,7 @@
                         law.Avoid += vote.Points;
                         break;
                 }
+                votedGroupsCount++;
                 StateHasChanged();
             }
         });
@@ -306,221 +314,128 @@
 
 
 
-
-
-    async Task GetGame()
-    {
-
-        // Delete all the groups in the game.
-        var response = await Http.DeleteAsync("api/Laws/DeleteAllGroups");
-        if (response.IsSuccessStatusCode)
-        {
-            Console.WriteLine("DeleteAllGroups");
+    async Task GetGame() {
+        var gameResponse = await Http.GetAsync($"api/Laws/Game/{playerGameCode}");
+        if (!gameResponse.IsSuccessStatusCode) {
+            await HandleGameError(gameResponse);
+            return;
         }
-        else
-        {
-            // msg = response.Content.ReadAsStringAsync().Result; ;
-            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
-        }
-        // reset all the votes for the laws.
-        var resetVotesResponse = await Http.GetAsync("api/Laws/ResetVotes/" + myGame.GameID);
-        if (resetVotesResponse.IsSuccessStatusCode)
-        {
-            Console.WriteLine("ResetVotes");
-        }
-        else
-        {
-            // msg = resetVotesResponse.Content.ReadAsStringAsync().Result;
-            Console.WriteLine(resetVotesResponse.Content.ReadAsStringAsync().Result);
-        }
+        Console.WriteLine("we got the game!");
+        myGame = await gameResponse.Content.ReadFromJsonAsync<Game>();
+    }
 
-        bool gameStarted = true;
-        var gameStartResponse = await Http.GetAsync("api/Laws/ChangeGameStarted/" + UserID + "/" + gameStarted);
 
-        if (gameStartResponse.IsSuccessStatusCode)
-        {
-            // we can get the game.
-            var response1 = await Http.GetAsync("api/Laws/Game/" + playerGameCode);
-            if (response1.IsSuccessStatusCode == true)
-            {
-                // להוסיף פה את השינוי של תחילת המשחק
-                myGame = response1.Content.ReadFromJsonAsync<Game>().Result;
-                firsatCanvasDisplay = "none";
-                containerDisplay = "flex";
-                groupListDisplay = "flex";
-                startGameBtnDisplay = "block";
-                msg = "";
-
-                Console.WriteLine(myGame.ScoreFormat);
-                // Retrieve all groups after logging in
-                await GetAllGroups();
+    async Task<bool> DeleteAllGroups() {
+        var deleteResponse = await Http.DeleteAsync($"api/Laws/DeleteAllGroups/{myGame.GameID}");
+        if (!deleteResponse.IsSuccessStatusCode) {
+            var errorMessage = await deleteResponse.Content.ReadAsStringAsync();
+            if (errorMessage != "No Groups" && errorMessage != "Failed to retrieve groups") {
+                await HandleGameError(deleteResponse);
+                return false;
             }
-            else
-            {
-                Console.WriteLine("wrong");
-                string error = response1.Content.ReadAsStringAsync().Result;
-                switch (error)
-                {
-                    case "No Game Code":
-                        msg = "קוד המשחק לא תקין";
-                        Console.WriteLine("we do not have a game with this code.");
-                        break;
-                    case "No Laws":
-                        msg = "קוד המשחק לא תקין";
-                        Console.WriteLine("this game do not have any laws");
-                        break;
-                    case "Not Enough Laws":
-                        msg = "המשחק לא זמין";
-                        Console.WriteLine("אין מספיק חוקים במשחק");
-                        break;
-                    case "Didnt Publish Game":
-                        msg = "המשחק לא זמין";
-                        Console.WriteLine("המשחק לא פורסם");
-                        break;
-
-                }
-            }
-
+            Console.WriteLine(errorMessage);
         }
-        else
-        {
-            Console.WriteLine("wrong");
-            string error = gameStartResponse.Content.ReadAsStringAsync().Result;
-            switch (error)
-            {
-                case "Did Not Update GameStarted":
-                    msg = "המשחק לא עודכן";
-                    Console.WriteLine("the game was not update .");
-                    break;
-            }
-
+        else {
+            Console.WriteLine($"Deleted all groups in gameID: {myGame.GameID}");
         }
+        return true;
+    }
+
+    async Task<bool> ResetVotes() {
+        var resetVotesResponse = await Http.GetAsync($"api/Laws/ResetVotes/{myGame.GameID}");
+        if (!resetVotesResponse.IsSuccessStatusCode) {
+            await HandleGameError(resetVotesResponse);
+            return false;
+        }
+        Console.WriteLine("we reset all the votes to 0");
+        return true;
+    }
 
 
-
+    async Task<bool> ChangeGameStart(bool gameStarted) {
+        var gameStartResponse = await Http.GetAsync($"api/Laws/ChangeGameStarted/{myGame.GameID}/{gameStarted}");
+        if (!gameStartResponse.IsSuccessStatusCode) {
+            await HandleGameError(gameStartResponse);
+            return false;
+        }
+        return true;
     }
 
 
 
+    async Task HandleGetGame() {
+        try {
+            // Get the Game.
+            await GetGame();
+            if (myGame == null) return;
+
+            // Check groups to delete.
+            if (!await DeleteAllGroups()) return;
+
+            // Reset votes.
+            if (!await ResetVotes()) return;
+
+            // Change game start.
+            if (!await ChangeGameStart(true)) return;
+
+            firstCanvasDisplay = "none";
+            containerDisplay = "flex";
+            groupListDisplay = "flex";
+            startGameBtnDisplay = "block";
+            msg = "";
+            await GetAllGroups(); // Retrieve all groups after logging in
+
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
 
 
 
-
-    // async Task GetGame() {
-
-    //     // we can get the game.
-    //     var response1 = await Http.GetAsync("api/Laws/Game/" + playerGameCode);
-    //     if (response1.IsSuccessStatusCode == true) {
-    //         // להוסיף פה את השינוי של תחילת המשחק
-    //         myGame = response1.Content.ReadFromJsonAsync<Game>().Result;
-
-    //         // Retrieve all groups after logging in
-    //         await GetAllGroups();
-
-    //         // // we check if we have groups and if we do we delete them.
-    //         // if (allGroups != null && allGroups.Any()) {
-    //         //     // Delete all the groups in the game.
-    //         //     var response = await Http.DeleteAsync("api/Laws/DeleteAllGroups");
-    //         //     if (response.IsSuccessStatusCode) {
-    //         //         Console.WriteLine("DeleteAllGroups");
-    //         //         allGroups.Clear();
-    //         //     }
-    //         //     else {
-    //         //         // msg = response.Content.ReadAsStringAsync().Result; ;
-    //         //         Console.WriteLine(response.Content.ReadAsStringAsync().Result);
-    //         //     }
-
-    //         // }
-
-    //         bool resetLaws = false;
-    //         // we checl if the laws are 0 and if not we reset them.
-    //         foreach(LawsDTO law in myGame.LawList) {
-    //             if(law.For > 0 || law.Against >0 || law.Avoid > 0) {
-    //                 resetLaws = true;
-    //                 law.For = 0;
-    //                 law.Against = 0;
-    //                 law.Avoid = 0;
-    //             }
-    //         }
-    //         if(resetLaws == true) {
-    //             // reset all the votes for the laws.
-    //             var resetVotesResponse = await Http.GetAsync("api/Laws/ResetVotes/" + myGame.GameID);
-    //             if (resetVotesResponse.IsSuccessStatusCode) {
-    //                 Console.WriteLine("ResetVotes");
-    //             }
-    //             else {
-    //                 string error = resetVotesResponse.Content.ReadAsStringAsync().Result;
-    //                 Console.WriteLine(error);
-
-    //             }
-
-    //         }
-
-
-
-    //         // we check if the game didnt start if he didnt we satr him.
-    //         if(myGame.GameStarted == false) {
-    //             bool gameStarted = true;
-    //             var gameStartResponse = await Http.GetAsync("api/Laws/ChangeGameStarted/" + UserID + "/" + gameStarted);
-    //             if (gameStartResponse.IsSuccessStatusCode) {
-    //                 myGame.GameStarted = true;
-    //             }
-    //             else {
-    //                 Console.WriteLine("wrong");
-    //                 string error = gameStartResponse.Content.ReadAsStringAsync().Result;
-    //                 switch (error) {
-    //                     case "Did Not Update GameStarted":
-    //                         msg = "המשחק לא עודכן";
-    //                         Console.WriteLine("the game was not update .");
-    //                         break;
-    //                 }
-
-    //             }
-
-    //         }
-
-
-    //         firsatCanvasDisplay = "none";
-    //         containerDisplay = "flex";
-    //         groupListDisplay = "flex";
-    //         startGameBtnDisplay = "block";
-    //         msg = "";
-
-
-
-    //     }
-    //     else {
-    //         Console.WriteLine("wrong");
-    //         string error = response1.Content.ReadAsStringAsync().Result;
-    //         switch (error) {
-    //             case "No Game Code":
-    //                 msg = "קוד המשחק לא תקין";
-    //                 Console.WriteLine("we do not have a game with this code.");
-    //                 break;
-    //             case "No Laws":
-    //                 msg = "קוד המשחק לא תקין";
-    //                 Console.WriteLine("this game do not have any laws");
-    //                 break;
-    //             case "Not Enough Laws":
-    //                 msg = "המשחק לא זמין";
-    //                 Console.WriteLine("אין מספיק חוקים במשחק");
-    //                 break;
-    //             case "Didnt Publish Game":
-    //                 msg = "המשחק לא זמין";
-    //                 Console.WriteLine("המשחק לא פורסם");
-    //                 break;
-
-    //         }
-    //     }
-
-
-    // }
+    private async Task HandleGameError(HttpResponseMessage response) {
+        var error = await response.Content.ReadAsStringAsync();
+        switch (error) {
+            case "No Game Code":
+                msg = "קוד המשחק לא תקין";
+                Console.WriteLine("we do not have a game with this code.");
+                break;
+            case "No Laws":
+                msg = "קוד המשחק לא תקין";
+                Console.WriteLine("this game do not have any laws");
+                break;
+            case "Not Enough Laws":
+                msg = "המשחק לא זמין";
+                Console.WriteLine("אין מספיק חוקים במשחק");
+                break;
+            case "Didnt Publish Game":
+                msg = "המשחק לא פורסם";
+                Console.WriteLine("המשחק לא פורסם");
+                break;
+            case "Failed to retrieve groups":
+                msg = "לא מצאנו קבוצות";
+                break;
+            case "Didn't delete groups!":
+                msg = "לא מחקנו את הקבוצות";
+                break;
+            case "Did Not Update GameStarted":
+                msg = "לא עדכנו את התחלת המשחק";
+                break;
+            default:
+                msg = "שגיאה בלתי צפויה";
+                break;
+        }
+        Console.WriteLine(msg);
+        await JS.InvokeVoidAsync("alert", msg);
+        return;
+    }
 
 
     async Task StartGame() {
         if (hub != null) {
             await hub.SendAsync("StartGame");
         }
+        speechBubbleDisplay = "none";
     }
 
     void HandleStartGame() {
@@ -529,10 +444,12 @@
         explenationCanvasDisplay = "block";
         characterText = ""; // no text to character when explaining.
                             // Console.WriteLine("startgame");
+        speechBubbleDisplay = "none";
         InvokeAsync(StateHasChanged);
 
     }
 
+    private string showScoresBtnDisplay = "none";
 
 
 
@@ -552,31 +469,38 @@
         }
 
     }
-
-    async Task DistributePoints() {
+    async Task DistributePoints()
+    {
         int gameID = myGame.GameID;
-        bool scoreFormat;
-        if(myGame.ScoreFormat == true) {
-            scoreFormat = true;
-        }
-        else {
-            scoreFormat = false;
-        }
+        bool scoreFormat = myGame.ScoreFormat;
+
         var response = await Http.GetAsync("api/Laws/DistributePoints/" + gameID + "/" + scoreFormat);
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             Console.WriteLine("Points distributed successfully");
             await GetAllGroups(); // Refresh the group list to show updated points
+
             explenationCanvasDisplay = "none";
             startVoteBtnDisplay = "block";
             groupListDisplay = "flex";
             characterText = "ברכותי! קיבלתם קולות, בואו נתחיל לשחק!";
-            // gotVotesDisplay = "block";
+            speechBubbleDisplay = "flex";
+
+            // Show the button to display scores
+            showScoresBtnDisplay = "block";
+
+            StateHasChanged(); // Trigger UI update
         }
-        else {
+        else
+        {
             Console.WriteLine("Failed to distribute points");
             msg = "Failed to distribute points.";
+            await JS.InvokeVoidAsync("alert", msg);
         }
     }
+
+
+
 
     async void StartTheVote() {
         Console.WriteLine("start the game!");
@@ -608,11 +532,13 @@
 
     private bool CalculateResult() {
         if (myGame.LawList[lawCounter].For > 60) {
+            ChangeEmotion("happy");
             lawAmountPass++;
             characterText = "ברכותי! החוק עבר!";
             return true;
         }
         else {
+            ChangeEmotion("sad");
             lawAmountNotPass++;
             characterText = "החוק לא עבר ";
             return false;
@@ -628,9 +554,9 @@
         if (myGame.LawList.Count > 0 && lawCounter < myGame.LawList.Count) {
             var currentLaw = myGame.LawList[lawCounter];
             var data = new[] {
-                new { label = "For", value = currentLaw.For },
-                new { label = "Against", value = currentLaw.Against },
-                new { label = "Avoid", value = currentLaw.Avoid }
+                new { label = "בעד", value = currentLaw.For },
+                new { label = "נגד", value = currentLaw.Against },
+                new { label = "נמנע", value = currentLaw.Avoid }
             };
             myGame.LawList[lawCounter].IsPass = CalculateResult();// return true/false.
             Console.WriteLine(myGame.LawList[lawCounter].IsPass);
@@ -647,6 +573,7 @@
 
     void GetNextLaw() {
         lawCounter++;
+
         // לבדוק האם נגמרו החוקים
         if (lawCounter >= myGame.LawList.Count) {
             FinishGame();
@@ -659,7 +586,8 @@
         PieChartContainerDisplay = "none";
         characterText = "הצביעו עכשיו!";
         pieChartBtnDisplay = "block";
-
+        ChangeEmotion("normal");
+        votedGroupsCount = 0;
 
     }
 
@@ -667,48 +595,35 @@
         Console.WriteLine("we finish vote");
         voteGameCanvasDisplay = "none";
         resultsContainerDisplay = "block";
-
+        scoreTableContainer = "none";
         PieChartContainerDisplay = "none";
         characterText = " סיימנו להצביע";
 
-        // foreach(LawsDTO law in myGame.LawList) {
-        //     if(law.IsPass == true) {
-        //         lawAmountPass++;
-        //     }
-        //     else {
-        //         lawAmountNotPass++;
-        //     }
-        // }
-
     }
 
 
-    async Task BackToStart() {
-        var response = await Http.DeleteAsync("api/Laws/DeleteAllGroups");
-        if (response.IsSuccessStatusCode) {
-            var resetVotesResponse = await Http.GetAsync("api/Laws/ResetVotes/" + myGame.GameID);
-            if (resetVotesResponse.IsSuccessStatusCode) {
-                bool gameStarted = false;
-                var gameStartResponse = await Http.GetAsync("api/Laws/ChangeGameStarted/" + playerGameCode + "/" + gameStarted);
-                if (gameStartResponse.IsSuccessStatusCode) {
-                    await hub.SendAsync("StartAgain");
-                }
-                else {
-                    msg = gameStartResponse.Content.ReadAsStringAsync().Result;
-                }
-            }
-            else {
-                msg = resetVotesResponse.Content.ReadAsStringAsync().Result;
-            }
+
+
+    private async Task BackToStart() {
+        try {
+            // Check groups to delete.
+            if (!await DeleteAllGroups()) return;
+            // Reset votes.
+            if (!await ResetVotes()) return;
+            // Change game start.
+            if (!await ChangeGameStart(false)) return;
+            await hub.SendAsync("StartAgain");
+
         }
-        else {
-            msg = response.Content.ReadAsStringAsync().Result; ;
-            Console.WriteLine(msg);
+        catch (Exception ex) {
+            Console.WriteLine($"Error: {ex.Message}");
         }
+
     }
+
 
     async Task StartAgain() {
-        firsatCanvasDisplay = "flex";
+        firstCanvasDisplay = "flex";
         resultsContainerDisplay = "none";
         msg = "";
 
@@ -719,7 +634,7 @@
         lawAmountPass = 0;
         lawCounter = 0;
         characterText = "ברוכים הבאים למליאה";
-
+        scoreTableContainer = "table";
     }
 
 
@@ -727,23 +642,32 @@
         int usrID = 1;
         nav.NavigateTo("./MyGames/" + usrID);
     }
+    // private async Task ShowGroupScores()
+    // {
+    //     // Create a formatted list of group names and their points
+    //     var formattedScores = allGroups
+    //         .Select(group => $"שם הקבוצה: {group.GroupName}, נקודות: {group.Points}")
+    //         .ToList();
+
+    //     // Join the formatted list into a single string with each entry on a new line
+    //     var displayText = string.Join("\n", formattedScores);
+
+    //     // Display the formatted text in the console (for testing purposes)
+    //     Console.WriteLine(displayText);
+
+    //     // Show the formatted text in an alert box
+    //     await JS.InvokeVoidAsync("alert", displayText);
+    // }
 
 
+    string myCharaterSrc = "./imgs/lecturernormal.png";
+    string emotion = "normal";
 
-
-    /*
-     * ניסיון חשיבה למקרה ומישהו יצא מהדפדפן:
-     * 
-     * שלב 0 - כניסת שחקנים
-     * שלב 1 - שלב הסבר המשחק
-     * שלב 2 - שלב חלוקת ניקוד
-     * שלב 3 - מסך כניסת השחקנים, הפעם עם ניקוקד
-     * שלב - 4 תחילת המשחק והצגת חוק ראשון
-     * לשים משתנים של איזה חוק אנחנו ומה הניקוד(כמות חוקים שעברו או לא))
-     * 
-     */
-
-
+    void ChangeEmotion(string emotion)
+    {
+        // Change the image based on selected character and emotion
+        myCharaterSrc = $"./imgs/lecturer{emotion}.png";
+    }
 
 
 

@@ -28,6 +28,16 @@
     <div>
         <input class="btn-nav" type="button" value="אודות" @onclick="ShowAboutPopup" />
     </div>
+    <div>
+        <input class="btn-nav" type="button" value="איך משחקים?" @onclick="ShowHotTo" />
+    </div>
+    @if (howto)
+    {
+        <div id="page">
+        <img class="odotImg" src="./imgs/איך משחקים.png" />
+        <input @onclick="exitPopUp2" class="exitButton" type="button" value="X" />
+        </div>
+    }
     @if (UserService.IsLoggedIn) {
         <div>
             <input class="btn-nav" type="button" value="Logout" @onclick="Logout" />
@@ -40,14 +50,17 @@
 
 
 @code {
-
+    bool howto = false;
     [Parameter]
     public int UserID { get; set; }
 
     private LoginPopup loginPopup;
     private bool isLoggedIn = false;
     private AboutPopup aboutPopup;
-
+    private void ShowHotTo()
+    {
+        howto = true;
+    }
     private void ShowLoginPopup() {
         loginPopup?.Show();
     }
@@ -55,7 +68,10 @@
     void ShowAboutPopup() {
         aboutPopup?.Show();
     }
-
+    private void exitPopUp2()
+    {
+        howto = false;
+    }
     private void OnLoginSuccess() {
         // isLoggedIn = true;
         StateHasChanged();

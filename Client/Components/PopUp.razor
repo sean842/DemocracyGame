@@ -10,7 +10,10 @@
     </div>
 </div>
 
+
+}
 @code {
+    
     [Parameter]
     public string Message { get; set; } // Message to display in the popup
 
@@ -20,5 +23,6 @@
     private async Task Confirm(bool isConfirmed) {
         await OnConfirm.InvokeAsync(isConfirmed); // Invoke the callback with the user's choice
     }
+   
 
 }

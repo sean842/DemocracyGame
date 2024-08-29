@@ -5,54 +5,59 @@
 @using Microsoft.AspNetCore.SignalR.Client;
 @implements IAsyncDisposable;
 @using NewBlazorProjecct.Shared.DTOs;
+@inject IJSRuntime JS
 
-
-
-@if (msg != "") {
-    <p style="margin:0;">@msg</p>
-}
 
 <div id="FristCanvas" style="display:@firsatCanvasDisplay">
 
-    <h1>הקלד קוד משחק:</h1>
+    <h1>הקלידו קוד משחק</h1>
     <input type="number" @bind="playerGameCode" />
-    <span>לדוגמה 101</span>
+    <span>לדוגמה: 101</span>
     <button @onclick="GetGame"> כניסה למשחק</button>
     <img class="images" src="./imgs/ballot-box.png" />
 
+
 </div>
 
 
- <div id="chooseCharacter" style="display:@chooseCharacterDisplay">
+
+
+
+<div id="chooseCharacter" class="canvas" style="display:@chooseCharacterDisplay">
     @if (!logged) {
 
-            <div class="row justify-content-center">
-                <div class="col text-center">
-                    <h1>בחרו שם ונציג לקבוצה</h1>
-                </div>
+        <div class="title-container">
+            <h1 class="title">בחרו שם ונציג לקבוצה</h1>
+        </div>
+
+        <div class="character-selection">
+
+
+
+
+            <div class="character-col">
+                <img src="@maleCharacter" class="character-img-btn @(selectedCharacter == "male" ? "selected" : "")"
+                     @onclick='() => SetCharacter("male")' />
             </div>
 
-            <div class="row align-items-center" style="height: 100vh; width:100%; align-self: baseline; max-height:70%">
-                <div  class="col text-center characterColumm">
-                    <img src="./imgs/mydiplo.png" style=" width:100%; cursor:pointer;" @onclick='() => SetCharacter("./imgs/mydiplo.png")' />
-                </div>
-
-                <div class="col text-center" style="align-content: center; height:100%">
-                    <label>
-                        שם הקבוצה:
-                        <input @bind="myGroup.GroupName" class="form-control" />
-                    </label>
-                    <button class="btn btn-primary mt-2" @onclick="LogIn">התחברות</button>
-                </div>
-
-                <div class="col text-center characterColumm">
-                    <img src="./imgs/femalediplo.png" style=" width:100%; cursor:pointer;" @onclick='() => SetCharacter("./imgs/femalediplo.png")' />
-                </div>
+            <div class="input-col">
+                <label>
+                    שם הקבוצה:
+                    <input @bind="myGroup.GroupName" class="form-control" />
+                </label>
+                <button class="btn-main" @onclick="LogIn">התחברות</button>
             </div>
+
+            <div class="character-col">
+                <img src="@femaleCharacter" class="character-img-btn @(selectedCharacter == "female" ? "selected" : "")"
+                     @onclick='() => SetCharacter("female")' />
+            </div>
+
+
+
+        </div>
     }
 </div>
-
-
 
 
 
@@ -64,23 +69,25 @@
     <div class="left-column">
         <div class="left-top">
 
-                <div id="ForTable">
-                    <table>
-                        <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
-                        <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
-                    </table>
-                </div>
+            <div id="ForTable">
+                <table style="display:@scoreTableContainer" class="score-table">
+                    <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
+                    <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="left-middle">
-            <p> @characterText </p>
+            <div class="speech-bubble-container" style="display:@speechBubbleDisplay">
+                <p class="character-text"> @characterText </p>
+            </div>
         </div>
 
         <div class="left-bottom">
-            <img src="@myGroup.Character" alt="myCharacter"  />
+            <img src="@myGroup.Character" alt="myCharacter" />
         </div>
-    </div>
 
+    </div>
 
 
 
@@ -90,18 +97,16 @@
             <p style="margin:0;">@msg</p>
         }
 
-
-
         <ul style="display:@groupListDisplay">
             @foreach (Group group in allGroups) {
                 string myGroupClass = group.GroupID == myGroup.GroupID ? "my-group" : "";
-
+                Console.WriteLine($" groupID: {group.GroupID.ToString()}"); 
                 <li class="@myGroupClass">
                     <div class="header">
                         <p>@group.GroupName</p>
                     </div>
                     <div class="body">
-                        <img src="@group.Character" />
+                        <img class="smallImg" src="@group.Character" />
                     </div>
                     <div class="footer">
                         <p>קולות: @group.Points.ToString()</p>
@@ -109,23 +114,19 @@
                 </li>
             }
         </ul>
-
-
-        <div id="explenation" style="display:@explenationCanvasDisplay">
-            <h1>ברוכים הבאים למליאה!</h1>
-            <p>אנו הולכים להצביע על החוקים החדשים ולהשפיע על חיי הכיתה!</p>
-            <p>כל קבוצה תקבל מספר קולות אשר ישפיעו על עתידנו.</p>
+        <div id="explenation" class="canvas" style="display:@explenationCanvasDisplay">
+            <div class="speech-bubble">
+                <h1 class="title">ברוכים הבאים למליאה!</h1>
+            </div>
+            <p class="description">אנו הולכים להצביע על החוקים החדשים ולהשפיע על חיי הכיתה!</p>
+            <p class="description">כל קבוצה תקבל מספר קולות אשר ישפיעו על עתידנו.</p>
         </div>
 
-
-
-
-
-        <div id="voteGameCanvas" style="display:@voteGameCanvasDisplay">
+        <div id="voteGameCanvas" class="canvas" style="display:@voteGameCanvasDisplay">
 
             <div class="row  biggerHalf">
 
-                <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
+                <div id="LawContentContainer" class="law-container" style="display:@LawContentContainerDisplay">
 
                     <div class="row half head">
                         <div id="lawWrapper">   <div id="law">@currentLawContent</div>   </div>
@@ -216,6 +217,8 @@
     string LawContentContainerDisplay = "flex";
     string PieChartContainerDisplay = "none";
     string resultsContainerDisplay = "none";
+    string scoreTableContainer = "table";
+    string speechBubbleDisplay = "flex";
 
     // string myGroupClass = ""; // defaine the class of our group only.
 
@@ -260,13 +263,14 @@
         hub.On("PointsDistributed", async () => {
             await GetAllGroups();
             foreach (Group group in allGroups) {
-                if(myGroup.GroupName == group.GroupName) {
+                if(myGroup.GroupID == group.GroupID) {
                     myGroup = group;
                 }
             }
             explenationCanvasDisplay = "none";
             groupListDisplay = "flex";
             characterText = "קיבלנו: " + myGroup.Points.ToString() + " קולות!";
+            speechBubbleDisplay = "flex";
 
 
             // voteGameCanvasDisplay = "flex";
@@ -325,6 +329,14 @@
 
     }
 
+    // private string selectedCharacter;
+
+    private void SetCharacter(string id, string src)
+    {
+        selectedCharacter = id;
+        myGroup.Character = src;
+    }
+
 
     // if the user looged in:
     public bool IsConnected =>
@@ -344,85 +356,110 @@
 
 
     async Task GetGame() {
-        var response = await Http.GetAsync("api/Laws/Game/" + playerGameCode);
-        if (response.IsSuccessStatusCode == true) {
-            myGame = response.Content.ReadFromJsonAsync<Game>().Result;
-            if (myGame.GameStarted == false) {
-                msg = "המשחק לא התחיל, חכו למרצה.";
-                return;
-            }
-
-            firsatCanvasDisplay = "none";
-            // containerDisplay = "flex";
-
-            chooseCharacterDisplay = "flex";
+        var gameResponse = await Http.GetAsync($"api/Laws/Game/{playerGameCode}");
+        if (!gameResponse.IsSuccessStatusCode) {
+            await HandleGameError(gameResponse);
+            return;
         }
-        else {
-            Console.WriteLine("wrong");
-            string error = response.Content.ReadAsStringAsync().Result;
-            switch (error) {
-                case "No Game Code":
-                    msg = "קוד המשחק לא תקין";
-                    Console.WriteLine("we do not have a game with this code.");
-                    break;
-                case "No Laws":
-                    msg = "קוד המשחק לא תקין";
-                    Console.WriteLine("this game do not have any laws");
-                    break;
-                case "Not Enough Laws":
-                    msg = "המשחק לא זמין";
-                    Console.WriteLine("אין מספיק חוקים במשחק");
-                    break;
-                case "Didnt Publish Game":
-                    msg = "המשחק לא זמין";
-                    Console.WriteLine("המשחק לא פורסם");
-                    break;
-            }
+        Console.WriteLine("we got the game!");
+        myGame = await gameResponse.Content.ReadFromJsonAsync<Game>();
+        if (myGame.GameStarted == false) {
+            msg = "המשחק לא התחיל, חכו למרצה.";
+            await JS.InvokeVoidAsync("alert", msg);
+            return;
         }
+        firsatCanvasDisplay = "none";
+        chooseCharacterDisplay = "flex";
+        msg = "";
 
     }
 
-    void SetCharacter(string src) {
-        myGroup.Character = src;
+
+
+
+    private async Task HandleGameError(HttpResponseMessage response) {
+        var error = await response.Content.ReadAsStringAsync();
+        switch (error) {
+            case "No Game Code":
+                msg = "קוד המשחק לא תקין";
+                Console.WriteLine("we do not have a game with this code.");
+                break;
+            case "No Laws":
+                msg = "קוד המשחק לא תקין";
+                Console.WriteLine("this game do not have any laws");
+                break;
+            case "Not Enough Laws":
+                msg = "המשחק לא זמין";
+                Console.WriteLine("אין מספיק חוקים במשחק");
+                break;
+            case "Didnt Publish Game":
+                msg = "המשחק לא פורסם";
+                Console.WriteLine("המשחק לא פורסם");
+                break;
+            case "Failed to retrieve groups":
+                msg = "לא מצאנו קבוצות";
+                break;
+            case "Didn't delete groups!":
+                msg = "לא מחקנו את הקבוצות";
+                break;
+            case "Did Not Update GameStarted":
+                msg = "לא עדכנו את התחלת המשחק";
+                break;
+            case "didnt insert":
+                msg = "we did not insert the group";
+                break;
+            default:
+                msg = "שגיאה בלתי צפויה";
+                break;
+        }
+        Console.WriteLine(msg);
+        await JS.InvokeVoidAsync("alert", msg);
     }
+
+
+
+
 
     async Task LogIn() {
         if (string.IsNullOrEmpty(myGroup.Character)) {
             msg = "נא לבחור נציג לקבוצה.";
+            await JS.InvokeVoidAsync("alert", msg);
             return;
         }
         if (string.IsNullOrEmpty(myGroup.GroupName)) {
             msg = "שם הקבוצה הוא שדה חובה.";
+            await JS.InvokeVoidAsync("alert", msg);
             return;
         }
         else if (myGroup.GroupName.Length < 3 || myGroup.GroupName.Length > 15) {
             msg = "שם הקבוצה צריך להיות בין 3-15 תווים.";
+            await JS.InvokeVoidAsync("alert", msg);
             return;
         }
-        // Console.WriteLine("Login");
+
         myGroup.GameID = myGame.GameID;
+        Console.WriteLine(myGroup.GameID);
         var post = await Http.PostAsJsonAsync("api/Laws/InsertGroup", myGroup);
-        if (post.IsSuccessStatusCode) {
-            myGroup.GroupID = post.Content.ReadFromJsonAsync<int>().Result;
-            logged = true;
-            chooseCharacterDisplay = "none";
-            containerDisplay = "flex";
-            groupListDisplay = "flex";
-            // secondCanvasDisplay = "flex";
-            msg = "";
-            // Retrieve all groups after logging in
-            await GetAllGroups();
+
+        if (!post.IsSuccessStatusCode) {
+            await HandleGameError(post);
+            return;
         }
-        else {
-            Console.WriteLine("wrong Login");
-            string error = post.Content.ReadAsStringAsync().Result;
-            switch (error) {
-                case "didnt insert":
-                    msg = "we did not insert the group";
-                    break;
-            }
-        }
+
+        myGroup.GroupID = post.Content.ReadFromJsonAsync<int>().Result;
+        logged = true;
+        chooseCharacterDisplay = "none";
+        containerDisplay = "flex";
+        groupListDisplay = "flex";
+        msg = "";
+        // Retrieve all groups after logging in
+        await GetAllGroups();
+
     }
+
+
+
+
 
     async Task GetAllGroups() {
         var response = await Http.GetAsync("api/Laws/GetAllGroups/" + myGame.GameID);
@@ -441,6 +478,7 @@
         groupListDisplay = "none";
         explenationCanvasDisplay = "block";
         characterText = ""; // no text to character when explaining.
+        speechBubbleDisplay = "none";
         InvokeAsync(StateHasChanged);
     }
 
@@ -463,14 +501,14 @@
             currentLawContent = "finish Game!";
         }
         characterText = "בואו נצביע";
-
+        ChangeEmotion("normal");
         // SetVoteTrueOrFalse();
         DisableVoteButton = false;// make the buttons clickable.
     }
 
     private void ShowPopup(string voteType) {
         currentVoteType = voteType; // Store the vote type
-        // popupMessage = $"Are you sure you want to vote {voteType}?"; // Set the message
+                                    // popupMessage = $"Are you sure you want to vote {voteType}?"; // Set the message
         isPopupVisible = true; // Show the popup
         switch (voteType) {
             case "For":
@@ -520,14 +558,17 @@
 
 
     private bool CalculateResult() {
-        if (myGame.LawList[lawCounter].For > myGame.LawList[lawCounter].Against) {
+        if (myGame.LawList[lawCounter].For > 60) {
             lawAmountPass++;
             characterText = "ברכותי! החוק עבר!";
+            // ChangeEmotion("happy");
+            ChangeEmotion("happy");
             return true;
         }
         else {
             lawAmountNotPass++;
             characterText = "החוק לא עבר, נמשיך לנסות ";
+            ChangeEmotion("sad");
             return false;
         }
     }
@@ -542,9 +583,9 @@
         if (myGame.LawList.Count > 0 && lawCounter < myGame.LawList.Count) {
             var currentLaw = myGame.LawList[lawCounter];
             var data = new[] {
-                new { label = "For", value = currentLaw.For },
-                new { label = "Against", value = currentLaw.Against },
-                new { label = "Avoid", value = currentLaw.Avoid }
+                new { label = "בעד", value = currentLaw.For },
+                new { label = "נגד", value = currentLaw.Against },
+                new { label = "נמנע", value = currentLaw.Avoid }
             };
             myGame.LawList[lawCounter].IsPass = CalculateResult();// return true/false.
             Console.WriteLine(myGame.LawList[lawCounter].IsPass);
@@ -576,15 +617,7 @@
         resultsContainerDisplay = "block";
         PieChartContainerDisplay = "none";
         characterText = " סיימנו להצביע";
-
-        // foreach (LawsDTO law in myGame.LawList) {
-        //     if (law.IsPass == true) {
-        //         lawAmountPass++;
-        //     }
-        //     else {
-        //         lawAmountNotPass++;
-        //     }
-        // }
+        scoreTableContainer = "none";
 
     }
 
@@ -601,9 +634,60 @@
         lawAmountPass = 0;
         lawCounter = 0;
         characterText = "ברוכים הבאים למליאה";
+        scoreTableContainer = "table";
 
     }
 
+
+
+    // Initial character image paths
+    private string maleCharacter = "./imgs/malediplonormal.png";
+    private string femaleCharacter = "./imgs/femalediplonormal.png";
+    private string selectedCharacter = ""; // Default selected character
+
+
+    void SetCharacter(string character) {
+        selectedCharacter = character;
+
+        // Set the default image based on selected character
+        if (character == "male") {
+            maleCharacter = "./imgs/malediplonormal.png";
+            myGroup.Character = maleCharacter;
+        }
+        else if (character == "female") {
+            femaleCharacter = "./imgs/femalediplonormal.png";
+            myGroup.Character = femaleCharacter;
+        }
+    }
+
+    void ChangeEmotion(string emotion) {
+        // Change the image based on selected character and emotion
+        if (selectedCharacter == "male") {
+            maleCharacter = $"./imgs/malediplo{emotion}.png";
+            myGroup.Character = maleCharacter;
+        }
+        else if (selectedCharacter == "female") {
+            femaleCharacter = $"./imgs/femalediplo{emotion}.png";
+            myGroup.Character = femaleCharacter;
+        }
+    }
+
+
+    // string imgName = "normal";
+
+    // void Emotion(string emotion) {
+    //     imgName = emotion;
+    // }
+
+
+    // void ChangeCharacterEmotion(string emotion) {
+    //     if (selectedCharacter == "malediplonormal") {
+
+    //     }
+    //     else {
+            
+    //     }
+    // }
 
 
 }

@@ -8,22 +8,22 @@
     <div class="modal" style="display:block;">
         <div class="modal-content">
             <span class="close" @onclick="Hide">&times;</span>
-            <h3>Login</h3>
+            <h3>כניסה לעריכה</h3>
 
             <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
-
-                <div>
-                    <label>Username:</label>
+                <div class="form-group">
+                    <label>שם משתמש:</label>
                     <InputText @bind-Value="loginModel.Name" />
                 </div>
-                <div>
-                    <label>Password:</label>
+                <div class="form-group">
+                    <label>סיסמה:</label>
                     <InputNumber @bind-Value="loginModel.Password" type="password" />
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit">התחברות</button>
             </EditForm>
+        
             @if (!string.IsNullOrEmpty(errorMessage)) {
                 <p style="color:red;">@errorMessage</p>
             }
@@ -76,7 +76,7 @@
     }
 }
 
-<style>
+@*<style>
     .modal {
         display: none;
         position: fixed;
@@ -112,4 +112,4 @@
             text-decoration: none;
             cursor: pointer;
         }
-</style>
+</style>*@

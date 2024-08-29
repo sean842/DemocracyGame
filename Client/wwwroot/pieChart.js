@@ -32,13 +32,13 @@ window.createOrUpdatePieChart = function (dataJson) {
                 data: values,
                 backgroundColor: [
                     '#42EB9A', // Green for 'For'
-                    '#EBE142', // Red for 'Against'
-                    '#EB3121'  // Yellow for 'Avoid'
+                    '#EB3121', // Red for 'Against'
+                    '#EBE142'  // Yellow for 'Avoid'
                 ],
                 hoverBackgroundColor: [
                     '#42EB9A', // Green for 'For'
-                    '#EBE142', // Red for 'Against'
-                    '#EB3121'  // Yellow for 'Avoid'
+                    '#EB3121', // Red for 'Against'
+                    '#EBE142'  // Yellow for 'Avoid'
                 ]
             }]
         },

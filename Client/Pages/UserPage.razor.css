@@ -1,5 +1,14 @@
-﻿
-/*   START OF chooseCharacter    */
+﻿body {
+    background-color: #FFF1E1;
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
 
 #chooseCharacter {
     height: 100%;
@@ -7,22 +16,321 @@
     height: 100%;
 }
 
-.characterColumm {
+
+.canvas {
+    text-align: center;
+    padding: 2vh 2vw;
+}
+
+.title-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-direction:row;
+}
+
+.title {
+    /*font-size: 3vw;*/ /* Relative to viewport width */
+/*    color: #4CAF50;
+*/    text-align: center;
+    margin: 0 auto;
+}
+
+.character-selection {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 2vh; /* Add some space between the elements */
+    margin-top: 2vh; /* Add some space below the title */
+    height:100%;
+}
+
+.character-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw; /* Add space between character images */
+    width:40%;
+    height:100%;
+}
+
+/*.character-img {
+    width: 60%; 
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+}
+*/
+/*    .character-img:hover,
+    .character-img.selected {
+        transform: scale(1.2);
+        box-shadow: 0 0 15px rgba(0, 128, 0, 0.5);
+    }
+*/
+
+
+
+.character-img-btn {
+    width: 50%;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+}
+
+    .character-img-btn:hover,
+    .character-img-btn.selected {
+        transform: scale(1.2);
+        box-shadow: 0 0 15px rgba(0, 128, 0, 0.5);
+    }
+
+.regular-img {
+    width: 80%; /* Adjust as needed */
+    height: auto;
+    border-radius: 10px; /* If you want rounded corners */
+}
+
+    /* Optional: to ensure regular images don't inherit hover effects */
+    .regular-img:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+.input-col {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
+    margin-bottom: 2vh; /* Add some space below the input column */
+}
+
+    .input-col label {
+        font-size: 2vw; /* Relative to viewport width */
+        color: #333;
+        margin-bottom: 1vh;
+    }
+
+.form-control {
+    padding: 1vh 1vw;
+    font-size: 1.5vw;
+    border-radius: 10px;
+    border: 2px solid #4CAF50;
+    margin-bottom: 1vh;
+}
+
+.btn-main {
+    padding: 1vh 2vw;
+    font-size: 2vw;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-main:hover {
+        background-color: #45A049;
+    }
+
+/*.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2vh 2vw;
     height: 100%;
 }
-/*   ----- END ----  */
+*/
+/*.left-column, .right-column {
+    width: 48%;
+    height: 100%;
+}
+*/
+/*.score-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2vh;
+}
 
-/*START OF SECOND CANVAS*/
+    .score-table th, .score-table td {
+        padding: 1vh 1vw;
+        text-align: center;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+    }
+*/
+.character-text {
+    font-size: 2vw; /* Adjusted for better visibility */
+    color: #333;
+    margin: 0;
+}
 
+.group-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 
+.group-item {
+    width: 45%;
+    background-color: #fff;
+    border: 2px solid #4CAF50;
+    border-radius: 10px;
+    padding: 2vh 2vw;
+    margin: 2vh 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
 
-/*   ----- END ----  */
+    .group-item:hover {
+        transform: scale(1.05);
+    }
 
+/*.header, .body, .footer {
+    padding: 1vh 1vw;
+}
+*/
+.error-msg {
+    color: red;
+    font-size: 1.5vw;
+    margin-bottom: 2vh;
+}
 
+.law-container {
+    width: 100%;
+}
 
+.law-content {
+    font-size: 2.5vw;
+    margin: 2vh 0;
+}
 
+.btn-vote {
+    padding: 1vh 2vw;
+    font-size: 2vw;
+    margin: 1vh;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
 
+    .btn-vote:hover {
+        transform: scale(1.1);
+    }
+
+.pie-chart-container {
+    text-align: center;
+    margin-top: 2vh;
+}
+
+.character-container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Stack the elements vertically */
+    align-items: center; /* Center the elements horizontally */
+    justify-content: flex-end; /* Align items at the bottom */
+    height: 100%;
+}
+
+/*.speech-bubble-container {
+    position: absolute;
+    bottom: 35vh;*/ /* Use viewport height to position the speech bubble responsively */
+    /*width: 80%;*/ /* Adjust width as needed */
+    /*text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+    .speech-bubble-container .character-text {
+        background: #fff;
+        border-radius: .4em;
+        padding: 2vh 3vw;*/ /* Adjust padding to expand the speech bubble */
+        /*max-width: 100%;*/ /* Ensure it doesn't exceed container's width */
+        /*text-align: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        word-wrap: break-word;*/ /* Ensure long words break */
+        /*margin-bottom: 2vh;*/ /* Add some space between the speech bubble and the character */
+        /*position: relative;*/ /* Ensure the pseudo-element positions relative to this */
+    /*}
+
+        .speech-bubble-container .character-text::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;*/ /* Adjust this value to position the tail correctly */
+            /*left: 50%;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #fff;
+            border-bottom: 0;
+            margin-left: -10px;
+        }*/
+
+.description {
+    font-size: 2vw;
+    color: #333;
+    margin-top: 2vh;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .left-column, .right-column {
+        width: 100%;
+    }
+
+    .group-item {
+        width: 90%;
+    }
+
+    .character-container {
+        height: 50%; /* Adjust height for medium screens */
+    }
+
+    .speech-bubble-container {
+        bottom: 40vh; /* Adjust position for medium screens */
+        width: 90%; /* Adjust width for medium screens */
+    }
+
+    .character-img {
+        width: 20vw; /* Adjust size for medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 5vw !important;
+        text-align: center !important;
+    }
+
+    .btn-main {
+        font-size: 3vw;
+        padding: 1vh 2vw;
+    }
+
+    .character-text {
+        font-size: 3vw;
+    }
+
+    .character-container {
+        height: 40%; /* Adjust height for small screens */
+    }
+
+    .speech-bubble-container {
+        bottom: 45vh; /* Adjust position for small screens */
+        width: 100%; /* Adjust width for small screens */
+    }
+
+    .character-img {
+        width: 25vw; /* Adjust size for small screens */
+    }
+}

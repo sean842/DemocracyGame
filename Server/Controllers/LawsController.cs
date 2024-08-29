@@ -19,178 +19,119 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
 
-        // Get the game and all his laws.
+
+        // TRY NEW FUNC!!!!!
+        //// Get the game and all his laws.
         [HttpGet("Game/{gameCode}")]
         public async Task<IActionResult> GetGame(int gameCode) {
-            object param = new {
-                GameCode = gameCode
-            };
-            string query = "SELECT * FROM Games WHERE GameCode = @GameCode";
+            var param = new { GameCode = gameCode };
+            const string query = "SELECT * FROM Games WHERE GameCode = @GameCode";
 
-            var recordes = await _db.GetRecordsAsync<Game>(query, param);
-            Game game = recordes.FirstOrDefault();
-            if (game != null) {
-                // לשלוף את כל החוקים
-                object lawParam = new {
-                    gameID = game.GameID
-                };
-                string lawQuery = "SELECT * FROM Laws WHERE GameID = @gameID";
-                var Laws = await _db.GetRecordsAsync<LawsDTO>(lawQuery, lawParam);
-                game.LawList = Laws.ToList();
-                if (game.LawList.Count > 0) {
-                    if (game.LawList.Count > 2) {
-                        if(game.IsPublish == true) {
-
-                            return Ok(game);
-                        }
-                        else { return BadRequest("Didnt Publish Game"); }
-                    }
-                    else {
-                        return BadRequest("Not Enough Laws");
-                    }
-                }
-                else {
-                    return BadRequest("No Laws");
-                }
-            }
-            else {
+            var records = await _db.GetRecordsAsync<Game>(query, param);
+            var game = records.FirstOrDefault();
+            if (game == null)
                 return BadRequest("No Game Code");
-            }
 
+            var lawParam = new { gameID = game.GameID };
+            const string lawQuery = "SELECT * FROM Laws WHERE GameID = @gameID";
+            var laws = await _db.GetRecordsAsync<LawsDTO>(lawQuery, lawParam);
+            game.LawList = laws.ToList();
+
+            if (!game.LawList.Any())
+                return BadRequest("No Laws");
+
+            if (game.LawList.Count <= 2)
+                return BadRequest("Not Enough Laws");
+
+            if (!game.IsPublish)
+                return BadRequest("Didnt Publish Game");
+
+            return Ok(game);
         }
 
 
+
+
+        //TRY NEW CODE!!!!!!!
         [HttpGet("CloseAllGames/{userID}")]
         public async Task<IActionResult> CloseAllGames(int userID) {
-            object param = new {
-                userID,
-                gameStarted = false
-            };
-            string updateQuery = "UPDATE Games SET GameStarted = @gameStarted WHERE UserID =@userID";
-            bool isUpdate = await _db.SaveDataAsync(updateQuery, param);
-            if (isUpdate) {
+            var param = new { userID, gameStarted = false };
+            const string updateQuery = "UPDATE Games SET GameStarted = @gameStarted WHERE UserID = @userID";
+            var isUpdate = await _db.SaveDataAsync(updateQuery, param);
+            if (isUpdate)
                 return Ok();
-            }
             return BadRequest("Did Not Update All Games");
-
         }
 
 
 
-
-        // לעשות איפוז לכל המשחקים של השחקן
-        [HttpGet("ChangeGameStarted/{userID}/{gameStarted}")]
-        public async Task<IActionResult> ChangeGameStarted(int userID, bool gameStarted) {
-            object param = new {
-                userID,
-                gameStarted
-            };
-            string updateQuery = "UPDATE Games SET GameStarted = @gameStarted WHERE UserID =@userID";
-            bool isUpdate = await _db.SaveDataAsync(updateQuery, param);
-            if (isUpdate) {
+        //TRY NEW CODE!!!!!!!
+        [HttpGet("ChangeGameStarted/{gameID}/{gameStarted}")]
+        public async Task<IActionResult> ChangeGameStarted(int gameID, bool gameStarted) {
+            var param = new { gameID, gameStarted };
+            const string updateQuery = "UPDATE Games SET GameStarted = @gameStarted WHERE GameID = @gameID";
+            var isUpdate = await _db.SaveDataAsync(updateQuery, param);
+            if (isUpdate)
                 return Ok();
-            }
             return BadRequest("Did Not Update GameStarted");
-
         }
 
 
 
-
+        //TRY NEW CODE!!!!!!!
         [HttpGet("GetAllGroups/{gameID}")]
         public async Task<IActionResult> GetAllGroups(int gameID) {
-            object param = new { GameID = gameID };
-            string query = "SELECT * FROM Groups WHERE GameID = @GameID";
+            var param = new { GameID = gameID };
+            const string query = "SELECT * FROM Groups WHERE GameID = @GameID";
             var groups = await _db.GetRecordsAsync<Group>(query, param);
-            List<Group> groupsList = groups.ToList();
-            if (groupsList != null && groupsList.Any()) {
-                return Ok(groupsList);
-            }
-            else {
-                // Log the error or return a more descriptive message
-                return BadRequest("No Groups In Game or invalid GameID");
-            }
+            if (groups != null && groups.Any())
+                return Ok(groups);
+            return BadRequest("No Groups In Game or invalid GameID");
         }
-
-
-        //[HttpGet("GetAllGroups/{gameID}")]
-        //public async Task<IActionResult> GetAllGroups(int gameID) {
-        //    object param = new {
-        //        GameID = gameID
-        //    };
-        //    string query = "SELECT * FROM Groups WHERE GameID = @GameID";
-        //    var groups = await _db.GetRecordsAsync<Group>(query, param);
-        //    List<Group> groupsList = groups.ToList();
-        //    if (groupsList != null && groupsList.Any()) {
-        //        return Ok(groupsList);
-        //    }
-        //    else {
-        //        return BadRequest("No Groups In Game");
-        //    }
-        //}
-
-
-
 
         [HttpPost("InsertGroup")]
         public async Task<IActionResult> InsertGroup(Group group) {
-            object param = new {
-                groupName = group.GroupName,
-                gameID = group.GameID,
-                points = 0,
-                character = group.Character,
-            };
-            string insertQuery = "INSERT INTO Groups (GroupName, GameID, Points, Character) VALUES (@groupName, @gameID, @points, @character)";
+            //var param = new { group.GroupName, group.GameID, points = 0, group.Character };
+            object param = new { groupName = group.GroupName, gameID = group.GameID, points = 0, character = group.Character };
+            const string insertQuery = "INSERT INTO Groups (GroupName, GameID, Points, Character) VALUES (@groupName, @gameID, @points, @character)";
             group.GroupID = await _db.InsertReturnId(insertQuery, param);
             if (group.GroupID > 0) {
                 await _hub.Clients.All.SendAsync("GroupLogin", group);
                 return Ok(group.GroupID);
             }
-            else {
-                return BadRequest("didnt insert");
-            }
+            return BadRequest("didn't insert");
         }
 
-
         [HttpGet("DistributePoints/{gameID}/{scoreFormat}")]
-        public async Task<IActionResult> DistributePoints2(int gameID, bool scoreFormat) {
-            // Call GetAllGroups at the start
-            var allGroupsResult = await GetAllGroups(gameID);
+        public async Task<IActionResult> DistributePoints(int gameID, bool scoreFormat) {
+            var allGroupsResult = await GetAllGroups(gameID); // Call GetAllGroups at the start
             if (allGroupsResult is OkObjectResult okResult) {
-                List<Group> groupsList = okResult.Value as List<Group>;
-                // reset the points.
-                object param = new { GameID = gameID };
-                string updateQuery = "UPDATE Groups SET Points = 0 WHERE GameID = @GameID";
-                bool isUpdate = await _db.SaveDataAsync(updateQuery, param);
+                var groupsList = okResult.Value as List<Group>;
+                if (groupsList == null || !groupsList.Any())
+                    return BadRequest("No groups found");
 
-                if (groupsList.Count > 0) {
-                    if (scoreFormat) {
-                        return await EvenDistribution(groupsList);                        
-                    }
-                    else {
-                        return await RandomDistribution(groupsList);
-                    }
-                }
+                var param = new { GameID = gameID };// reset the points.
+                const string updateQuery = "UPDATE Groups SET Points = 0 WHERE GameID = @GameID";
+                var isUpdate = await _db.SaveDataAsync(updateQuery, param);
+                if (!isUpdate)
+                    return BadRequest("Failed to reset points");
+
+                return scoreFormat ? await EvenDistribution(groupsList) : await RandomDistribution(groupsList);
             }
             return BadRequest("No groups found");
         }
 
+
         private async Task<IActionResult> EvenDistribution(List<Group> groupsList) {
-            int totalPoints = 120;
-            int pointsPerGroup = totalPoints / groupsList.Count;
-            // ... your existing even distribution logic ...
-            foreach (Group group in groupsList) {
-                object updateParam = new {
-                    GroupID = group.GroupID,
-                    Points = pointsPerGroup
-                };
-                string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
-                bool isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
-                if (!isUpdate) {
-                    return BadRequest("Failed to update points for group: " + group.GroupName);
-                }
+            const int totalPoints = 120;
+            var pointsPerGroup = totalPoints / groupsList.Count;
+            foreach (var group in groupsList) {
+                var updateParam = new { group.GroupID, Points = pointsPerGroup };
+                const string updateQuery = "UPDATE Groups SET Points = @Points WHERE GroupID = @GroupID";
+                var isUpdate = await _db.SaveDataAsync(updateQuery, updateParam);
+                if (!isUpdate)
+                    return BadRequest($"Failed to update points for group: {group.GroupName}");
             }
-            // Notify clients about the points distribution
             await _hub.Clients.All.SendAsync("PointsDistributed");
             return Ok(true);
         }
@@ -232,6 +173,7 @@ namespace NewBlazorProjecct.Server.Controllers {
             return Ok(true);
         }
 
+
         [HttpPost("Vote")]
         public async Task<IActionResult> Vote(VoteDTO vote) {
             // Prepare the SQL update query based on the vote type
@@ -264,21 +206,25 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
 
-
         [HttpDelete("DeleteAllGroups/{gameID}")]
         public async Task<IActionResult> DeleteAllGroups(int gameID) {
-            object param = new { GameID = gameID };
-            string deleteQuery = "DELETE FROM Groups WHERE GameID = @GameID";
-            bool isDelete = await _db.SaveDataAsync(deleteQuery, param);
-            if (isDelete) {
-                return Ok();
+            var allGroupsResult = await GetAllGroups(gameID); // Call GetAllGroups at the start
+            if (allGroupsResult is OkObjectResult okResult) {
+                var groupsList = okResult.Value as List<Group>;
+                if (groupsList == null || !groupsList.Any()) {
+                    return Ok("No Groups");
+                }
+
+                var param = new { GameID = gameID };
+                const string deleteQuery = "DELETE FROM Groups WHERE GameID = @GameID";
+                bool isDelete = await _db.SaveDataAsync(deleteQuery, param);
+                if (isDelete) {
+                    return Ok("Groups Deleted");
+                }
+                return BadRequest("Didn't delete groups!");
             }
-            return BadRequest("didnt delete groups!");
+            return Ok("Failed to retrieve groups");
         }
-
-
-
-
 
 
 
@@ -292,7 +238,6 @@ namespace NewBlazorProjecct.Server.Controllers {
             }
             return BadRequest("Not Update");
         }
-
 
 
 

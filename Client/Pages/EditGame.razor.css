@@ -1,7 +1,8 @@
 ﻿/* Ensure proper padding and styling for the body */
 body {
     padding: 20px;
-    font-size:0.7rem;
+    font-size: 0.7rem;
+    background-color: #F0F7FF;
 }
 
 /* Header styling */
@@ -72,12 +73,132 @@ body {
     }
 
 .newrule {
-    /*margin-top: 10px;*/ /* Adjust the top margin to move it up */
-    /*margin-bottom: 20px;*/ /* Adjust the bottom margin if needed */
     padding: 10px; /* Optional padding */
     border: 1px solid #ccc; /* Optional border */
 }
 
 button {
     font-size: 0.7rem;
+}
+.default-input {
+    border: 2px solid #ccc; /* Add a border to the input box from the start */
+    padding: 10px;
+    /*    margin-top: 20px;*/
+    border-radius: 10px;
+    outline-width: 3px;
+    outline-style: solid;
+    outline-color: grey; /* Default outline color, could be set to match the background */
+    transition: outline-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for color changes */
+    max-width: 250px;
+    max-height: 50px;
+}
+
+.good-input {
+    outline-color: green;
+    border-color: green; /* Change the border color as well */
+}
+
+.warnning-input {
+    outline-color: orange;
+    border-color: orange;
+}
+
+.danger-input {
+    outline-color: red;
+    border-color: red;
+}
+.Ldefault-input {
+    border: 2px solid #ccc; /* Add a border to the input box from the start */
+    padding: 10px;
+/*    margin-top: 20px;
+*/    border-radius: 10px;
+    outline-width: 3px;
+    outline-style: solid;
+    outline-color: grey; /* Default outline color, could be set to match the background */
+    transition: outline-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for color changes */
+    max-width: 350px;
+    max-height: 50px;
+}
+
+.Lgood-input {
+    outline-color: green;
+    border-color: green; /* Change the border color as well */
+}
+
+.Lwarnning-input {
+    outline-color: orange;
+    border-color: orange;
+}
+
+.Ldanger-input {
+    outline-color: red;
+    border-color: red;
+}
+div .info-circle {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+    div .info-circle:hover {
+        background-color: #0056b3;
+    }
+.caption-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+
+
+
+
+
+
+.checkbox-wrapper-25 input[type="checkbox"] {
+    background-image: -webkit-linear-gradient(hsla(0,0%,0%,.1), hsla(0,0%,100%,.1)), -webkit-linear-gradient(left, #f66 50%, #6cf 50%);
+    background-size: 100% 100%, 200% 100%;
+    background-position: 0 0, 15px 0;
+    border-radius: 25px;
+    box-shadow: inset 0 1px 4px hsla(0,0%,0%,.5), inset 0 0 10px hsla(0,0%,0%,.5), 0 0 0 1px hsla(0,0%,0%,.1), 0 -1px 2px 2px hsla(0,0%,0%,.25), 0 2px 2px 2px hsla(0,0%,100%,.75);
+    cursor: pointer;
+    height: 25px;
+    padding-right: 25px;
+    width: 75px;
+    -webkit-appearance: none;
+    -webkit-transition: .25s;
+}
+
+.checkbox-wrapper-25 input[type="checkbox"]:after {
+    background-color: #eee;
+    background-image: -webkit-linear-gradient(hsla(0,0%,100%,.1), hsla(0,0%,0%,.1));
+    border-radius: 25px;
+    box-shadow: inset 0 1px 1px 1px hsla(0,0%,100%,1), inset 0 -1px 1px 1px hsla(0,0%,0%,.25), 0 1px 3px 1px hsla(0,0%,0%,.5), 0 0 2px hsla(0,0%,0%,.25);
+    content: '';
+    display: block;
+    height: 25px;
+    width: 50px;
+}
+
+.checkbox-wrapper-25 input[type="checkbox"]:checked {
+    background-position: 0 0, 35px 0;
+    padding-left: 25px;
+    padding-right: 0;
+}
+
+
+.Bold{
+    font-weight:bold;
+}
+
+.Normal{
+    font-weight:normal;
 }

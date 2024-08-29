@@ -1,0 +1,30 @@
+﻿@using NewBlazorProjecct.Shared.DTOs;
+
+
+<!-- Floating Button -->
+<button @onclick="ToggleListVisibility" class="floating-btn">
+    <i class="fas fa-users"></i> <!-- FontAwesome Icon -->
+</button>
+
+<!-- Group List -->
+<div class="group-list" style="display:@(isListVisible ? "block" : "none")">
+    <ul>
+        @foreach (var group in Groups) {
+            <li>
+                <span class="group-name">@group.GroupName</span>
+                <span class="group-score">@group.Points</span>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    [Parameter]
+    public List<Group> Groups { get; set; } = new List<Group>();
+
+    private bool isListVisible = false;
+
+    private void ToggleListVisibility() {
+        isListVisible = !isListVisible;
+    }
+}
