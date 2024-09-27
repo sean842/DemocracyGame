@@ -114,17 +114,21 @@ namespace NewBlazorProjecct.Server.Controllers {
 
         }
 
-        [HttpGet("AddNewLaw/{GameID}/{LawContent}")]
-        public async Task<IActionResult> SaveLaw(int GameID, string LawContent) {
+
+
+
+        [HttpPost("AddNewLaw")]
+        public async Task<IActionResult> SaveLaw(LawToAdd lawToAdd) {
             object param = new {
-                GameID,
-                LawContent,
+                lawToAdd.GameID,
+                lawToAdd.Title,
+                lawToAdd.Content,
                 For = 0,
                 Againt = 0,
                 Avoid = 0,
                 IsPass = false
             };
-            string query = "INSERT INTO Laws (GameID, Content, For, Against, Avoid, IsPass) VALUES (@GameID, @LawContent, @For, @Againt, @Avoid, @Avoid)";
+            string query = "INSERT INTO Laws (GameID, Title, Content, For, Against, Avoid, IsPass) VALUES (@GameID, @Title, @Content, @For, @Againt, @Avoid, @Avoid)";
             int newLawID = await _db.InsertReturnId(query, param);
             if (newLawID > 0) {
                 object IdParam = new { newLawID };
@@ -140,6 +144,9 @@ namespace NewBlazorProjecct.Server.Controllers {
 
 
         }
+
+
+
 
         [HttpDelete("DeleteGame/{gameID}")]
         public async Task<IActionResult> DeleteGame(int gameID) {
@@ -199,8 +206,8 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
         [HttpPost("UpdateLaw")]
-        public async Task<IActionResult> UpdateLaw(LawsDTO lawToUpdate) {
-            string updateQuery = "UPDATE Laws SET Content = @Content WHERE LawID = @LawID";
+        public async Task<IActionResult> UpdateLaw(LawToUpdate lawToUpdate) {
+            string updateQuery = "UPDATE Laws SET Title = @Title, Content = @Content WHERE LawID = @LawID";
             bool isUpdate = await _db.SaveDataAsync(updateQuery, lawToUpdate);
             if(isUpdate) {
                 string getQuery = "SELECT * FROM Laws WHERE LawID = @LawID";

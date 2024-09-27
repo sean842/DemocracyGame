@@ -1,8 +1,8 @@
 ﻿.floating-btn {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #28a745;
+    bottom: 10%;
+    right: 2%;
+    background-color: #0062D1;
     color: white;
     border: none;
     border-radius: 50%;
@@ -12,20 +12,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    z-index: 1000;
+    z-index: 999;
     transition: background-color 0.3s;
+    /*    box-shadow: 2px 4px 2px rgba(0, 0, 0, 0.2);
+*/
 }
 
     .floating-btn:hover {
-        background-color: #218838;
+        background-color: #BFD8FF;
     }
 
+/* Group List (Bottom Right) */
 .group-list {
     position: fixed;
-    bottom: 90px;
-    right: 20px;
+    bottom: 26%;
+    right: 2%;
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 15px;

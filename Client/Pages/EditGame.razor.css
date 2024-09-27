@@ -1,139 +1,351 @@
-﻿/* Ensure proper padding and styling for the body */
-body {
+﻿body {
     padding: 20px;
-    font-size: 0.7rem;
+    font-size: 20px;
     background-color: #F0F7FF;
 }
 
+p{
+    font-size:20px;
+}
 /* Header styling */
 .container {
     /*    background-color: #f8f9fa;
 */ flex-direction: column;
     width: 100%;
     height: 100%;
-    gap: 5%
-}
-.pageHeader {
+    gap: 2%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #dee2e6;
-    max-height: 25%;
-    background-color: #f8f9fa;
-}
-.pageHeader button{
-    font-size:0.7rem;
-}
-.pageHeader h1{
-    font-size: 1.5rem;
-}
-    .secondRow{
-    height:70%;
-    max-height:70%;
-    background-color:antiquewhite;
+    justify-content: flex-start;
 }
 
-.firstColumn{
-    width:50%;
-    height:100%;
-    background-color:aqua;
+.extra-input-css {
+    width: 100%;
+    text-align: right;
+}
+
+
+.secondRow {
+    height: 70%;
+    max-height: 70%;
+    background-color: antiquewhite;
+}
+
+.firstColumn {
+    width: 50%;
+    height: 100%;
+    background-color: aqua;
 }
 
 .secondColumn {
     width: 50%;
     height: 100%;
-    background-color:aquamarine;
+    background-color: aquamarine;
 }
+
+.upperRow {
+    width: 100%;
+    padding: 0 3%;
+    text-align: center;
+    background-color: #BFD8FF;
+    color: #254655;
+    max-height: 20%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
+    border-radius: 10px;
+    color: black;
+}
+
+.lowerRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    max-height: 80%;
+    height: 80%;
+    gap: 5%;
+}
+
 
 .rightSide {
     height: 100%;
-    gap: 5%;
+    gap: 2%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    width: 45%;
+    /*    background-color: #F2F2F2;
+*/
 }
-/* Styling for content sections */
-.gamenamebox, .newrule, .rulestable {
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    padding: 20px;
+
+.leftSide {
+    width: 45%;
+    height: 100%;
+    background-color: #F2F2F2;
+    border-radius: 10px;
+}
+
+.generalSettings {
+    height: 25%;
+    width: 100%;
+    background-color: #BFD8FF;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3%;
+}
+
+.addOrEditLaw {
+    height: 70%;
+    width: 100%;
+    background-color: #BFD8FF;
+    border-radius: 10px;
+    padding: 0 3%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+
+.title-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 2%;
+}
+
+    .title-wrapper h2{
+        margin:0;
+    }
+
+.law-title,
+.law-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10%;
+}
+
+.setText p {
+    margin: 0;
+    font-size: 20px;
+}
+
+
+.btn-wraper {
+    display: flex;
+    justify-content: center;
+}
+
+
+.buttonWrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #BFD8FF;
+}
+
+.lawLeft {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2% 0;
+    justify-content: space-between;
+}
+
+    .lawLeft div {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+        gap: 2%;
+        height: 25%;
+        flex-wrap: wrap;
+        align-content: center;
+    }
+
+    .lawLeft input {
+        width: 90%;
+        height: 70%;
+        border-radius: 10px;
+    }
+
+    .lawLeft textarea {
+        width: 90%;
+        /* height: 133px; */
+        border-radius: 10px;
+        max-height: 75%;
+        height: 75%;
+        text-align: right
+    }
+
+.lawRight {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2% 0;
+    justify-content: space-between;
+}
+
+    .lawRight input {
+        width: 90%;
+        height: 50%;
+        border-radius: 10px;
+    }
+
+    .lawRight textarea {
+        width: 90%;
+        height: 50%;
+        border-radius: 10px;
+        text-align: right;
+    }
+
+.setText {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 2%;
+    height: 25%;
+    flex-wrap: wrap;
+    align-content: center;
+    text-align: right;
 }
 
 .gamenamebox {
     display: flex;
-    height: 50%;
+    height: 100%;
+    width: 45%;
+    flex-direction: column;
+    padding: 5px 2px;
+    justify-content: center;
 }
-    /* Ensure the rules table scrolls if it overflows */
-    .rulestable {
-        max-height: 100%; /* Adjust as needed */
-        overflow-y: auto;
+
+    .gamenamebox div {
+        display: flex;
+        align-items: flex-end;
+        gap: 2%;
     }
+
+.score {
+    height: 100%;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px 2px;
+    gap:5%;
+}
+
+    .score div {
+        display: flex;
+        align-items: center;
+        gap: 2%;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .score label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin:0;
+    }
+
+
+
+/* Ensure the rules table scrolls if it overflows */
+.rulestable {
+    max-height: 100%; /* Adjust as needed */
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 0;
+    border-width: 0px 1px;
+}
 
 .newrule {
     padding: 10px; /* Optional padding */
     border: 1px solid #ccc; /* Optional border */
+    max-height: 50%;
+}
+
+.addLawContainer {
+    display: flex;
+    height: 100%;
+}
+
+
+.table-container {
+    background-color: #F0F6FF;
+    width: 99%;
+    height: 100%;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+.row-color-1 {
+    background-color: #DBEDFF;
+}
+
+.row-color-2 {
+    background-color: #B2CEF0;
+}
+
+th {
+    background-color: #0062D1;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    font-size:20px;
+}
+
+td {
+    font-weight: normal;
+    font-size: 20px;
+}
+
+.sectionTitle {
+    display: flex;
 }
 
 button {
     font-size: 0.7rem;
 }
+
+
+
 .default-input {
-    border: 2px solid #ccc; /* Add a border to the input box from the start */
-    padding: 10px;
-    /*    margin-top: 20px;*/
-    border-radius: 10px;
-    outline-width: 3px;
-    outline-style: solid;
-    outline-color: grey; /* Default outline color, could be set to match the background */
-    transition: outline-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for color changes */
-    max-width: 250px;
-    max-height: 50px;
+    color: black;
+    font-weight: bold;
+    width: 100%;
+    height: 40%;
+    margin: 0;
+    padding: 0 10px;
+    text-align: start;
 }
 
 .good-input {
-    outline-color: green;
-    border-color: green; /* Change the border color as well */
+    color: green;
+    font-weight: bold;
 }
 
 .warnning-input {
-    outline-color: orange;
-    border-color: orange;
+    color: orange;
+    font-weight: bold;
 }
 
 .danger-input {
-    outline-color: red;
-    border-color: red;
-}
-.Ldefault-input {
-    border: 2px solid #ccc; /* Add a border to the input box from the start */
-    padding: 10px;
-/*    margin-top: 20px;
-*/    border-radius: 10px;
-    outline-width: 3px;
-    outline-style: solid;
-    outline-color: grey; /* Default outline color, could be set to match the background */
-    transition: outline-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for color changes */
-    max-width: 350px;
-    max-height: 50px;
+    color: red;
+    font-weight: bold;
 }
 
-.Lgood-input {
-    outline-color: green;
-    border-color: green; /* Change the border color as well */
-}
 
-.Lwarnning-input {
-    outline-color: orange;
-    border-color: orange;
-}
-
-.Ldanger-input {
-    outline-color: red;
-    border-color: red;
-}
 div .info-circle {
     width: 16px;
     height: 16px;
@@ -150,6 +362,7 @@ div .info-circle {
     div .info-circle:hover {
         background-color: #0056b3;
     }
+
 .caption-box {
     border: 1px solid #ccc;
     padding: 10px;
@@ -163,42 +376,157 @@ div .info-circle {
 
 
 
-.checkbox-wrapper-25 input[type="checkbox"] {
-    background-image: -webkit-linear-gradient(hsla(0,0%,0%,.1), hsla(0,0%,100%,.1)), -webkit-linear-gradient(left, #f66 50%, #6cf 50%);
-    background-size: 100% 100%, 200% 100%;
-    background-position: 0 0, 15px 0;
-    border-radius: 25px;
-    box-shadow: inset 0 1px 4px hsla(0,0%,0%,.5), inset 0 0 10px hsla(0,0%,0%,.5), 0 0 0 1px hsla(0,0%,0%,.1), 0 -1px 2px 2px hsla(0,0%,0%,.25), 0 2px 2px 2px hsla(0,0%,100%,.75);
+
+.icon-button {
+    background: none;
+    border: none;
     cursor: pointer;
-    height: 25px;
-    padding-right: 25px;
-    width: 75px;
-    -webkit-appearance: none;
-    -webkit-transition: .25s;
+    /*    padding: 10px;
+*/ font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.checkbox-wrapper-25 input[type="checkbox"]:after {
-    background-color: #eee;
-    background-image: -webkit-linear-gradient(hsla(0,0%,100%,.1), hsla(0,0%,0%,.1));
-    border-radius: 25px;
-    box-shadow: inset 0 1px 1px 1px hsla(0,0%,100%,1), inset 0 -1px 1px 1px hsla(0,0%,0%,.25), 0 1px 3px 1px hsla(0,0%,0%,.5), 0 0 2px hsla(0,0%,0%,.25);
-    content: '';
-    display: block;
-    height: 25px;
-    width: 50px;
+    .icon-button:hover {
+        color: #007BFF; /* Default hover color */
+    }
+
+
+.delete-button {
+    color: #dc3545; /* Red color for delete icon */
 }
 
-.checkbox-wrapper-25 input[type="checkbox"]:checked {
-    background-position: 0 0, 35px 0;
-    padding-left: 25px;
-    padding-right: 0;
-}
+    .delete-button:hover {
+        color: #c82333; /* Darker red on hover */
+    }
 
 
-.Bold{
-    font-weight:bold;
+
+
+
+
+
+
+
+
+/* ------------- COOL CHECKBOX ------------------*/
+
+
+
+.Bold {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .Normal{
+    font-size:20px;
     font-weight:normal;
 }
+
+.checkbox-container {
+}
+
+
+/* The switch container */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 34px;
+    margin-bottom: 10px; /* For spacing between switches */
+}
+
+    /* Hide the default checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+/* The slider (background) */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    border: 1px solid black;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+    /* The circle (inside the slider) */
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: #0062D1;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+
+/* Checked state */
+input:checked + .slider {
+    background-color: #0062D1;
+}
+
+    input:checked + .slider:before {
+        transform: translateX(40px);
+        background-color: white;
+    }
+
+/* Disabled state */
+.switch.disabled .slider {
+    background-color: lightblue;
+    border: 1px solid gray;
+}
+
+    .switch.disabled .slider:before {
+        background-color: gray;
+    }
+
+.switch.disabled input:checked + .slider {
+    background-color: #0062D1;
+}
+
+    .switch.disabled input:checked + .slider:before {
+        transform: translateX(26px);
+        background-color: gray;
+    }
+
+/* Add pointer cursor only for active sliders */
+input:disabled + .slider {
+    cursor: not-allowed;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

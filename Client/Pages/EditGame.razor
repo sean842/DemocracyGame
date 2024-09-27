@@ -2,52 +2,47 @@
 @inject HttpClient Http
 @inject NavigationManager nav
 @using NewBlazorProjecct.Shared.DTOs
-@if (msg != "") {
-    <h1>@msg</h1>
-}
+@inject IJSRuntime JS
 
 
 @if (myGame != null) {
     <div class="container">
-        <header class="d-flex justify-content-between align-items-center py-3 border-bottom h-20">
-            <button class="btn btn-secondary returnbutton" @onclick="ShowReturnPopup">חזרה לטבלת המשחקים </button>
+
+        <div class="upperRow">
+            <button class="defaultBTN" @onclick="UpdateGame">עדכון משחק</button>
             <h1>עריכת משחק</h1>
-            <button class="btn btn-primary updatebutton" @onclick="UpdateGame">עדכון משחק</button>
-        </header>
+            <button class="defaultBTN" @onclick="ShowReturnPopup">חזרה לטבלת המשחקים </button>
+        </div>
 
-        <div class="row h-70" style="max-height:70%;">
 
-            <div class="col-md-6 h-100 rightSide">
+        <div class="lowerRow">
 
-                <div class="gamenamebox p-2 border">
+            <div class="col rightSide">
 
-                    <div class="col ps-2">
-                        <div class="d-flex align-items-center ">
+                <div class="generalSettings">
 
-                            <div class="d-flex align-items-center ">
+                    <div class="gamenamebox">
 
-                                <p style="margin:0; margin-left:.3rem;">שם המשחק</p>
-                                <Tooltip Title="שם המשחק יכול להכיל עד 15 תווים">
-                                    <span class="info-icon">
-                                        <span class="info-circle">i</span>
-                                    </span>
-                                </Tooltip>
-
-                            </div>
-
-                            <span style="font-size:.6rem;">@myGame.GameName.Length /15</span>
+                        <div>
+                            <p style="margin:0; ">שם המשחק</p>
+                            <Tooltip Title=" שם המשחק יכול להיות בין 3-20 תווים">
+                                <span class="info-icon">
+                                    <span class="info-circle">i</span>
+                                </span>
+                            </Tooltip>
+                            <span class="@inputClassSpanName"> 20/ @myGame.GameName.Length </span>
 
                         </div>
-                        <input type="text" @bind="myGame.GameName" class="default-input @inputClass"
-                               @bind:event="oninput" @onkeyup="countChars" maxlength="15" />
-                        <br>
-                        
+
+                        <input type="text" @bind="myGame.GameName" class="defaultINPUT extra-input-css"
+                               @bind:event="oninput" @onkeyup="countChars" maxlength="20" style="font-weight: normal;" />
+
                     </div>
 
+                    <div class="score">
 
-                    <div class="col ps-2">
-                        <div class="d-flex align-items-center ">
-                            <div style="margin:0; margin-left:.3rem;"> חלוקת ניקוד </div>
+                        <div style="max-height:35%;">
+                            <p style="margin:0; "> חלוקת ניקוד </p>
                             <Tooltip Title="בלחיצה על כפתור זה, נחליט אם לחלק את הנקודות באופן שווה או אקראי">
                                 <span class="info-icon">
                                     <span class="info-circle">i</span>
@@ -55,73 +50,177 @@
                             </Tooltip>
                         </div>
 
-                        <label class="d-flex align-items-center">
-                            <span class="me-2 @spanEqualClass"> שווה </span>
-                            <div class="checkbox-wrapper-25">
+
+
+                        <div class="checkbox-container">
+                            <span class="@spanEqualClass"> שווה </span>
+
+                            <label class="switch">
                                 <input type="checkbox" checked="@myGame.ScoreFormat" @onchange="changeFormat">
-                            </div>
-                            <span class="ms-2 @spanRandomClass"> אקראית </span>
-                        </label>
+                                <span class="slider"></span>
+                            </label>
+                            <span class="@spanRandomClass">  אקראי </span>
+
+                        </div>
+
+
                     </div>
-
-
                 </div>
 
-                <div class="newrule  p-2 border">
-                    @if (singleLaw == null) {
-                        <p> @updateOrNewLawText </p>
-                        <button class="btn btn-primary" @onclick="AddLaw">הוספת חוק חדש </button>
+                <div class="addOrEditLaw">
 
+                    @if (singleLaw == null) {
+                        <div class="buttonWrap">
+
+                            <button class="defaultBTN" @onclick="AddLaw">הוספת חוק חדש </button>
+                        </div>
                     }
                     else {
-                        <div class="d-flex align-items-center mb-2">
-                            <p style="margin:0; margin-left:.3rem;"> @updateOrNewLawText </p>
-                            <Tooltip Title="שם החוק יכול להכיל עד 20 תווים">
-                                <span class="info-icon">
-                                    <span class="info-circle">i</span>
-                                </span>
-                            </Tooltip>
-                        </div>
-                        <input type="text" @bind="singleLaw.Content" class=" Ldefault-input @LinputClass"
-                               @bind:event="oninput" @onkeyup="countCharsLaws" maxlength="20" />
-                        <br />
 
-                        <button class="btn btn-primary" @onclick="CheckLawSaving">שמירת החוק</button>
+                         <div class="law-title">
+
+                            <div class="setText">
+                                <p style="margin:0;">כותרת החוק</p>
+
+                                <Tooltip Title="כותרת החוק יכולה להכיל בין 3-25 תווים">
+                                    <span class="info-icon">
+                                        <span class="info-circle">i</span>
+                                    </span>
+                                </Tooltip>
+
+                                <span class="@inputClassSpanTitle" > 25/ @singleLaw.Title.Length  </span>
+                            </div>
+
+                            <input type="text" @bind="singleLaw.Title" @bind:event="oninput" class="defaultINPUT extra-input-css" @onkeyup="countCharsLawsTitle" maxlength="25" />
+
+                        </div>
+
+                        <div class="law-content">
+
+                            <div class="setText">
+
+                                <p style="margin:0; margin-left:.3rem;">תוכן החוק</p>
+
+                                <Tooltip Title="תוכן החוק יכול להכיל בין 3-50 תווים">
+                                    <span class="info-icon">
+                                        <span class="info-circle">i</span>
+                                    </span>
+                                </Tooltip>
+
+                                <span class="@inputClassSpanContent" > 50/ @singleLaw.Content.Length  </span>
+
+                            </div>
+
+                            <input @bind="singleLaw.Content" @bind:event="oninput" class="defaultINPUT extra-input-css" @onkeyup="countCharsLawsContent" maxlength="50"></input>
+                        </div>
+
+                        <div class="btn-wraper">
+                            <button class="defaultBTN" style="width:55%;margin:0;" @onclick="CheckLawSaving">שמירת החוק</button>
+                        </div>
+
+
+
+
+
+
+
+@*                         <div class="col-5 lawRight">
+
+                            <div class="setText">
+                                <p style="margin:0; margin-left:.3rem;">כותרת החוק</p>
+                                <Tooltip Title="כותרת החוק יכולה להכיל בין 3-25 תווים">
+                                    <span class="info-icon">
+                                        <span class="info-circle">i</span>
+                                    </span>
+                                </Tooltip>
+                                <span class="@inputClassSpanTitle" style="font-size:.5rem;"> @singleLaw.Title.Length / 25 </span>
+                            </div>
+                            <textarea @bind="singleLaw.Title" @bind:event="oninput" class="defaultINPUT" @onkeyup="countCharsLawsTitle" maxlength="25"></textarea>
+                            <button class="defaultBTN" style="width:55%;margin:0;" @onclick="CheckLawSaving">שמירת החוק</button>
+
+                        </div>
+
+                        <div class="col-5 lawLeft">
+                            <div class="setText">
+
+                                <p style="margin:0; margin-left:.3rem;">תוכן החוק</p>
+                                <Tooltip Title="תוכן החוק יכול להכיל בין 3-50 תווים">
+                                    <span class="info-icon">
+                                        <span class="info-circle">i</span>
+                                    </span>
+                                </Tooltip>
+                                <span class="@inputClassSpanContent" style="font-size:.5rem;"> @singleLaw.Content.Length / 50 </span>
+
+                            </div>
+                            <textarea @bind="singleLaw.Content" @bind:event="oninput" class="defaultINPUT" @onkeyup="countCharsLawsContent" maxlength="50"></textarea>
+
+                        </div>
+ *@
+
                     }
+
+
                 </div>
+
             </div>
 
-            <div class="col-md-6 h-100">
-                <div class="rulestable p-3 border">
-                    <table class="table table-striped">
+            <div class="col leftSide">
+
+
+                <div class="table-container">
+
+                    <table class="table rulestable">
+
                         <thead>
                             <tr>
-                                <th>חוק</th>
-                                <th>עריכה</th>
-                                <th>מחיקה</th>
+                                <th> כותרת החוק </th>
+                                <th> עריכה </th>
+                                <th> מחיקה </th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            @if (myGame?.LawList == null || myGame.LawList.Count == 0) {
+                            @if (myGame.LawList == null || myGame.LawList.Count == 0) {
                                 <tr>
-                                    <td colspan="3">אין חוקים קיימים. </td>
+                                    <td colspan="3"> אין חוקים קיימים </td>
                                 </tr>
                             }
                             else {
-                                @foreach (var law in myGame.LawList) {
-                                    <tr>
-                                        <td>@law.Content</td>
-                                        <td><button class="btn btn-warning" @onclick="(() => SendLawToUpdate(law))">עריכה</button></td>
-                                        <td><button class="btn btn-danger" @onclick="(() => ShowPopUp(law))">מחיקה</button></td>
+                                int index = 0;
+                                foreach (var law in myGame.LawList) {
+                                    <tr class="@GetRowClass(index)">
+                                        <td style="font-weight:bold;"> @law.Title  </td>
+                                        <td>
+                                            <button class="icon-button" @onclick="(() => SendLawToUpdate(law))">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class="icon-button delete-button" @onclick="(() => ShowPopUp(law))">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </td>
                                     </tr>
+                                    index++;
                                 }
+
                             }
                         </tbody>
+
                     </table>
+
                 </div>
             </div>
+
+
         </div>
+
+
     </div>
+
+
+
+
 }
 else {
     <p>טוען נתוני משחק.. </p>
@@ -149,8 +248,10 @@ else {
 
     bool goBack = false; // to check if we go back page or delete law. false = delete law, trou = go back.
 
-    string inputClass = "";
-    string LinputClass = "";
+
+    string inputClassSpanName = "";
+    string inputClassSpanTitle = "";
+    string inputClassSpanContent = "";
 
     string spanEqualClass = "";
     string spanRandomClass = "";
@@ -160,39 +261,71 @@ else {
         int charLength = myGame.GameName.Length;
         switch (charLength) {
             case < 3:
-                inputClass = "danger-input";
+                inputClassSpanName = "danger-input";
                 break;
             case >= 3 and <= 10:
-                inputClass = "good-input";
+                inputClassSpanName = "good-input";
                 break;
-            case > 10 and <= 14:
-                inputClass = "warnning-input";
+            case > 10 and <= 19:
+                inputClassSpanName = "warnning-input";
                 break;
-            case > 14:
-                inputClass = "danger-input";
+            case > 19:
+                inputClassSpanName = "danger-input";
                 break;
             default:
-                inputClass = "";
+                inputClassSpanName = "default-input";
                 break;
         }
     }
-    void countCharsLaws() {
-        int lawsLength = singleLaw.Content.Length;
+    void countCharsLawsTitle() {
+        if (singleLaw == null) {
+            inputClassSpanTitle = "default-input";
+            return;
+        }
+        int lawsLength = singleLaw.Title.Length;
         switch (lawsLength) {
-            case < 2:
-                LinputClass = "Ldanger-input";
+            case < 3:
+                inputClassSpanTitle = "danger-input";
                 break;
-            case > 2 and <= 15:
-                LinputClass = "Lgood-input";
+            case >= 3 and <= 15:
+                inputClassSpanTitle = "good-input";
+
                 break;
-            case > 15 and <= 19:
-                LinputClass = "Lwarnning-input";
+            case > 15 and <= 24:
+                inputClassSpanTitle = "warnning-input";
+
                 break;
-            case > 19:
-                LinputClass = "Ldanger-input";
+            case > 24:
+                inputClassSpanTitle = "danger-input";
+
                 break;
             default:
-                LinputClass = "";
+                inputClassSpanTitle = "default-input";
+                break;
+        }
+    }
+    void countCharsLawsContent() {
+        if (singleLaw == null) {
+            inputClassSpanContent = "default-input";
+            return;
+        }
+
+        int lawsLength = singleLaw.Content.Length;
+        switch (lawsLength) {
+            case < 3:
+                inputClassSpanContent = "danger-input";
+                break;
+            case >= 3 and <= 30:
+                inputClassSpanContent = "good-input";
+                break;
+            case > 30 and <= 49:
+                inputClassSpanContent = "warnning-input";
+                break;
+            case > 49:
+                inputClassSpanContent = "danger-input";
+                break;
+            default:
+                inputClassSpanContent = "default-input";
                 break;
         }
     }
@@ -211,20 +344,65 @@ else {
             };
         }
         countChars();
+        countCharsLawsTitle();
+        countCharsLawsContent();
         HighlightText();
     }
 
-    public void AddLaw() => singleLaw = new LawsDTO();
+    private string GetRowClass(int index) {
+        return index % 2 == 0 ? "row-color-1" : "row-color-2";
+    }
+
+
+    // public void AddLaw() => singleLaw = new LawsDTO();
+    // public void AddLaw() => singleLaw = new LawsDTO { GameID = myGame.GameID, Title = " ", Content = "" };
+
+    public void AddLaw() {
+        singleLaw = new LawsDTO {
+                GameID = myGame.GameID,
+                Title = string.Empty,
+                Content = string.Empty
+            };
+        countCharsLawsTitle();
+        countCharsLawsContent();
+
+    }
+
 
     void SendLawToUpdate(LawsDTO lawToUpdate) {
         singleLaw = lawToUpdate;
         editState = true;
+        countCharsLawsTitle();
+        countCharsLawsContent();
+
     }
+
+
+    bool CheckLawTitle() {
+        return singleLaw.Title.Length >= 3 && singleLaw.Title.Length <= 25;
+    }
+
+    bool CheckLawContent() {
+        return singleLaw.Content.Length >= 3 && singleLaw.Title.Length <= 50;
+    }
+
+    bool CheckGameName() {
+        return myGame.GameName.Length >= 3 && myGame.GameName.Length <= 20;
+    }
+
     async void CheckLawSaving() {
-        if (string.IsNullOrEmpty(singleLaw.Content) || singleLaw.Content.Length < 3 || singleLaw.Content.Length > 15) {
-            msg = "שם המשחק צריך להיות בין 3-15 תווים.";
+        if (!CheckLawTitle()) {
+            msg = "כותרת החוק צריכה להיות בין 3-25 תווים.";
+            await JS.InvokeVoidAsync("alert", msg);
             return;
         }
+
+        if (!CheckLawContent()) {
+            msg = "תוכן החוק צריך להיות בין 3-50 תווים.";
+            await JS.InvokeVoidAsync("alert", msg);
+            return;
+        }
+
 
         if (editState) {
             updateOrNewLawText = "עדכון חוק";
@@ -237,7 +415,12 @@ else {
     }
 
     async Task UpdateLaw() {
-        var response = await Http.PostAsJsonAsync($"api/Generator/{UserID}/UpdateLaw", singleLaw);
+        LawToUpdate lawToUpdate = new LawToUpdate();
+        lawToUpdate.LawID = singleLaw.LawID;
+        lawToUpdate.Title = singleLaw.Title;
+        lawToUpdate.Content = singleLaw.Content;
+
+        var response = await Http.PostAsJsonAsync("api/Generator/" + UserID + "/UpdateLaw", lawToUpdate);
         if (response.IsSuccessStatusCode) {
             var newLaw = await response.Content.ReadFromJsonAsync<LawsDTO>();
             int index = myGame.LawList.IndexOf(singleLaw);
@@ -254,11 +437,20 @@ else {
                 "Didnt Get Law" => "We did not get the law.",
                 _ => "An unknown error occurred."
             };
+            await JS.InvokeVoidAsync("alert", msg);
+
         }
     }
 
     async Task AddNewLaw() {
-        var response = await Http.GetAsync($"api/Generator/{UserID}/AddNewLaw/{myGame.GameID}/{singleLaw.Content}");
+        LawToAdd lawToAdd = new LawToAdd();
+        lawToAdd.GameID = singleLaw.GameID;
+        lawToAdd.Title = singleLaw.Title;
+        lawToAdd.Content = singleLaw.Content;
+        Console.WriteLine($"gmaeID:{singleLaw.GameID}, title:{singleLaw.Title}, content: {singleLaw.Content}");
+        // var response = await Http.PostAsJsonAsync($"api/Generator/{UserID}/AddNewLaw/", singleLaw);
+        var response = await Http.PostAsJsonAsync($"api/Generator/{UserID}/AddNewLaw/", lawToAdd);
+
         if (response.IsSuccessStatusCode) {
             var newLaw = await response.Content.ReadFromJsonAsync<LawsDTO>();
             if (newLaw != null) {
@@ -277,8 +469,13 @@ else {
                 "Not Get Law" => "We did not get the law.",
                 _ => "An unknown error occurred."
             };
+            await JS.InvokeVoidAsync("alert", msg);
+
         }
     }
+
+
+
     void changeFormat() {
         myGame.ScoreFormat = !myGame.ScoreFormat; // Toggle the value
         HighlightText();
@@ -286,20 +483,26 @@ else {
 
     void HighlightText() {
         if (myGame.ScoreFormat) {
+            Console.WriteLine(myGame.ScoreFormat);
             spanEqualClass = "Bold";
             spanRandomClass = "Normal";
         }
         else {
+            Console.WriteLine(myGame.ScoreFormat);
+
             spanEqualClass = "Normal";
             spanRandomClass = "Bold";
         }
     }
 
     async Task UpdateGame() {
-        if (string.IsNullOrEmpty(myGame.GameName) || myGame.GameName.Length < 3 || myGame.GameName.Length > 15) {
-            msg = "שם המשחק צריך להיות בין 3-15 תווים.";
+
+        if (!CheckGameName()) {
+            msg = "שם המשחק צריך להיות בין 3-20 תווים";
+            await JS.InvokeVoidAsync("alert", msg);
             return;
         }
+
 
         var response = await Http.PostAsJsonAsync($"api/Generator/{UserID}/UpdateGame", myGame);
         if (response.IsSuccessStatusCode) {
@@ -312,13 +515,15 @@ else {
                 "Didnt Get Law" => "We did not get the law.",
                 _ => "An unknown error occurred."
             };
+            await JS.InvokeVoidAsync("alert", msg);
+
         }
     }
 
 
     void ShowPopUp(LawsDTO LawToDelete) {
         lawToDelete = LawToDelete;
-        popupMessage = "למחוק את החוק: " + lawToDelete.Content + "?";
+        popupMessage = "למחוק את החוק: " + lawToDelete.Title + "?";
         goBack = false;
         isPopupVisible = true; // Show the popup
     }
@@ -338,6 +543,7 @@ else {
             else {
                 await DeleteLaw(lawToDelete); // If confirmed, delete the law.
             }
+            goBack = false;
         }
 
     }
@@ -353,6 +559,8 @@ else {
                 "Not Delete" => "Did not delete the law.",
                 _ => "An unknown error occurred."
             };
+            await JS.InvokeVoidAsync("alert", msg);
+
         }
     }
 

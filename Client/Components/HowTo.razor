@@ -1,0 +1,43 @@
+﻿
+
+
+
+<div class="overlay">
+    <div class="content">
+        <button @onclick="Close" class="close-button">X</button>
+
+        <img src="./imgs/logo.png" class="my-logo" />
+
+        <h2>איך משחקים</h2>
+
+        <ol class="styled-list">
+            <li>
+                <h3> נתחלק לקבוצות</h3>
+                <p>נבחר שם ודמות שתייצג את הקבוצה שלנו</p>
+            </li>
+
+            <li>
+                <h3> נקליד את קוד המשחק </h3>
+                <p>הקוד שקיבלנו מהמרצה, למשל 101</p>
+            </li>
+
+            <li>
+                <h3> נתחיל לשחק</h3>
+                <p>נמתין להצגת החוקים ונצביע האם אנחנו <span class="green-text">בעד</span> / <span class="orange-text">נמנע</span> / <span class="red-text">נגד</span> החוק</p>
+
+            </li>
+
+        </ol>
+
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+
+    private void Close() {
+        OnClose.InvokeAsync(false);
+    }
+}

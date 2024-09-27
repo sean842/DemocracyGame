@@ -1,4 +1,6 @@
-﻿using System;
+﻿//זה הפרויקט של שון
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +16,6 @@ namespace NewBlazorProjecct.Shared.DTOs
         public int GameID { get; set; }
         public int Points { get; set; }
         public string Character { get; set; } = "";
-
+        public string PassportCharacter { get; set; } = "";
     }
 }

@@ -2,87 +2,135 @@
 @inject HttpClient Http;
 @inject NavigationManager nav;
 @using NewBlazorProjecct.Shared.DTOs;
+@inject IJSRuntime JS
 
-@if(msg != null) { @msg; }
+
 
 <div class="container">
 
-    <div class="upperRow">
-        <h3>שלום, @myUser.Name</h3>
+    <div class="upperRow ">
+
+        <div class="col-7 " style="display: flex; align-items: center; justify-content: flex-start;">
+            <h1 style="margin:0;">שלום, @myUser.Name</h1>
+        </div>
+
+
+        <div class="col-5">
+
+            <div class="text-container ">
+
+                <h3>  שם המשחק:  </h3>
+
+                <Tooltip Title=" שם המשחק יכול להיות בין 3-20 תווים">
+                    <span class="info-icon">
+                        <span class="info-circle">i</span>
+                    </span>
+                </Tooltip>
+
+                <span class="@spawnInputClass myGames-span"> 20/  @gameNameToAdd.Length </span>
+
+            </div>
+
+            <div class="inputANDbtn-container row">
+
+                <input type="text" @bind="gameNameToAdd" placeholder="שם למשחק החדש" class=" defaultINPUT" style="text-align:right; width:200px !important;"
+                       @bind:event="oninput" @onkeyup="countChars" maxlength="20" />
+                <button class=" defaultBTN" style="width:135px !important;" @onclick="AddNewGame">הוסף משחק </button>
+
+            </div>
+
+        </div>
+
+
+
     </div>
 
-    <div class="addnewgame">
-        <input type="text" placeholder="הקלד שם למשחק חדש" @bind="gameNameToAdd" />
-        <button class="btn btn-primary myBtn" @onclick="AddNewGame">הוסף משחק</button>
-    </div>
 
 
-<div class="parent-container">
-   
-    <div class="table-wrapper">
-        <div class="table-container">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>שם המשחק</th>
-                        <th>קוד המשחק</th>
-                        <th>מספר חוקים</th>
-                        <th>עריכה</th>
-                        <th>
-                            מצב פרסום
-                            <Tooltip Title="משחק יפורסם עם 3 חוקים ויותר">
-                                <span class="info-icon">
-                                    <span class="info-circle">i</span>
-                                </span>
-                            </Tooltip>
-                        </th>
-                        <th>מחיקה</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (myUser?.GameList?.Count > 0) {
-                        int index = 0;
-                        @foreach (var game in myUser.GameList) {
-                            <tr class="@GetRowClass(index)">
-                                <td>@game.GameName</td>
-                                <td>@game.GameCode</td>
-                                <td>@game.LawsNumber</td>
-                                <td>
+    <div class="parent-container">
+
+        <div class="table-wrapper">
+
+            <div class="table-container">
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>שם המשחק</th>
+                            <th>קוד המשחק</th>
+                            <th>מספר חוקים</th>
+                            <th>עריכה</th>
+                            <th>
+                                מצב פרסום
+                                <Tooltip Title="משחק יפורסם עם 3 חוקים ויותר">
+                                    <span class="info-icon">
+                                        <span class="info-circle">i</span>
+                                    </span>
+                                </Tooltip>
+                            </th>
+                            <th>מחיקה</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (myUser?.GameList?.Count > 0) {
+                            int index = 0;
+                            @foreach (var game in myUser.GameList) {
+                                <tr class="@GetRowClass(index)">
+                                    <td style="font-weight:bold">@game.GameName</td>
+                                    <td>@game.GameCode</td>
+                                    <td>@game.LawsNumber</td>
+                                    <td>
                                         <button class="icon-button" @onclick="(() => Navigate(game.GameCode))">
                                             <i class="fas fa-edit"></i>
                                         </button>
-@*                                     <button class="editbut" @onclick="(() => Navigate(game.GameCode))">עריכה</button>
- *@                                </td>
-                                <td>
-                                    @if (!game.CanPublish)
-                                    {
-                                        <input type="checkbox" disabled />
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox" checked="@game.IsPublish" @onchange="(() => changePublish(game))" />
-                                    }
-                                </td>
-                                <td>
+                                    </td>
+                                    <td>
+                                        @if (!game.CanPublish) {
+
+
+                                            <div class="checkbox-container">
+                                                <label class="switch">
+                                                    <input type="checkbox" disabled>
+                                                    <span class="slider"></span>
+                                                </label>
+                                            </div>
+
+
+
+                                        }
+                                        else {
+
+                                            <div class="checkbox-container">
+
+                                                <label class="switch">
+                                                    <input type="checkbox" checked="@game.IsPublish" @onchange="(() => changePublish(game))">
+                                                    <span class="slider"></span>
+                                                </label>
+
+                                            </div>
+
+
+                                        }
+                                    </td>
+                                    <td>
                                         <button class="icon-button delete-button" @onclick="(() => ShowPopUp(game))">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
-@*                                     <button class="btn btn-danger" @onclick="(() => ShowPopUp(game))">מחיקה</button>
- *@                                </td>
-                            </tr>
-                            index++;
+                                    </td>
+                                </tr>
+                                index++;
+                            }
                         }
-                    }
-                    else {
-                        <tr>
-                            <td colspan="6">אין משחקים</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                        else {
+                            <tr>
+                                <td colspan="6">אין משחקים</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
 </div>
 @if (isPopupVisible) {
@@ -100,6 +148,8 @@
     string msg = "";
     string popupMessage = "";
     bool isPopupVisible = false;
+    // string inputClass = "";
+    string spawnInputClass = "";
 
     private string GetRowClass(int index) {
         return index % 2 == 0 ? "row-color-1" : "row-color-2";
@@ -109,7 +159,8 @@
         var userResponse = await Http.GetAsync($"api/Generator/{UserID}/GetGames");
         if (userResponse.IsSuccessStatusCode) {
             myUser = await userResponse.Content.ReadFromJsonAsync<User>();
-        } else {
+        }
+        else {
             string error = await userResponse.Content.ReadAsStringAsync();
             msg = error switch {
                 "No User" => "Didn't find the user.",
@@ -119,8 +170,8 @@
     }
 
     async Task AddNewGame() {
-        if (string.IsNullOrEmpty(gameNameToAdd) || gameNameToAdd.Length < 3 || gameNameToAdd.Length > 15) {
-            msg = "שם המשחק צריך להיות בין 3-15 תווים.";
+        if (string.IsNullOrEmpty(gameNameToAdd) || gameNameToAdd.Length < 3 || gameNameToAdd.Length > 20) {
+            msg = "שם המשחק צריך להיות בין 3-20 תווים.";
             return;
         }
 
@@ -129,7 +180,8 @@
             var newGame = await response.Content.ReadFromJsonAsync<GameLawCount>();
             myUser.GameList.Add(newGame);
             Navigate(newGame.GameCode);
-        } else {
+        }
+        else {
             string error = await response.Content.ReadAsStringAsync();
             msg = error switch {
                 "Not Insert" => "Didn't insert the game",
@@ -157,41 +209,97 @@
         }
     }
 
+
+
+
     public async Task DeleteGame(GameLawCount gameToDelete) {
         var respons = await Http.DeleteAsync($"api/Generator/{UserID}/DeleteGame/{gameToDelete.GameID}");
-        if (respons.IsSuccessStatusCode) {
-            myUser.GameList.Remove(gameToDelete);
-        } else {
-            string error = await respons.Content.ReadAsStringAsync();
-            msg = error switch {
-                "Not Delete" => "Didn't delete the game.",
-                _ => "An error occurred.",
-            };
+        if (!respons.IsSuccessStatusCode) {
+            await HandleGameError(respons);
+            return;
+        }
+        myUser.GameList.Remove(gameToDelete);
+    }
+
+
+
+    void countChars() {
+        int charLength = gameNameToAdd.Length;
+        switch (charLength) {
+            case < 3:
+                spawnInputClass = "danger-input";
+                break;
+            case >= 3 and <= 10:
+                spawnInputClass = "good-input";
+                break;
+            case > 10 and <= 19:
+                spawnInputClass = "warnning-input";
+                break;
+            case > 19:
+                spawnInputClass = "danger-input";
+                break;
+            default:
+                spawnInputClass = "default-input";
+                break;
         }
     }
+
+
+
 
     protected async Task changePublish(GameLawCount game) {
         var gameToSend = new PublishGame {
-            GameID = game.GameID,
-            IsPublish = !game.IsPublish
-        };
+                GameID = game.GameID,
+                IsPublish = !game.IsPublish
+            };
 
         var userRes = await Http.PostAsJsonAsync($"api/Generator/{UserID}/PublishGame", gameToSend);
-        if (userRes.IsSuccessStatusCode) {
-            var updatedGame = await userRes.Content.ReadFromJsonAsync<GameLawCount>();
-            int index = myUser.GameList.IndexOf(game);
-            myUser.GameList[index] = updatedGame;
-
-            if (gameToSend.IsPublish != updatedGame.IsPublish) {
-                msg = "Can't publish the game";
-            }
-        } else {
-            string error = await userRes.Content.ReadAsStringAsync();
-            msg = error switch {
-                "Update Failed" => "Failed to update",
-                "not get game" => "we didnt got the game",
-                _ => "An error occurred.",
-            };
+        if (!userRes.IsSuccessStatusCode) {
+            await HandleGameError(userRes);
+            return;
         }
+
+        var updatedGame = await userRes.Content.ReadFromJsonAsync<GameLawCount>();
+        int index = myUser.GameList.IndexOf(game);
+        myUser.GameList[index] = updatedGame;
+
+        if (gameToSend.IsPublish != updatedGame.IsPublish) {
+            msg = "Can't publish the game";
+            Console.WriteLine(msg);
+            await JS.InvokeVoidAsync("alert", msg);
+
+        }
+
     }
+
+
+
+
+
+    private async Task HandleGameError(HttpResponseMessage response) {
+        var error = await response.Content.ReadAsStringAsync();
+        switch (error) {
+            case "Not Delete":
+                msg = "המשחק לא נמחק!";
+                Console.WriteLine("המשחק לא נמחק!");
+                break;
+            case "Update Failed":
+                msg = "Failed to update";
+                Console.WriteLine("this game do not have any laws");
+                break;
+            case "not get game":
+                msg = "we didnt got the game";
+                break;
+            default:
+                msg = "שגיאה בלתי צפויה";
+                break;
+        }
+        Console.WriteLine(msg);
+        await JS.InvokeVoidAsync("alert", msg);
+        return;
+    }
+
+
+
+
 }

@@ -2,7 +2,7 @@
 
 
 <!-- Floating Button -->
-<button @onclick="ToggleListVisibility" class="floating-btn">
+<button @onclick="ToggleListVisibility" class="floating-btn myShadow">
     <i class="fas fa-users"></i> <!-- FontAwesome Icon -->
 </button>
 
@@ -10,6 +10,7 @@
 <div class="group-list" style="display:@(isListVisible ? "block" : "none")">
     <ul>
         @foreach (var group in Groups) {
+
             <li>
                 <span class="group-name">@group.GroupName</span>
                 <span class="group-score">@group.Points</span>

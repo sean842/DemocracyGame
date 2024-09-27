@@ -2,54 +2,85 @@
 @inject NavigationManager Navigation
 @using NewBlazorProjecct.Client.Components
 
-<nav>
-    <div>
+
+
+
+ <nav>
+
+
+     <div class="logoWrapper">
+        <img src="./imgs/logo.png" />
+     </div>
+
+    <ul class="nav-links">
         @if (UserService.IsLoggedIn) {
-            <NavLink href="@($"./LecturePage/{UserService.LoggedInUser.UserID}")" Match="NavLinkMatch.All">
-                משחק
-            </NavLink>
+            <li class="myNavBTN"> <a href="@($"./LecturePage/{UserService.LoggedInUser.UserID}")"> משחק </a>  </li>
         }
         else {
-            <NavLink href="UserPage" Match="NavLinkMatch.All">
-                משחק
-            </NavLink>
+            <li class="myNavBTN"> <a href="@("./UserPage")"> משחק </a>  </li>
         }
-    </div>
-    <div>
+
         @if (UserService.IsLoggedIn) {
-
-            <input class="btn-nav" type="button" value="עורך" @onclick="NavTo" />
-
+            <li class="myNavBTN"> <a href="@($"./MyGames/{UserService.LoggedInUser.UserID}")"> עורך </a>  </li>
         }
         else {
-            <input class="btn-nav" type="button" value="עורך" @onclick="ShowLoginPopup" />
+            <li class="myNavBTN"> <a @onclick="ShowLoginPopup"> עורך</a> </li>
         }
-    </div>
-    <div>
-        <input class="btn-nav" type="button" value="אודות" @onclick="ShowAboutPopup" />
-    </div>
-    <div>
-        <input class="btn-nav" type="button" value="איך משחקים?" @onclick="ShowHotTo" />
-    </div>
-    @if (howto)
-    {
-        <div id="page">
-        <img class="odotImg" src="./imgs/איך משחקים.png" />
-        <input @onclick="exitPopUp2" class="exitButton" type="button" value="X" />
-        </div>
-    }
-    @if (UserService.IsLoggedIn) {
-        <div>
-            <input class="btn-nav" type="button" value="Logout" @onclick="Logout" />
-        </div>
-    }
-</nav>
+
+
+
+        <li class="myNavBTN"> <a @onclick="ShowAboutPopup"> אודות </a> </li>
+        <li class="myNavBTN"> <a @onclick="ShowHowTo"> איך משחקים? </a> </li>
+
+        @if (UserService.IsLoggedIn) {
+            <li class="myNavBTN"> <a @onclick="Logout"> התנתקות</a> </li>
+
+        }
+
+
+
+
+
+
+    </ul>
+
+
+ </nav>
+
+
 
 <LoginPopup @ref="loginPopup" OnLoginSuccess="OnLoginSuccess" />
-<AboutPopup @ref="aboutPopup" />
-
+<AboutPopup IsVisible="@showPopup" OnClose="HideAboutPopup"></AboutPopup>
+@if (showHowTo) {
+    <HowTo OnClose="HideHowTo" />
+}
 
 @code {
+
+
+
+    private bool showHowTo = false;
+
+    private void ShowHowTo() {
+        showHowTo = true;
+    }
+
+    private void HideHowTo(bool isVisible) {
+        showHowTo = isVisible;
+    }
+
+
+
+
+
+
+
+
+
+
+    private bool showPopup = false;
+
+
     bool howto = false;
     [Parameter]
     public int UserID { get; set; }
@@ -57,33 +88,55 @@
     private LoginPopup loginPopup;
     private bool isLoggedIn = false;
     private AboutPopup aboutPopup;
-    private void ShowHotTo()
-    {
+
+    bool showOdot = false;
+
+
+
+
+    private void ShowHotTo() {
         howto = true;
     }
     private void ShowLoginPopup() {
         loginPopup?.Show();
     }
 
-    void ShowAboutPopup() {
-        aboutPopup?.Show();
-    }
-    private void exitPopUp2()
-    {
+
+    private void exitPopUp2() {
         howto = false;
     }
     private void OnLoginSuccess() {
         // isLoggedIn = true;
         StateHasChanged();
     }
-    private void Logout() {
-        UserService.Logout();
-        Navigation.NavigateTo("./UserPage");
 
-        StateHasChanged();
-    }
     void NavTo() {
         Navigation.NavigateTo("./MyGames/" + UserService.LoggedInUser.UserID);
 
     }
+
+    private void Logout() {
+        UserService.Logout();
+        loginPopup?.ClearLoginFields(); // קריאה לניקוי השדות בפופאפ
+        Navigation.NavigateTo("./UserPage");
+        StateHasChanged();
+    }
+
+    private void exitPopUp3() {
+        showOdot = false;
+    }
+
+
+
+    private void ShowAboutPopup() {
+        showPopup = true;
+    }
+
+    private void HideAboutPopup() {
+        showPopup = false;
+    }
+
+
+
+
 }

@@ -17,24 +17,33 @@
 }
 
 
-.canvas {
+/*.canvas {
     text-align: center;
     padding: 2vh 2vw;
 }
-
+*/
 .title-container {
     display: flex;
     justify-content: center;
     width: 100%;
     flex-direction:row;
-}
+/*    margin-top:10vh;
+*/}
 
 .title {
     /*font-size: 3vw;*/ /* Relative to viewport width */
-/*    color: #4CAF50;
-*/    text-align: center;
+    /*    color: #4CAF50;
+*/ text-align: center;
     margin: 0 auto;
+    font-size: 2rem;
+    font-weight: bold;
 }
+
+
+#tablewWrapForUser{
+    width:70%;
+}
+
 
 .character-selection {
     display: flex;
@@ -42,9 +51,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    gap: 2vh; /* Add some space between the elements */
-    margin-top: 2vh; /* Add some space below the title */
-    height:100%;
+    height: 100%;
 }
 
 .character-col {
@@ -52,41 +59,41 @@
     justify-content: center;
     align-items: center;
     gap: 2vw; /* Add space between character images */
-    width:40%;
-    height:100%;
+/*    width:40%;
+*/    height:100%;
 }
-
-/*.character-img {
-    width: 60%; 
-    height: auto;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 10px;
-}
-*/
-/*    .character-img:hover,
-    .character-img.selected {
-        transform: scale(1.2);
-        box-shadow: 0 0 15px rgba(0, 128, 0, 0.5);
-    }
-*/
 
 
 
 .character-img-btn {
-    width: 50%;
+    width: 90%;
     height: auto;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 10px;
 }
 
-    .character-img-btn:hover,
-    .character-img-btn.selected {
-        transform: scale(1.2);
-        box-shadow: 0 0 15px rgba(0, 128, 0, 0.5);
+
+.imgWrapper {
+    width: 65%;
+    height: 100%;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease, background-color 0.3s ease;
+    border-radius: 10px;
+    display: flex;
+    align-content: flex-end;
+    flex-wrap: wrap;
+    background: #FFFFFF;
+    justify-content: center;
+    border: 2px black solid;
+}
+
+    .imgWrapper:hover {
+        background: #A5B6CE;
     }
 
+    .imgWrapper.selected {
+        background: #A5B6CE;
+        box-shadow: inset 4px 4px 2px rgba(0, 0, 0, 0.2); /* Inner shadow */
+    }
 .regular-img {
     width: 80%; /* Adjust as needed */
     height: auto;
@@ -102,9 +109,10 @@
 .input-col {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    height: 100%;
     align-items: center;
-    margin-bottom: 2vh; /* Add some space below the input column */
+    gap: 10px;
 }
 
     .input-col label {
@@ -113,15 +121,34 @@
         margin-bottom: 1vh;
     }
 
+
+
+.left-only {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
 .form-control {
-    padding: 1vh 1vw;
+    /*    padding: 1vh 1vw;
     font-size: 1.5vw;
     border-radius: 10px;
     border: 2px solid #4CAF50;
     margin-bottom: 1vh;
+*/ width: 90% !important;
+    height: 90% !important;
+    display: block !important;
 }
 
-.btn-main {
+/*.inputChooseCharacter {
+    width: 90% !important;
+    height: 90% !important;
+    display: block !important;
+}
+*/.btn-main {
     padding: 1vh 2vw;
     font-size: 2vw;
     color: white;
@@ -136,37 +163,6 @@
         background-color: #45A049;
     }
 
-/*.container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 2vh 2vw;
-    height: 100%;
-}
-*/
-/*.left-column, .right-column {
-    width: 48%;
-    height: 100%;
-}
-*/
-/*.score-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2vh;
-}
-
-    .score-table th, .score-table td {
-        padding: 1vh 1vw;
-        text-align: center;
-        border: 1px solid #ddd;
-        background-color: #f9f9f9;
-    }
-*/
-.character-text {
-    font-size: 2vw; /* Adjusted for better visibility */
-    color: #333;
-    margin: 0;
-}
 
 .group-list {
     list-style: none;
@@ -201,10 +197,10 @@
     margin-bottom: 2vh;
 }
 
-.law-container {
+/*.law-container {
     width: 100%;
 }
-
+*/
 .law-content {
     font-size: 2.5vw;
     margin: 2vh 0;

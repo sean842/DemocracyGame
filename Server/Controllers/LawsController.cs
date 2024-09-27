@@ -20,7 +20,6 @@ namespace NewBlazorProjecct.Server.Controllers {
 
 
 
-        // TRY NEW FUNC!!!!!
         //// Get the game and all his laws.
         [HttpGet("Game/{gameCode}")]
         public async Task<IActionResult> GetGame(int gameCode) {
@@ -52,20 +51,7 @@ namespace NewBlazorProjecct.Server.Controllers {
 
 
 
-        //TRY NEW CODE!!!!!!!
-        [HttpGet("CloseAllGames/{userID}")]
-        public async Task<IActionResult> CloseAllGames(int userID) {
-            var param = new { userID, gameStarted = false };
-            const string updateQuery = "UPDATE Games SET GameStarted = @gameStarted WHERE UserID = @userID";
-            var isUpdate = await _db.SaveDataAsync(updateQuery, param);
-            if (isUpdate)
-                return Ok();
-            return BadRequest("Did Not Update All Games");
-        }
-
-
-
-        //TRY NEW CODE!!!!!!!
+        // Start the game so we can play.
         [HttpGet("ChangeGameStarted/{gameID}/{gameStarted}")]
         public async Task<IActionResult> ChangeGameStarted(int gameID, bool gameStarted) {
             var param = new { gameID, gameStarted };
@@ -78,7 +64,6 @@ namespace NewBlazorProjecct.Server.Controllers {
 
 
 
-        //TRY NEW CODE!!!!!!!
         [HttpGet("GetAllGroups/{gameID}")]
         public async Task<IActionResult> GetAllGroups(int gameID) {
             var param = new { GameID = gameID };
@@ -90,12 +75,16 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
         [HttpPost("InsertGroup")]
-        public async Task<IActionResult> InsertGroup(Group group) {
+        public async Task<IActionResult> InsertGroup(Group group)
+        {
             //var param = new { group.GroupName, group.GameID, points = 0, group.Character };
-            object param = new { groupName = group.GroupName, gameID = group.GameID, points = 0, character = group.Character };
-            const string insertQuery = "INSERT INTO Groups (GroupName, GameID, Points, Character) VALUES (@groupName, @gameID, @points, @character)";
+            object param = new { 
+                groupName = group.GroupName,  gameID = group.GameID,  points = 0, character = group.Character, passportCharacter = group.PassportCharacter
+            };
+            const string insertQuery = "INSERT INTO Groups (GroupName, GameID, Points, Character, PassportCharacter) VALUES (@groupName, @gameID, @points, @character, @passportCharacter)";
             group.GroupID = await _db.InsertReturnId(insertQuery, param);
-            if (group.GroupID > 0) {
+            if (group.GroupID > 0)
+            {
                 await _hub.Clients.All.SendAsync("GroupLogin", group);
                 return Ok(group.GroupID);
             }
@@ -227,17 +216,36 @@ namespace NewBlazorProjecct.Server.Controllers {
         }
 
 
+        // Close the game so we can not play.
+        [HttpGet("CloseAllGames/{userID}")]
+        public async Task<IActionResult> CloseAllGames(int userID) {
+            var param = new { userID, gameStarted = false };
+            const string updateQuery = "UPDATE Games SET GameStarted = @gameStarted WHERE UserID = @userID";
+            var isUpdate = await _db.SaveDataAsync(updateQuery, param);
+            if (isUpdate)
+                return Ok();
+            return BadRequest("Did Not Update All Games");
+        }
+
+
 
         [HttpGet("ResetVotes/{GameID}")]
         public async Task<IActionResult> ResetVotes(int GameID) {
             object param = new { GameID };
-            string query = "UPDATE Laws SET For = 0, Avoid = 0, Against = 0 where GameID = @GameID";
+            string query = "UPDATE Laws SET For = 0, Avoid = 0, Against = 0, IsPass = false WHERE GameID = @GameID";
             bool isUpdate = await _db.SaveDataAsync(query, param);
             if (isUpdate) {
                 return Ok();
             }
             return BadRequest("Not Update");
         }
+
+
+
+
+
+
+
 
 
 

@@ -8,13 +8,13 @@
 @inject IJSRuntime JS
 
 
-<div id="FristCanvas" style="display:@firsatCanvasDisplay">
+<div id="FristCanvas" style="display:@firstCanvasDisplay">
 
-    <h1>הקלידו קוד משחק</h1>
-    <input type="number" @bind="playerGameCode" />
+    <h1>נא להקליד קוד משחק</h1>
+    <input class="defaultINPUT" type="number" @bind="playerGameCode" />
     <span>לדוגמה: 101</span>
-    <button @onclick="GetGame"> כניסה למשחק</button>
-    <img class="images" src="./imgs/ballot-box.png" />
+    <button class="defaultBTN" @onclick="GetGame"> כניסה למשחק</button>
+    <img class="images" src="./imgs/updatedballotbox.png" />
 
 
 </div>
@@ -25,37 +25,36 @@
 
 <div id="chooseCharacter" class="canvas" style="display:@chooseCharacterDisplay">
     @if (!logged) {
-
-        <div class="title-container">
-            <h1 class="title">בחרו שם ונציג לקבוצה</h1>
-        </div>
-
         <div class="character-selection">
+            <div class="col-4 character-col">
 
+                <div class="imgWrapper @(selectedCharacter == "male" ? "selected" : "")" @onclick='() => SetCharacter("male")'>
+                    <img src="./imgs/bigmale.png" class="character-img-btn" />
+                </div>
 
-
-
-            <div class="character-col">
-                <img src="@maleCharacter" class="character-img-btn @(selectedCharacter == "male" ? "selected" : "")"
-                     @onclick='() => SetCharacter("male")' />
             </div>
 
-            <div class="input-col">
-                <label>
-                    שם הקבוצה:
-                    <input @bind="myGroup.GroupName" class="form-control" />
+            <div class="col-4 input-col">
+                <h2 class="title">בחרו שם ונציג לקבוצה</h2>
+                <label style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <input @bind="myGroup.GroupName" placeholder="הקלידו שם" class="defaultINPUT" />
                 </label>
-                <button class="btn-main" @onclick="LogIn">התחברות</button>
+                <button class=" defaultBTN" style="margin:0;" @onclick="LogIn">המשיכו</button>
+
             </div>
 
-            <div class="character-col">
-                <img src="@femaleCharacter" class="character-img-btn @(selectedCharacter == "female" ? "selected" : "")"
-                     @onclick='() => SetCharacter("female")' />
+            <div class="col-4 character-col">
+                <div class="imgWrapper myShadow @(selectedCharacter == "female" ? "selected" : "")" @onclick='() => SetCharacter("female")'>
+                    <img src="./imgs/bigfemale.png" class="character-img-btn" />
+                </div>
+
             </div>
-
-
 
         </div>
+
+
+
+
     }
 </div>
 
@@ -66,71 +65,104 @@
 
 <div class="container" style="display:@containerDisplay;">
 
-    <div class="left-column">
-        <div class="left-top">
+    <GroupListCompo Groups="allGroups"> </GroupListCompo>
 
-            <div id="ForTable">
-                <table style="display:@scoreTableContainer" class="score-table">
-                    <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
-                    <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
-                </table>
+
+    <div class="row Main-Row">
+
+        <div class="left-column col-4">
+
+            <div class="left-only ">
+
+                <div class="speech-bubble-container" style="display:@speechBubbleDisplay">
+                    <p class="character-text"> @characterText </p>
+                </div>
+
+                <div class="characterWrapper">
+                    <img src=@myGroup.Character alt="myCharacter" class="characterImg" />
+                </div>
+
+                <div class="Black-Box">
+
+
+
+                    <table class="score-table" style="display:@scoreTableDisplay">
+
+                        <thead>
+                            <tr>
+                                <th class="green-title">  עברו </th>
+                                <th class="red-title">  נפלו </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td> @lawAmountPass  </td>
+                                <td> @lawAmountNotPass  </td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="2"> @amountOfLaws / @lawCounterInTable  </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+
+
+                </div>
+
+
             </div>
+
+
         </div>
 
-        <div class="left-middle">
-            <div class="speech-bubble-container" style="display:@speechBubbleDisplay">
-                <p class="character-text"> @characterText </p>
-            </div>
-        </div>
 
-        <div class="left-bottom">
-            <img src="@myGroup.Character" alt="myCharacter" />
-        </div>
-
-    </div>
+        <div class="right-column col-8">
 
 
 
+            <ul style="display:@groupListDisplay">
+                @foreach (Group group in allGroups) {
+                    string myGroupClass = group.GroupID == myGroup.GroupID ? "my-group" : "";
+                    Console.WriteLine($" groupID: {group.GroupID.ToString()}");
 
-    <div class="right-column">
-        @if (msg != "") {
-            <p style="margin:0;">@msg</p>
-        }
+                    <li>
+                        <div class="header">
+                            <p> @group.GroupName </p>
 
-        <ul style="display:@groupListDisplay">
-            @foreach (Group group in allGroups) {
-                string myGroupClass = group.GroupID == myGroup.GroupID ? "my-group" : "";
-                Console.WriteLine($" groupID: {group.GroupID.ToString()}"); 
-                <li class="@myGroupClass">
-                    <div class="header">
-                        <p>@group.GroupName</p>
-                    </div>
-                    <div class="body">
-                        <img class="smallImg" src="@group.Character" />
-                    </div>
-                    <div class="footer">
-                        <p>קולות: @group.Points.ToString()</p>
-                    </div>
-                </li>
-            }
-        </ul>
-        <div id="explenation" class="canvas" style="display:@explenationCanvasDisplay">
-            <div class="speech-bubble">
-                <h1 class="title">ברוכים הבאים למליאה!</h1>
-            </div>
-            <p class="description">אנו הולכים להצביע על החוקים החדשים ולהשפיע על חיי הכיתה!</p>
-            <p class="description">כל קבוצה תקבל מספר קולות אשר ישפיעו על עתידנו.</p>
-        </div>
+                        </div>
 
-        <div id="voteGameCanvas" class="canvas" style="display:@voteGameCanvasDisplay">
+                        <div class="body">
+                            <img class="smallImg" src="@group.PassportCharacter" />
+                        </div>
 
-            <div class="row  biggerHalf">
+                        <div class="footer">
+                            <p> קולות:  @group.Points.ToString() </p>
+                        </div>
 
-                <div id="LawContentContainer" class="law-container" style="display:@LawContentContainerDisplay">
+                    </li>
+                }
+            </ul>
+
+
+
+
+            <div id="voteGameCanvas" style="display:@voteGameCanvasDisplay">
+
+
+                <div id="LawContentContainer" style="display:@LawContentContainerDisplay">
 
                     <div class="row half head">
-                        <div id="lawWrapper">   <div id="law">@currentLawContent</div>   </div>
+                        <div id="lawWrapper">
+                            <h3> @currentLawTitle  </h3>
+                            <p id="law">@currentLawContent</p>
+                        </div>
                     </div>
+
 
                     <div class="row half bottom">
                         <div id="cardsContainer">
@@ -144,7 +176,6 @@
                     }
 
 
-
                 </div>
 
                 <div id="PieChartContainer" style="display:@PieChartContainerDisplay">
@@ -152,22 +183,42 @@
                 </div>
 
 
+
+
+
+
+            </div>
+
+            <!--  RESULTS SCREEN  -->
+            <div id="resultsContainer" style="display:@resultsContainerDisplay">
+
+                <div class="end-table-wrapper">
+
+                    <table class="score-table end-table">
+
+                        <thead>
+                            <tr>
+                                <th class="green-title end-table-th">  עברו </th>
+                                <th class="red-title end-table-th">  נפלו </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td class="end-table-td"> @lawAmountPass  </td>
+                                <td class="end-table-td"> @lawAmountNotPass  </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
             </div>
 
 
+
         </div>
-
-        <!--  RESULTS SCREEN  -->
-        <div id="resultsContainer" style="display:@resultsContainerDisplay">
-            <div id="ForTable">
-                <table>
-                    <thead> <tr>   <th id="pass">עברו</th> <th id="fall">נפלו</th>   </tr> </thead>
-                    <tbody> <tr>   <td>@lawAmountPass</td>  <td>@lawAmountNotPass</td>   </tr> </tbody>
-                </table>
-            </div>
-        </div>
-
-
 
     </div>
 
@@ -177,56 +228,47 @@
 
 
 
-
-
-
-
-
-
-
 @code {
 
     private HubConnection? hub;// the connection to the Hub.
-    Group myGroup = new Group(); // My user, will save the id.
-    bool logged = false;
-    List<Group> allGroups = new List<Group>();// list for all the users.
-    int playerGameCode = 0;// the code from the input of the player.
-    Game myGame = new Game(); // containe the game withe the laws.
 
+    bool logged = false;
+    int playerGameCode = 0;// the code from the input of the player.
+    List<Group> allGroups = new List<Group>();// list for all the users.
+    Group myGroup = new Group(); // My user, will save the id.
+    Game myGame = new Game(); // containe the game withe the laws.
     string msg;// handle the error msg.
 
     // display divs.
-    string firsatCanvasDisplay = "flex";
+    string firstCanvasDisplay = "flex";
     string containerDisplay = "none";
     string explenationCanvasDisplay = "none";
     string voteGameCanvasDisplay = "none";
     string groupListDisplay = "none";
+    string LawContentContainerDisplay = "flex";
+    string PieChartContainerDisplay = "none";
+    string resultsContainerDisplay = "none";
+    string chooseCharacterDisplay = "none";
+    string scoreTableDisplay = "none";
+
 
     // display buttons
     string startGameBtnDisplay = "none";
     string startVoteBtnDisplay = "none";
     string pieChartBtnDisplay = "none";
-
-
-    // check if they exist
-    string chooseCharacterDisplay = "none";
-    string secondCanvasDisplay = "none";
-    // string explenationCanvasDisplay = "none";
-    string gotVotesDisplay = "none";
-    string voteScreenDisplay = "none";
-    string LawContentContainerDisplay = "flex";
-    string PieChartContainerDisplay = "none";
-    string resultsContainerDisplay = "none";
-    string scoreTableContainer = "table";
     string speechBubbleDisplay = "flex";
+    string scoreTableContainer = "table";
 
-    // string myGroupClass = ""; // defaine the class of our group only.
 
+
+    string currentLawTitle = "";
     string currentLawContent = "the law content will be here";
     int lawCounter = 0;
+    int lawCounterInTable = 0;
+    int amountOfLaws = 0;
     int lawAmountPass = 0;
     int lawAmountNotPass = 0;
-    string characterText = "ברוכים הבאים למליאה";
+    string characterText = "ברוכה הבאה";
 
     bool DisableVoteButton = true;// if we can vote or not(disable buttons), true will disable!.
     private bool isPopupVisible; // Flag to control popup visibility
@@ -257,17 +299,17 @@
         });
 
         hub.On("StartTheGame", () => {
-            HandleStartGame();
+            // HandleStartGame();
         });
 
         hub.On("PointsDistributed", async () => {
             await GetAllGroups();
             foreach (Group group in allGroups) {
-                if(myGroup.GroupID == group.GroupID) {
+                if (myGroup.GroupID == group.GroupID) {
                     myGroup = group;
                 }
             }
-            explenationCanvasDisplay = "none";
+            // explenationCanvasDisplay = "none";
             groupListDisplay = "flex";
             characterText = "קיבלנו: " + myGroup.Points.ToString() + " קולות!";
             speechBubbleDisplay = "flex";
@@ -331,11 +373,10 @@
 
     // private string selectedCharacter;
 
-    private void SetCharacter(string id, string src)
-    {
-        selectedCharacter = id;
-        myGroup.Character = src;
-    }
+    // private void SetCharacter(string id, string src) {
+    //     selectedCharacter = id;
+    //     myGroup.Character = src;
+    // }
 
 
     // if the user looged in:
@@ -353,29 +394,6 @@
         myGroup.ConnectionID = newConnectionId;
         await hub.SendAsync("Reconnected", myGroup);
     }
-
-
-    async Task GetGame() {
-        var gameResponse = await Http.GetAsync($"api/Laws/Game/{playerGameCode}");
-        if (!gameResponse.IsSuccessStatusCode) {
-            await HandleGameError(gameResponse);
-            return;
-        }
-        Console.WriteLine("we got the game!");
-        myGame = await gameResponse.Content.ReadFromJsonAsync<Game>();
-        if (myGame.GameStarted == false) {
-            msg = "המשחק לא התחיל, חכו למרצה.";
-            await JS.InvokeVoidAsync("alert", msg);
-            return;
-        }
-        firsatCanvasDisplay = "none";
-        chooseCharacterDisplay = "flex";
-        msg = "";
-
-    }
-
-
-
 
     private async Task HandleGameError(HttpResponseMessage response) {
         var error = await response.Content.ReadAsStringAsync();
@@ -416,9 +434,25 @@
         await JS.InvokeVoidAsync("alert", msg);
     }
 
+    async Task GetGame() {
+        var gameResponse = await Http.GetAsync($"api/Laws/Game/{playerGameCode}");
+        if (!gameResponse.IsSuccessStatusCode) {
+            await HandleGameError(gameResponse);
+            return;
+        }
+        Console.WriteLine("we got the game!");
+        myGame = await gameResponse.Content.ReadFromJsonAsync<Game>();
+        if (myGame.GameStarted == false) {
+            msg = "המשחק לא התחיל, חכו למרצה.";
+            await JS.InvokeVoidAsync("alert", msg);
+            return;
+        }
+        firstCanvasDisplay = "none";
+        chooseCharacterDisplay = "flex";
+        msg = "";
+        amountOfLaws = myGame.LawList.Count;
 
-
-
+    }
 
     async Task LogIn() {
         if (string.IsNullOrEmpty(myGroup.Character)) {
@@ -457,10 +491,6 @@
 
     }
 
-
-
-
-
     async Task GetAllGroups() {
         var response = await Http.GetAsync("api/Laws/GetAllGroups/" + myGame.GameID);
         if (response.IsSuccessStatusCode) {
@@ -474,20 +504,13 @@
     }
 
 
-    void HandleStartGame() {
-        groupListDisplay = "none";
-        explenationCanvasDisplay = "block";
-        characterText = ""; // no text to character when explaining.
-        speechBubbleDisplay = "none";
-        InvokeAsync(StateHasChanged);
-    }
-
     void StartVote() {
         // gotVotesDisplay = "none";
         // voteScreenDisplay = "block";
-        groupListDisplay = "none";
-        voteGameCanvasDisplay = "flex";
-        LawContentContainerDisplay = "flex";
+        groupListDisplay = "none"; // hide the groups.
+        voteGameCanvasDisplay = "flex"; // show the ga,e.
+        LawContentContainerDisplay = "flex"; // show the law.
+        scoreTableDisplay = "table"; // show the score table
 
 
         GetLawContent();
@@ -495,13 +518,15 @@
 
     void GetLawContent() {
         if (lawCounter < myGame.LawList.Count) {
+            currentLawTitle = myGame.LawList[lawCounter].Title;
             currentLawContent = myGame.LawList[lawCounter].Content;
+            lawCounterInTable++;
         }
         else {
+            currentLawTitle = "";
             currentLawContent = "finish Game!";
         }
         characterText = "בואו נצביע";
-        ChangeEmotion("normal");
         // SetVoteTrueOrFalse();
         DisableVoteButton = false;// make the buttons clickable.
     }
@@ -541,7 +566,7 @@
                     LawID = myGame.LawList[lawCounter].LawID,
                     VoteType = voteType,
                     Points = myGroup.Points
-            };
+                };
 
             var response = await Http.PostAsJsonAsync("api/Laws/Vote", vote);
             if (response.IsSuccessStatusCode) {
@@ -560,15 +585,13 @@
     private bool CalculateResult() {
         if (myGame.LawList[lawCounter].For > 60) {
             lawAmountPass++;
-            characterText = "ברכותי! החוק עבר!";
+            characterText = "ברכותי, החוק עבר!";
             // ChangeEmotion("happy");
-            ChangeEmotion("happy");
             return true;
         }
         else {
             lawAmountNotPass++;
             characterText = "החוק לא עבר, נמשיך לנסות ";
-            ChangeEmotion("sad");
             return false;
         }
     }
@@ -597,6 +620,7 @@
 
     void GetNextLaw() {
         lawCounter++;
+        // lawCounterInTable++;
         // לבדוק האם נגמרו החוקים
         if (lawCounter >= myGame.LawList.Count) {
             FinishGame();
@@ -614,35 +638,64 @@
     void FinishGame() {
         Console.WriteLine("we finish vote");
         voteGameCanvasDisplay = "none";
-        resultsContainerDisplay = "block";
+        resultsContainerDisplay = "flex";
         PieChartContainerDisplay = "none";
         characterText = " סיימנו להצביע";
         scoreTableContainer = "none";
+        scoreTableDisplay = "none"; // hide the score table
 
     }
 
     void StartAgain() {
-        firsatCanvasDisplay = "flex";
-        resultsContainerDisplay = "none";
-        msg = "";
-        myGroup = new Group(); // reset the group.
-        allGroups = new List<Group>(); // reset the groups list.
-        playerGameCode = 0;
-        myGame = new Game();
         logged = false;
-        lawAmountNotPass = 0;
-        lawAmountPass = 0;
-        lawCounter = 0;
-        characterText = "ברוכים הבאים למליאה";
-        scoreTableContainer = "table";
+        playerGameCode = 0;
+        allGroups = new List<Group>(); // reset the groups list.
+        myGroup = new Group(); // reset the group.
+        myGame = new Game();
+        msg = "";
+        ResetDisplayVars();
 
+        currentLawTitle = "";
+        currentLawContent = "";
+
+        lawCounter = 0;
+        lawCounterInTable = 0;
+        amountOfLaws = 0;
+        lawAmountPass = 0;
+        lawAmountNotPass = 0;
+        characterText = "ברוכים הבאים למליאה";
+        selectedCharacter = "";
+
+        DisableVoteButton = true;
+        popupMessage = "";
+        currentVoteType = "";
+    }
+
+    void ResetDisplayVars() {
+        //divs
+        firstCanvasDisplay = "flex";
+        containerDisplay = "none";
+        explenationCanvasDisplay = "none";
+        voteGameCanvasDisplay = "none";
+        groupListDisplay = "none";
+        LawContentContainerDisplay = "flex";
+        PieChartContainerDisplay = "none";
+        resultsContainerDisplay = "none";
+        chooseCharacterDisplay = "none";
+        scoreTableDisplay = "none";
+        // buttons
+        startGameBtnDisplay = "none";
+        startVoteBtnDisplay = "none";
+        pieChartBtnDisplay = "none";
+        speechBubbleDisplay = "flex";
+        scoreTableContainer = "table";
     }
 
 
 
     // Initial character image paths
-    private string maleCharacter = "./imgs/malediplonormal.png";
-    private string femaleCharacter = "./imgs/femalediplonormal.png";
+    private string maleCharacter = "./imgs/male.png";
+    private string femaleCharacter = "./imgs/female.png";
     private string selectedCharacter = ""; // Default selected character
 
 
@@ -651,43 +704,17 @@
 
         // Set the default image based on selected character
         if (character == "male") {
-            maleCharacter = "./imgs/malediplonormal.png";
             myGroup.Character = maleCharacter;
+            myGroup.PassportCharacter = maleCharacter;
         }
         else if (character == "female") {
-            femaleCharacter = "./imgs/femalediplonormal.png";
             myGroup.Character = femaleCharacter;
-        }
-    }
-
-    void ChangeEmotion(string emotion) {
-        // Change the image based on selected character and emotion
-        if (selectedCharacter == "male") {
-            maleCharacter = $"./imgs/malediplo{emotion}.png";
-            myGroup.Character = maleCharacter;
-        }
-        else if (selectedCharacter == "female") {
-            femaleCharacter = $"./imgs/femalediplo{emotion}.png";
-            myGroup.Character = femaleCharacter;
+            myGroup.PassportCharacter = femaleCharacter;
         }
     }
 
 
-    // string imgName = "normal";
 
-    // void Emotion(string emotion) {
-    //     imgName = emotion;
-    // }
-
-
-    // void ChangeCharacterEmotion(string emotion) {
-    //     if (selectedCharacter == "malediplonormal") {
-
-    //     }
-    //     else {
-            
-    //     }
-    // }
 
 
 }

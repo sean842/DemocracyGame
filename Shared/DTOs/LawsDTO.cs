@@ -10,6 +10,7 @@ namespace NewBlazorProjecct.Shared.DTOs
 	{
         public int GameID { get; set; }
         public int LawID { get; set; }
+        public string Title { get; set; }
         public string Content { get; set; }
         public int For { get; set; }
         public int Against { get; set; }

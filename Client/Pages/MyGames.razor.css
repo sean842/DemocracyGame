@@ -10,6 +10,13 @@
     overflow: hidden;
 }
 
+
+
+.extra-input-css {
+    width: 100%;
+    text-align: right;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -21,26 +28,66 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 95%;
     box-sizing: border-box;
     max-height: 65%;
+    height: 65%;
 }
 
 .upperRow {
-    width: 100%;
+    width: 95%;
     padding-left: 5%;
     padding-right: 5%;
     text-align: center;
-    background-color: #9BBDE7;
+    background-color: #BFD8FF;
     color: #254655;
     max-height: 25%;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    align-items: center;
+    border-radius: 10px;
 }
 
-    .upperRow h3 {
-        margin: 0;
-        padding: 20px 0;
-    }
+.right-column {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:0;
+}
 
+.text-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 2%;
+}
+
+.myGames-span{
+
+}
+
+
+/*.addGameInput {
+    width: 60%;
+    border-radius: 10px;
+    border: none;
+    font-size: .7rem;
+}
+*/
+.upperRow h3 {
+    margin: 0;
+    padding: 0;
+}
+
+/*.addGameContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2%;
+}
+*/
 .addnewgame {
     width: 80%;
     display: flex;
@@ -49,36 +96,68 @@
     align-items: center;
 }
 
-.myBtn {
+
+
+.inputANDbtn-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+/*.rightRow {
+    display: flex;
+    justify-content: space-evenly;
+}
+*/
+/*.myBtn {
     max-height: 80%;
     text-align: center;
-    font-size: .7rem;
+    font-size: .7rem !important;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 30%;
+    padding: 1% 2% !important;
+    border: none;
+    text-decoration: none;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    max-width: 35%;
+    background-color: #0062D1;
+    color: white;*/ /* text */
+/*font-weight: bold;
+    cursor: pointer;*/ /* Pointer cursor on hover */
+/*}
+
+    .myBtn:hover {
+        background-color: white;
+        color: #0062D1;
+    }*/
+.addnewgame input {
+    margin-right: 10px;
 }
-    .addnewgame input {
-        margin-right: 10px;
-    }
 
 .table-wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
-    width: 80%;
+    align-items: flex-start;
+    width: 95%;
     max-width: 100%;
     height: 100%;
-    overflow-y: auto;
     box-sizing: border-box;
     font-size: .7rem;
+    border-radius: 10px;
+    /*    overflow-y: auto;
+*/
 }
 
 .table-container {
     max-height: 100%;
     overflow-y: auto;
     width: 100%;
-/*    box-shadow: 0 2px 15px rgba(64, 64, 64, .7);
-*/    border-radius: 12px 12px 0 0;
+    border-radius: 10px;
     background-color: #ffffff;
 }
 
@@ -86,21 +165,26 @@ table {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
+    margin: 0;
 }
 
 td, th {
-    /*    padding: 15px 20px;
-*/
     padding: 1% 1.5%;
     text-align: center;
+    align-content:center;
+    
 }
 
 th {
-    background-color: antiquewhite;
-    color: #295C73;
-    font-family: 'Open Sans', Sans-serif;
-    font-weight: 200;
+    background-color: #0062D1;
+    font-weight: bold;
     text-transform: uppercase;
+    color: white;
+    font-size:20px;
+}
+
+td{
+    font-weight:normal;
 }
 
 tr {
@@ -109,11 +193,11 @@ tr {
 }
 
 .row-color-1 {
-    background-color: #cbedf3;
+    background-color: #DBEDFF;
 }
 
 .row-color-2 {
-    background-color: #e2f7f6;
+    background-color: #B2CEF0;
 }
 
 
@@ -122,8 +206,8 @@ tr {
     background: none;
     border: none;
     cursor: pointer;
-/*    padding: 10px;
-*/    font-size: 24px;
+    /*    padding: 10px;
+*/ font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -209,3 +293,329 @@ tr {
     .info-circle:hover {
         background-color: #0056b3;
     }
+
+
+
+.default-input {
+    color: black;
+    font-weight: bold;
+}
+
+.good-input {
+    color: green;
+    font-weight: bold;
+}
+
+.warnning-input {
+    color: orange;
+    font-weight: bold;
+}
+
+.danger-input {
+    color: red;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*<div class="checkbox-wrapper-5" >
+<div class="check" >
+<input id="check-5" type="checkbox" >
+<label for="check-5" > </label >
+</div >
+</div >
+*/
+
+
+/*.checkbox-wrapper-5 .check {
+    --size: 24px;
+    position: relative;
+    background: linear-gradient(90deg, #f19af3, #f099b5);
+    line-height: 0;
+    perspective: 400px;
+    font-size: var(--size);
+}
+
+    .checkbox-wrapper-5 .check input[type="checkbox"],
+    .checkbox-wrapper-5 .check label,
+    .checkbox-wrapper-5 .check label::before,
+    .checkbox-wrapper-5 .check label::after,
+    .checkbox-wrapper-5 .check {
+        appearance: none;
+        display: inline-block;
+        border-radius: var(--size);
+        border: 0;
+        transition: .35s ease-in-out;
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+
+        .checkbox-wrapper-5 .check label {
+            width: calc(2.2 * var(--size));
+            height: var(--size);
+            overflow: hidden;*/
+            /*        background: #d7d7d7;
+*/
+            /*background-color: wheat;
+        }
+
+        .checkbox-wrapper-5 .check input[type="checkbox"] {
+            position: absolute;
+            z-index: 1;
+            width: calc(.8 * var(--size));
+            height: calc(.8 * var(--size));
+            top: calc(.1 * var(--size));
+            left: calc(.1 * var(--size));
+            background: linear-gradient(45deg, #dedede, #ffffff);
+            box-shadow: 0 6px 7px rgba(0,0,0,0.3);
+            outline: none;
+            margin: 0;
+        }
+
+            .checkbox-wrapper-5 .check input[type="checkbox"]:checked {
+                left: calc(1.3 * var(--size));
+            }
+
+                .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label {
+                    background: transparent;
+                }
+
+        .checkbox-wrapper-5 .check label::before,
+        .checkbox-wrapper-5 .check label::after {*/
+            /*        content: "· ·";*/
+            /*position: absolute;
+            overflow: hidden;
+            left: calc(.15 * var(--size));
+            top: calc(.5 * var(--size));
+            height: var(--size);
+            letter-spacing: calc(-0.04 * var(--size));
+            color: #9b9b9b;
+            font-family: "Times New Roman", serif;
+            z-index: 2;
+            font-size: calc(.6 * var(--size));
+            border-radius: 0;
+            transform-origin: 0 0 calc(-0.5 * var(--size));
+            backface-visibility: hidden;
+        }
+
+        .checkbox-wrapper-5 .check label::after {*/
+            /*        content: "●";*/
+            /*top: calc(.65 * var(--size));
+            left: calc(.2 * var(--size));
+            height: calc(.1 * var(--size));
+            width: calc(.35 * var(--size));
+            font-size: calc(.2 * var(--size));
+            transform-origin: 0 0 calc(-0.4 * var(--size));
+        }
+
+        .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::before,
+        .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::after {
+            left: calc(1.55 * var(--size));
+            top: calc(.4 * var(--size));
+            line-height: calc(.1 * var(--size));
+            transform: rotateY(360deg);
+        }
+
+        .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::after {
+            height: calc(.16 * var(--size));
+            top: calc(.55 * var(--size));
+            left: calc(1.6 * var(--size));
+            font-size: calc(.6 * var(--size));
+            line-height: 0;
+        }*/
+
+        /* Styles for the disabled checkbox */
+        /*.checkbox-wrapper-5 .check input[type="checkbox"]:disabled,
+        .checkbox-wrapper-5 .check input[type="checkbox"]:disabled + label,
+        .checkbox-wrapper-5 .check input[type="checkbox"]:disabled + label::before,
+        .checkbox-wrapper-5 .check input[type="checkbox"]:disabled + label::after {
+            background-color: #d3d3d3;*/ /* Gray background for disabled */
+            /*cursor: not-allowed;
+            box-shadow: none;*/ /* Remove shadow for disabled state */
+            /*color: #9b9b9b;*/ /* Gray text */
+            /*border-radius: 50%;*/ /* Ensure the shape stays circular */
+            /*overflow: hidden;*/ /* Hide any overflow of the box */
+        /*}*/
+
+        /* Adjust the label to ensure no extra square is rendered */
+        /*.checkbox-wrapper-5 .check label {
+            width: calc(2.2 * var(--size));
+            height: var(--size);
+            background-color: wheat;
+            overflow: hidden;*/ /* Hide any overflow */
+            /*border-radius: var(--size);*/ /* Match the round shape */
+        /*}*/
+
+        /* Ensure the inner elements are contained within the checkbox */
+        /*.checkbox-wrapper-5 .check input[type="checkbox"]:disabled + label::before,
+        .checkbox-wrapper-5 .check input[type="checkbox"]:disabled + label::after {
+            display: none;*/ /* Optionally hide these elements in the disabled state */
+        /*}*/
+
+        /* Special handling for the disabled checked state */
+        /*.checkbox-wrapper-5 .check input[type="checkbox"]:disabled:checked + label {
+            background-color: #b0b0b0;
+            border-radius: var(--size);
+            overflow: hidden;*/ /* Ensure nothing leaks outside */
+        /*}*/
+        /* מצב חוסר יכולת פרסום (Disabled) */
+        /*.checkbox-wrapper-5 .check input[type="checkbox"]:disabled + label {
+            background-color: #939292;*/ /* רקע האליפסה */
+        /*}
+
+        .checkbox-wrapper-5 .check input[type="checkbox"]:disabled {
+            background-color: #4d4d4d;*/ /* הכפתור העגול */
+            /*cursor: not-allowed;
+        }*/
+
+        /* מצב פרסום אפשרי אך לא מפורסם */
+        /*.checkbox-wrapper-5 .check input[type="checkbox"] + label {
+            background-color: #ffffff;*/ /* רקע האליפסה */
+        /*}
+
+        .checkbox-wrapper-5 .check input[type="checkbox"] {
+            background-color: #000000;*/ /* הכפתור העגול */
+        /*}*/
+
+            /* מצב מפורסם */
+            /*.checkbox-wrapper-5 .check input[type="checkbox"]:checked + label {
+                background-color: #0062D1;*/ /* רקע האליפסה */
+            /*}
+
+            .checkbox-wrapper-5 .check input[type="checkbox"]:checked {
+                background-color: #000000;*/ /* הכפתור העגול */
+            /*}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------- COOL CHECKBOX ------------------*/
+
+
+.Bold {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.Normal {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.checkbox-container {
+}
+
+/* The switch container */
+.switch {
+    position: relative;
+    display: inline-block;
+    /*    width: 70px;
+*/ height: 30px;
+    width: 30%;
+}
+
+/* Hide the default checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider (background) */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    border: 1px solid black;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+/* The circle (inside the slider) */
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 24px;
+        width: 24px;
+        left: 4px;
+        bottom: 3px;
+        background-color: #0062D1;
+        transition: 0.4s;
+        border-radius: 50%;
+        height: 1.5em;
+        width: 1.5em;
+    }
+
+/* Checked state */
+input:checked + .slider {
+    background-color: #0062D1;
+}
+
+    input:checked + .slider:before {
+/*        transform: translateX(34px);
+*/        transform: translateX(2em);
+        background-color: white;
+    }
+
+/* Disabled state */
+input:disabled + .slider {
+    background-color: lightgray;
+    border: 1px solid gray;
+    cursor: not-allowed; /* Changes the cursor to not-allowed */
+}
+
+input:disabled + .slider:before {
+    background-color: gray;
+}
+
+input:disabled:checked + .slider {
+    background-color: lightgray;
+}
+
+input:disabled:checked + .slider:before {
+    transform: translateX(34px);
+    background-color: gray;
+}
+
+
+
+
+
+
+
+
+
+
+

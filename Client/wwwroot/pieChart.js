@@ -31,14 +31,14 @@ window.createOrUpdatePieChart = function (dataJson) {
             datasets: [{
                 data: values,
                 backgroundColor: [
-                    '#42EB9A', // Green for 'For'
-                    '#EB3121', // Red for 'Against'
-                    '#EBE142'  // Yellow for 'Avoid'
+                    '#A6D59B', // Green for 'For'
+                    '#FD7764', // Red for 'Against'
+                    '#F2DD81'  // Yellow for 'Avoid'
                 ],
                 hoverBackgroundColor: [
-                    '#42EB9A', // Green for 'For'
-                    '#EB3121', // Red for 'Against'
-                    '#EBE142'  // Yellow for 'Avoid'
+                    '#A6D59B', // Green for 'For'
+                    '#FD7764', // Red for 'Against'
+                    '#F2DD81'  // Yellow for 'Avoid'
                 ]
             }]
         },

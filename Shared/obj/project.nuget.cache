@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "/yJkcZ4Sww3J7aAfaPLXybj0Niy1uqIl4owgdb2aTtX1Hq3GEdwQeph979iM+al1e7zSoDm+ZCbDGOrVF6TB+A==",
+  "success": true,
+  "projectFilePath": "C:\\SeanDesktopData\\לימודים\\שנה ג\\פרוייקט גמר\\פרוייקט\\NewBlazorProject(4.18)\\Shared\\NewBlazorProjecct.Shared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\seanb\\.nuget\\packages\\sixlabors.imagesharp\\3.1.5\\sixlabors.imagesharp.3.1.5.nupkg.sha512",
+    "C:\\Users\\seanb\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.28\\microsoft.windowsdesktop.app.ref.6.0.28.nupkg.sha512",
+    "C:\\Users\\seanb\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.28\\microsoft.netcore.app.ref.6.0.28.nupkg.sha512",
+    "C:\\Users\\seanb\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.28\\microsoft.aspnetcore.app.ref.6.0.28.nupkg.sha512"
+  ],
+  "logs": []
+}
