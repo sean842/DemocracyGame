@@ -33,7 +33,7 @@
         <li class="myNavBTN"> <a @onclick="ShowHowTo"> איך משחקים? </a> </li>
 
         @if (UserService.IsLoggedIn) {
-            <li class="myNavBTN"> <a @onclick="Logout"> התנתקות</a> </li>
+            <li class="myNavBTN"> <a @onclick="ShowLogOutPopUp"> התנתקות</a> </li>
 
         }
 
@@ -55,11 +55,33 @@
     <HowTo OnClose="HideHowTo" />
 }
 
+@if (showLogOutPopUp) {
+    <PopUp Message="@msg" OnConfirm="@OnPopupConfirm"></PopUp>
+}
+
+
 @code {
 
 
 
     private bool showHowTo = false;
+
+
+    private bool showPopup = false;
+
+
+    // bool howto = false;
+    [Parameter]
+    public int UserID { get; set; }
+
+    private LoginPopup loginPopup;
+    private bool isLoggedIn = false;
+    private AboutPopup aboutPopup;
+
+    bool showOdot = false;
+
+    bool showLogOutPopUp = false;
+    string msg;// message for logout.
 
     private void ShowHowTo() {
         showHowTo = true;
@@ -70,41 +92,17 @@
     }
 
 
-
-
-
-
-
-
-
-
-    private bool showPopup = false;
-
-
-    bool howto = false;
-    [Parameter]
-    public int UserID { get; set; }
-
-    private LoginPopup loginPopup;
-    private bool isLoggedIn = false;
-    private AboutPopup aboutPopup;
-
-    bool showOdot = false;
-
-
-
-
-    private void ShowHotTo() {
-        howto = true;
-    }
+    // private void ShowHotTo() {
+    //     howto = true;
+    // }
     private void ShowLoginPopup() {
         loginPopup?.Show();
     }
 
 
-    private void exitPopUp2() {
-        howto = false;
-    }
+    // private void exitPopUp2() {
+    //     howto = false;
+    // }
     private void OnLoginSuccess() {
         // isLoggedIn = true;
         StateHasChanged();
@@ -137,6 +135,16 @@
     }
 
 
+    void ShowLogOutPopUp() {
+        showLogOutPopUp = !showLogOutPopUp;
+        msg = " האם להתנתק?";
+    }
 
+    void OnPopupConfirm(bool isConfirmed) {
+        showLogOutPopUp = !showLogOutPopUp;
+        if (isConfirmed) {
+            Logout();
+        }
+    }
 
 }

@@ -4,6 +4,7 @@
 <!-- Floating Button -->
 <button @onclick="ToggleListVisibility" class="floating-btn myShadow">
     <i class="fas fa-users"></i> <!-- FontAwesome Icon -->
+    <span style="color:white;" class="vote-counter"> @Groups.Count / @VoteCount</span> <!-- Display Vote Counter -->
 </button>
 
 <!-- Group List -->
@@ -11,7 +12,7 @@
     <ul>
         @foreach (var group in Groups) {
 
-            <li>
+            <li style="background-color: @(group.GroupID == groupId ? "#BFD8FF" : "white")">
                 <span class="group-name">@group.GroupName</span>
                 <span class="group-score">@group.Points</span>
             </li>
@@ -22,6 +23,10 @@
 @code {
     [Parameter]
     public List<Group> Groups { get; set; } = new List<Group>();
+    [Parameter]
+    public int? groupId { get; set; }  // Nullable groupId, only passed for users.
+    [Parameter]
+    public int VoteCount { get; set; }  // Vote count passed from Blazor page
 
     private bool isListVisible = false;
 

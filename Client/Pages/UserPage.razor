@@ -65,7 +65,7 @@
 
 <div class="container" style="display:@containerDisplay;">
 
-    <GroupListCompo Groups="allGroups"> </GroupListCompo>
+    <GroupListCompo Groups="allGroups" groupId="myGroup.GroupID" VoteCount="@votedGroupCount"> </GroupListCompo>
 
 
     <div class="row Main-Row">
@@ -130,7 +130,7 @@
                     string myGroupClass = group.GroupID == myGroup.GroupID ? "my-group" : "";
                     Console.WriteLine($" groupID: {group.GroupID.ToString()}");
 
-                    <li>
+                    <li class="@myGroupClass">
                         <div class="header">
                             <p> @group.GroupName </p>
 
@@ -276,6 +276,8 @@
     private string currentVoteType = ""; // The type of vote (For, Against, Avoid)
 
 
+    private int votedGroupCount = 0;  // Track number of groups that have voted
+
 
     protected override async Task OnInitializedAsync() {
         // make a connection.
@@ -290,16 +292,13 @@
             myGroup.ConnectionID = hub.ConnectionId;
             hub.Reconnected += (newConnectionId) => ReConnect(newConnectionId);
         }
-        // when someone login we get the user detailes and add it to the user list(to show it on screen).
-        hub.On<Group>("GroupLogin", newGroup => {
-            allGroups.Add(newGroup);
+
+
+        hub.On<string, Group>("JoinGroup", async (GroupName, newGroup) => {
+            await GetAllGroups();
+            // Console.WriteLine($"group Name: {GroupName}");
             msg = "";
             StateHasChanged();
-            // Console.WriteLine("Added Group");
-        });
-
-        hub.On("StartTheGame", () => {
-            // HandleStartGame();
         });
 
         hub.On("PointsDistributed", async () => {
@@ -323,6 +322,7 @@
             StartVote();
             StateHasChanged();
         });
+
         hub.On<VoteDTO>("VoteUpdated", vote => {
             var law = myGame.LawList.FirstOrDefault(l => l.LawID == vote.LawID);
             if (law != null) {
@@ -337,17 +337,23 @@
                         law.Avoid += vote.Points;
                         break;
                 }
+                votedGroupCount++;
+
                 StateHasChanged();
             }
         });
+
+
         hub.On("showPieChart", async () => {
             await ShowPieChart();
             StateHasChanged();
         });
+
         hub.On("ShowNextLaw", () => {
             GetNextLaw();
             StateHasChanged();
         });
+
         hub.On("StartAgain", () => {
             StartAgain();
             StateHasChanged();
@@ -358,6 +364,7 @@
             userToUpdate.ConnectionID = reconnectedGroup.ConnectionID;
             StateHasChanged();
         });
+
         hub.On<ReconnectingData>("GetData", Data => {
             lawCounter = Data.LawCounter;
             lawAmountPass = Data.LawAmountPass;
@@ -370,13 +377,6 @@
 
 
     }
-
-    // private string selectedCharacter;
-
-    // private void SetCharacter(string id, string src) {
-    //     selectedCharacter = id;
-    //     myGroup.Character = src;
-    // }
 
 
     // if the user looged in:
@@ -472,7 +472,7 @@
         }
 
         myGroup.GameID = myGame.GameID;
-        Console.WriteLine(myGroup.GameID);
+        // Console.WriteLine($"my group game id: {myGroup.GameID}");
         var post = await Http.PostAsJsonAsync("api/Laws/InsertGroup", myGroup);
 
         if (!post.IsSuccessStatusCode) {
@@ -481,6 +481,9 @@
         }
 
         myGroup.GroupID = post.Content.ReadFromJsonAsync<int>().Result;
+
+        await hub.SendAsync("Join", myGroup, myGame.GameID.ToString());
+
         logged = true;
         chooseCharacterDisplay = "none";
         containerDisplay = "flex";
@@ -571,6 +574,9 @@
             var response = await Http.PostAsJsonAsync("api/Laws/Vote", vote);
             if (response.IsSuccessStatusCode) {
                 Console.WriteLine("Vote submitted successfully");
+                // await _hub.Clients.All.SendAsync("VoteUpdated", vote);
+                // await hub.SendAsync("ShowTheNextLaw", myGame.GameID.ToString());
+
                 DisableVoteButton = true;
             }
             else {
@@ -620,7 +626,7 @@
 
     void GetNextLaw() {
         lawCounter++;
-        // lawCounterInTable++;
+        votedGroupCount = 0;
         // לבדוק האם נגמרו החוקים
         if (lawCounter >= myGame.LawList.Count) {
             FinishGame();
@@ -654,7 +660,7 @@
         myGame = new Game();
         msg = "";
         ResetDisplayVars();
-
+        votedGroupCount = 0;
         currentLawTitle = "";
         currentLawContent = "";
 

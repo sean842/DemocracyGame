@@ -22,7 +22,7 @@
 
 <div class="container" style="display:@containerDisplay;">
 
-    <GroupListCompo Groups="allGroups"> </GroupListCompo>
+    <GroupListCompo Groups="allGroups" VoteCount="@votedGroupCount"> </GroupListCompo>
 
     <div class="row Main-Row">
 
@@ -75,8 +75,7 @@
 
 
                 @if (allGroups.Count > 0) {
-                    @*                     <button class="defaultBTN" style="display:@startGameBtnDisplay" @onclick="StartGame">התחל משחק</button>
-                *@                    <button class="defaultBTN" style="display:@distributePointsBtnDisplay" @onclick="DistributePoints">חלוקת קולות</button>
+                    <button class="defaultBTN" style="display:@distributePointsBtnDisplay" @onclick="DistributePoints">חלוקת קולות</button>
                     <button class="defaultBTN" style="display:@startVoteBtnDisplay" @onclick="StartTheVote">נתחיל</button>
                     <button class="defaultBTN" style="display:@pieChartBtnDisplay" @onclick="TriggerPieChart"> תוצאות! </button>
                     <button class="defaultBTN" style="display:@PieChartContainerDisplay" @onclick="callForNextLaw" id="nextLawButton"> בואו נמשיך </button>
@@ -250,6 +249,9 @@
 
     // private string showScoresBtnDisplay = "none";
 
+    private int votedGroupCount = 0;  // Track number of groups that have voted
+
+
 
     protected override async Task OnInitializedAsync() {
         // make a connection.
@@ -264,22 +266,22 @@
             // hub.Reconnected += (newConnectionId) => ReConnect(newConnectionId);
         }
 
-        // when someone login we get the user detailes and add it to the user list(to show it on screen).
-        hub.On<Group>("GroupLogin", newGroup => {
-            allGroups.Add(newGroup);
+        hub.On<string>("LecturJoin", (lecturemsg) => {
+            Console.WriteLine(lecturemsg);
+        });
+
+        hub.On<string, Group>("JoinGroup", async (GroupName, newGroup) => {
+            await GetAllGroups();
+            Console.WriteLine($"group Name: {GroupName}");
             msg = "";
-            totalGroupsCount++;
             StateHasChanged();
         });
 
-
-        hub.On("StartTheGame", () => {
-            // HandleStartGame();
-        });
         hub.On("StartVote", () => {
             StartVote();
             StateHasChanged();
         });
+
         hub.On<VoteDTO>("VoteUpdated", vote => {
             var law = myGame.LawList.FirstOrDefault(l => l.LawID == vote.LawID);
             if (law != null) {
@@ -294,7 +296,10 @@
                         law.Avoid += vote.Points;
                         break;
                 }
+                Console.WriteLine($"FOR: {myGame.LawList[lawCounter].For}, AGAINST:  {myGame.LawList[lawCounter].Against}, AVOID: {myGame.LawList[lawCounter].Avoid}");
                 votedGroupsCount++;
+                votedGroupCount++;
+
                 StateHasChanged();
             }
         });
@@ -303,10 +308,12 @@
             await ShowPieChart();
             StateHasChanged();
         });
+
         hub.On("ShowNextLaw", () => {
             GetNextLaw();
             StateHasChanged();
         });
+
         hub.On("StartAgain", async () => {
             StartAgain();
             StateHasChanged();
@@ -362,12 +369,15 @@
             // Change game start.
             if (!await ChangeGameStart(true)) return;
 
+            await hub.SendAsync("JoinLecturer", ConnectionID, myGame.GameID.ToString());
+
             firstCanvasDisplay = "none";
             containerDisplay = "flex";
             groupListDisplay = "flex";
             distributePointsBtnDisplay = "block";
             // startGameBtnDisplay = "block";
             msg = "";
+            characterText = $"בואו לשחק! קוד המשחק: {myGame.GameCode}";
             await GetAllGroups(); // Retrieve all groups after logging in
 
         }
@@ -385,6 +395,8 @@
         Console.WriteLine("we got the game!");
         myGame = await gameResponse.Content.ReadFromJsonAsync<Game>();
         amountOfLaws = myGame.LawList.Count;
+        Console.WriteLine($"FOR: {myGame.LawList[0].For}, AGAINST:  {myGame.LawList[0].Against}, AVOID: {myGame.LawList[0].Avoid}");
+
     }
 
     async Task<bool> DeleteAllGroups() {
@@ -514,7 +526,7 @@
 
     async void StartTheVote() {
         Console.WriteLine("start the game!");
-        await hub.SendAsync("StartVote");
+        await hub.SendAsync("StartVote", myGame.GameID.ToString());
     }
 
     void StartVote() {
@@ -541,7 +553,7 @@
     }
 
     private async Task TriggerPieChart() {
-        await hub.SendAsync("ShowChart");
+        await hub.SendAsync("ShowChart", myGame.GameID.ToString());
     }
 
     private bool CalculateResult() {
@@ -580,12 +592,13 @@
 
     private async Task callForNextLaw() {
         // דרך HUB לקרוא לכולם להציג את החוק הבא
-        await hub.SendAsync("ShowTheNextLaw");
+        await hub.SendAsync("ShowTheNextLaw", myGame.GameID.ToString());
+
     }
 
     void GetNextLaw() {
         lawCounter++;
-        // lawCounterInTable++;
+        votedGroupCount = 0;
         // לבדוק האם נגמרו החוקים
         if (lawCounter >= myGame.LawList.Count) {
             FinishGame();
@@ -625,7 +638,7 @@
             if (!await ResetVotes()) return;
             // Change game start.
             if (!await ChangeGameStart(false)) return;
-            await hub.SendAsync("StartAgain");
+            await hub.SendAsync("StartAgain", myGame.GameID.ToString());
 
         }
         catch (Exception ex) {
@@ -641,6 +654,8 @@
         myGame = new Game();
         msg = "";
         ResetDisplayVars();
+        votedGroupCount = 0;
+
         currentLawTitle = "";
         currentLawContent = "";
         lawCounter = 0;

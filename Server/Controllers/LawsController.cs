@@ -85,7 +85,7 @@ namespace NewBlazorProjecct.Server.Controllers {
             group.GroupID = await _db.InsertReturnId(insertQuery, param);
             if (group.GroupID > 0)
             {
-                await _hub.Clients.All.SendAsync("GroupLogin", group);
+                //await _hub.Clients.All.SendAsync("GroupLogin", group);
                 return Ok(group.GroupID);
             }
             return BadRequest("didn't insert");
@@ -121,7 +121,12 @@ namespace NewBlazorProjecct.Server.Controllers {
                 if (!isUpdate)
                     return BadRequest($"Failed to update points for group: {group.GroupName}");
             }
-            await _hub.Clients.All.SendAsync("PointsDistributed");
+            //await _hub.Clients.All.SendAsync("PointsDistributed");
+
+            string groupname = groupsList[0].GameID.ToString();
+            //שליחת הודעה לקבוצה
+            await _hub.Clients.Group(groupname).SendAsync("PointsDistributed");
+
             return Ok(true);
         }
 
@@ -158,7 +163,12 @@ namespace NewBlazorProjecct.Server.Controllers {
             }
 
             // Notify clients about the points distribution
-            await _hub.Clients.All.SendAsync("PointsDistributed");
+            //await _hub.Clients.All.SendAsync("PointsDistributed");
+
+            string groupname = groupsList[0].GameID.ToString();
+            //שליחת הודעה לקבוצה
+            await _hub.Clients.Group(groupname).SendAsync("PointsDistributed");
+
             return Ok(true);
         }
 
@@ -184,7 +194,8 @@ namespace NewBlazorProjecct.Server.Controllers {
 
             if (isUpdate) {
                 // Notify clients about the vote update
-                await _hub.Clients.All.SendAsync("VoteUpdated", vote);
+                string gameName = vote.GameID.ToString();
+                await _hub.Clients.Group(gameName).SendAsync("VoteUpdated", vote);
                 return Ok("Update");
             }
             else {
