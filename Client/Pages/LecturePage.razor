@@ -6,15 +6,25 @@
 @using NewBlazorProjecct.Shared.DTOs;
 @inject IJSRuntime JS
 @using NewBlazorProjecct.Client.Components
+@using Blazorise.QRCode
 
 
 <div id="FristCanvas" style="display:@firstCanvasDisplay">
 
+    
     <h1>נא להקליד קוד משחק</h1>
     <input class="defaultINPUT" type="number" @bind="playerGameCode" />
     <span>לדוגמה: 101</span>
     <button class="defaultBTN" @onclick="HandleGetGame"> כניסה למשחק</button>
     <img class="images" src="./imgs/updatedballotbox.png" />
+
+
+    <div class="qr-code-container">
+
+        <QRCode Value="https://projects.telem-hit.net/2024/DemocracyGame_SeanYovel/UserPage" size="ExtraSmall" ></QRCode>
+
+    </div>
+
 
 </div>
 
@@ -38,7 +48,7 @@
                     <img src=@myCharaterSrc alt="myCharacter" class="characterImg" />
                 </div>
 
-                <div class="Black-Box">
+@*                 <div class="Black-Box">
 
                     <table class="score-table" style="display:@scoreTableDisplay">
 
@@ -63,6 +73,27 @@
                         </tfoot>
 
                     </table>
+
+
+                </div> *@
+
+
+                <div class="Black-Box">
+
+                    <div class="icon-container" style="display:@scoreTableDisplay">
+                        <div class="icon-item">
+                            <span class="icon-circle green-circle">
+                                <i class="fa fa-check"></i> <!-- Green "V" icon -->
+                            </span>
+                            <span class="counter">@lawAmountPass</span>
+                        </div>
+                        <div class="icon-item">
+                            <span class="icon-circle red-circle">
+                                <i class="fa fa-times"></i> <!-- Red "X" icon -->
+                            </span>
+                            <span class="counter">@lawAmountNotPass</span>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -124,7 +155,7 @@
 
                     <div class="row half head">
                         <div id="lawWrapper">
-                            <h3> @currentLawTitle  </h3>
+                            <h1> @currentLawTitle  </h1>
                             <p id="law">@currentLawContent</p>
                         </div>
                     </div>
@@ -194,7 +225,6 @@
 
 
 </div>
-
 
 
 
@@ -535,7 +565,7 @@
         voteGameCanvasDisplay = "flex"; // show the game.
         pieChartBtnDisplay = "block"; // show the next btn.
         LawContentContainerDisplay = "flex"; // show the law.
-        scoreTableDisplay = "table"; // show the score table
+        scoreTableDisplay = "flex"; // show the score table
         GetLawContent();
     }
 

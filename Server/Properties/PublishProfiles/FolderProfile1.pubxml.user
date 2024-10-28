@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\SeanDesktopData\לימודים\שנה ג\פרוייקט גמר\פרוייקט\NewBlazorProject(4.18)\Server\bin\Release\net6.0\publish\</_PublishTargetUrl>
-    <History>True|2024-10-19T08:41:51.9704943Z;True|2024-08-04T16:43:35.9462522+03:00;</History>
+    <History>True|2024-10-25T19:04:33.3202092Z;True|2024-10-19T11:41:51.9704943+03:00;True|2024-08-04T16:43:35.9462522+03:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

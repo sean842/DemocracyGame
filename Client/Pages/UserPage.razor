@@ -52,9 +52,6 @@
 
         </div>
 
-
-
-
     }
 </div>
 
@@ -82,9 +79,38 @@
                     <img src=@myGroup.Character alt="myCharacter" class="characterImg" />
                 </div>
 
+
+
+
                 <div class="Black-Box">
 
+                    <div class="icon-container" style="display:@scoreTableDisplay">
+                        <div class="icon-item">
+                            <span class="icon-circle green-circle">
+                                <i class="fa fa-check"></i> <!-- Green "V" icon -->
+                            </span>
+                            <span class="counter">@lawAmountPass</span>
+                        </div>
+                        <div class="icon-item">
+                            <span class="icon-circle red-circle">
+                                <i class="fa fa-times"></i> <!-- Red "X" icon -->
+                            </span>
+                            <span class="counter">@lawAmountNotPass</span>
+                        </div>
+                    </div>
 
+
+                </div>
+
+
+
+
+
+
+
+
+
+@*                 <div class="Black-Box">
 
                     <table class="score-table" style="display:@scoreTableDisplay">
 
@@ -112,7 +138,10 @@
 
 
 
-                </div>
+                </div> *@
+
+
+
 
 
             </div>
@@ -158,7 +187,7 @@
 
                     <div class="row half head">
                         <div id="lawWrapper">
-                            <h3> @currentLawTitle  </h3>
+                            <h1> @currentLawTitle  </h1>
                             <p id="law">@currentLawContent</p>
                         </div>
                     </div>
@@ -513,7 +542,7 @@
         groupListDisplay = "none"; // hide the groups.
         voteGameCanvasDisplay = "flex"; // show the ga,e.
         LawContentContainerDisplay = "flex"; // show the law.
-        scoreTableDisplay = "table"; // show the score table
+        scoreTableDisplay = "flex"; // show the score table
 
 
         GetLawContent();

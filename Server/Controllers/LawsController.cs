@@ -143,7 +143,7 @@ namespace NewBlazorProjecct.Server.Controllers {
                         remainingPoints = 0;
                     }
                     else {
-                        int maxPoints = Math.Min(21, remainingPoints);
+                        int maxPoints = Math.Min(15, remainingPoints);
                         pointsToDistribute = rnd.Next(5, maxPoints + 1);
                         remainingPoints -= pointsToDistribute;
                     }

@@ -168,3 +168,44 @@ nav {
                 color: #0062D1; /* שינוי צבע הטקסט */
                 font-weight: bold; /* הפיכת הטקסט ל-Bold */
             }
+
+
+
+
+/* Media query for mobile (screens smaller than 600px) */
+@media (max-width: 600px) {
+
+
+    nav {
+        padding: 0;
+        
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: space-evenly;
+    }
+
+        .nav-links li {
+            list-style: none;
+            margin: 0 ;
+        }
+
+            .nav-links li a {
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+
+    .myNavBTN {
+        font-size: 16px;
+        font-weight: bold;
+        max-width:100%;
+    }
+
+    .logoWrapper {
+        display: none;
+    }
+
+
+}

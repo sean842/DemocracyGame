@@ -107,10 +107,25 @@ p{
     /*margin: 10px 2px;*/ /* Margin */
 }
 
+.qr-code-container {
+    position: absolute; /* Allows you to position it anywhere */
+    top: 0; /* Distance from the top */
+    left: 2%; /* Distance from the left */
+    z-index: 1000; /* Ensures it appears above other content */
+    width: 100px; /* Set width for the container */
+    height: 100px; /* Set height for the container */
+}
+
+.qr-code-container canvas {
+    width:100px;
+    height:100px;
+}
+
+
 
 /*   ----------  START OF FIRST CANVAS DESIGN   ----------   */
 
-#FristCanvas {
+    #FristCanvas {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -277,6 +292,43 @@ p{
 }
 
 
+.icon-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: white;
+    font-size: 16px;
+}
+
+.green-circle {
+    background-color: #54724C; /* Green color */
+}
+
+.red-circle {
+    background-color: #F34A33; /* Red color */
+}
+
+.counter {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
 
 /*   start design for the table in the game  */
 
@@ -368,13 +420,6 @@ p{
         font-size: 20px;
     }
 
-/*#resultsContainer thead th {
-    padding: 1% 2%;
-    text-align: center;
-    position: relative;
-    font-size: 2rem;
-}
-*/
 
 .styled-table thead th:after {
     content: '';
@@ -832,4 +877,174 @@ ul li.my-group {
     /*font-size: 1rem;*/ /* Font size */
     /*margin: 20px 10px;*/ /* Margin */
     /*border-radius: 10px;*/ /* Rounded corners */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Media query for mobile (screens smaller than 600px) */
+@media (max-width: 600px) {
+
+
+    h1 {
+        font-size: 20px;
+        font-weight: 800;
+        color: black;
+    }
+
+    h2 {
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+    }
+
+    h3 {
+        font-size: 16px;
+        font-weight: bold;
+        color: black;
+    }
+
+    span {
+        font-size: 14px;
+        font-weight: normal;
+        color: black;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    article {
+        display: flex;
+        padding-bottom: 1.5rem;
+    }
+
+    #FristCanvas {
+        background-image: none;
+        bottom: 0;
+        height: 100%;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 2%;
+    }
+
+    .defaultINPUT {
+        font-size: 16px; 
+        width: 190px;
+        height: 42px;
+    }
+
+    .defaultBTN {
+        width: 141px;
+        height: 35px;
+        font-size: 16px;
+        margin:0;
+    }
+
+    .images {
+        width: 70%;
+    }
+
+    .container {
+        padding:0;
+
+    }
+
+
+
+    .Main-Row {
+        padding:0;
+        }
+
+    .right-column {
+        height: 60%;
+        width: 100%;
+        padding-top: 10px;
+    }
+
+        .right-column ul {
+            padding: 0 20px;
+        }
+
+    .left-column {
+        height: 40%;
+        width: 100%;
+    }
+
+    .characterImg {
+        width: 45%;
+    }
+
+
+    .speech-bubble-container {
+        width: 100%; 
+        max-width:100%;
+    }
+
+        .speech-bubble-container .character-text {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+    .score-table thead th {
+        font-size: 14px;
+    }
+
+    .score-table tbody td {
+        font-size: 14px;
+    }
+
+
+    #For,
+    #Avoid,
+    #Against {
+        width: 30%;
+        height: 60%;
+        font-size: 1.5rem;
+    }
+
+    #law{
+        font-size:20px;
+    }
+
+    #lawWrapper{
+        width:70%;
+        height:70%;
+    }
+
+    #cardsContainer {
+        align-items: flex-start;
+    }
+
+    .Black-Box{
+        width:60%;
+    }
+
+
+    .qr-code-container {
+        position: relative; /* Allows you to position it anywhere */
+        top: 0; /* Distance from the top */
+        left: 0; /* Distance from the left */
+        z-index: 1000; /* Ensures it appears above other content */
+        width: 100px; /* Set width for the container */
+        height: 100px; /* Set height for the container */
+    }
+
+        .qr-code-container canvas {
+            width: 100px;
+            height: 100px;
+        }
+
+
+
+
 }

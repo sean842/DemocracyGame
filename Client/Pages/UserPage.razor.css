@@ -297,4 +297,26 @@
     .character-img {
         width: 25vw; /* Adjust size for small screens */
     }
+
+
+    .character-selection {
+        flex-direction: column;
+        gap:5%;
+    }
+
+
+    .character-col {
+/*        height: auto;
+*/        height: 20%;
+        width: 100%;
+    }
+    .input-col {
+        height: auto;
+    }
+
+    .character-img-btn {
+        width: 30%;
+    }
+
+
 }
